@@ -1,11 +1,13 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
+import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegistrarBinding
@@ -41,29 +43,45 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validarFormulario(): Boolean {
-        if (!validarNombreApellido()) {
-            AppMessage.enviarMensaje(
-                binding.root, "Ingrese nombre y apellido",
-                TypeMessage.DANGER
-            )
-
+        if (!validarNombre()) {
+            return false
+        } else if (!validarApellido()) {
             return false
         } else if (!validarDNI()) {
             return false
         } else if (!validarCelular()) {
+            return false
+        } else if (!validarCorreo()) {
+            return false
+        } else if (!validarContrasenia()) {
             return false
         }
 
         return true
     }
 
-    private fun validarNombreApellido(): Boolean {
+    private fun validarNombre(): Boolean {
         var respuesta = true
         if (binding.edNombreUser.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Nombre no puede estar vacio",
+                TypeMessage.DANGER
+            )
             binding.edNombreUser.isFocusableInTouchMode = true
             binding.edNombreUser.requestFocus()
             respuesta = false
-        } else if (binding.edApellido.text.toString().trim().isEmpty()) {
+        }
+
+        return respuesta
+    }
+
+    private fun validarApellido(): Boolean {
+        var respuesta = true
+        if (binding.edApellido.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Apellido no puede estar vacio",
+                TypeMessage.DANGER
+            )
             binding.edApellido.isFocusableInTouchMode = true
             binding.edApellido.requestFocus()
             respuesta = false
@@ -84,7 +102,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
             respuesta = false
         } else if (binding.edDNI.text.toString().trim().length != 8) {
             AppMessage.enviarMensaje(
-                binding.root, "El DNI solo tiene 8 digitos",
+                binding.root, "El DNI solo acepta 8 digitos",
                 TypeMessage.INFO
             )
             binding.edDNI.isFocusableInTouchMode = true
@@ -107,7 +125,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
             respuesta = false
         } else if (binding.edCelular.text.toString().trim().length != 9) {
             AppMessage.enviarMensaje(
-                binding.root, "El Celular solo tiene 9 digitos",
+                binding.root, "El Celular solo acepta 9 digitos",
                 TypeMessage.INFO
             )
             binding.edCelular.isFocusableInTouchMode = true
@@ -118,4 +136,69 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         return respuesta
     }
 
+    private fun validarCorreo(): Boolean {
+        var respuesta = true
+        if (binding.edEmailUser.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Correo no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edEmailUser.isFocusableInTouchMode = true
+            binding.edEmailUser.requestFocus()
+            respuesta = false
+        } else if (!verificarFormatoCorreo()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El formato del Correo es invalido ",
+                TypeMessage.INFO
+            )
+            binding.edEmailUser.isFocusableInTouchMode = true
+            binding.edEmailUser.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun verificarFormatoCorreo(): Boolean {
+        val pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(binding.edEmailUser.text.toString().trim()).matches()
+    }
+
+    private fun validarContrasenia(): Boolean {
+        var respuesta = true
+        if (binding.edPasswordUser.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "La Contraseña no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edPasswordUser.isFocusableInTouchMode = true
+            binding.edPasswordUser.requestFocus()
+            respuesta = false
+        } else if(!verificarFormatoContrasenia()) {
+            AppMessage.enviarMensaje(
+                binding.root, "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
+                TypeMessage.INFO
+            )
+            binding.edPasswordUser.isFocusableInTouchMode = true
+            binding.edPasswordUser.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun verificarFormatoContrasenia(): Boolean {
+        val pattern = Pattern.compile(
+            "^" +
+                    "(?=.*[0-9])" +          //al menos un numero
+                    "(?=.*[a-z])" +          //al menos una letra minusucla
+                    "(?=.*[A-Z])" +          //al menos una letra mayuscula
+                    "(?=.*[@#$%^&+=.])" +    //algunos de ellos debe estar
+                    "(?=\\S+$)" +            //nada de espacios
+                    ".{4,}" +                //al menos 4 caracteres
+                    "$"
+        )
+
+        return pattern.matcher(binding.edPasswordUser.text.toString().trim()).matches()
+    }
 }
