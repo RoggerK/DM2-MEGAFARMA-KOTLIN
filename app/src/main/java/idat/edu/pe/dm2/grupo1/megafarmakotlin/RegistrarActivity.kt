@@ -16,32 +16,45 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         binding.btnRegistrar.setOnClickListener(this)
+        binding.btnCancelar.setOnClickListener(this)
 
     }
 
     override fun onClick(view: View) {
-        when(view.id) {
+        when (view.id) {
             binding.btnRegistrar.id -> registrarCliente()
+            binding.btnCancelar.id -> cancelarActivity()
         }
     }
 
+    private fun cancelarActivity() {
+        this.finish()
+    }
+
     private fun registrarCliente() {
-        if(validarFormulario()) {
-            AppMessage.enviarMensaje(binding.root, "Registro con exito",
-                TypeMessage.SUCCESSFULL)
+        if (validarFormulario()) {
+            AppMessage.enviarMensaje(
+                binding.root, "Registro con exito",
+                TypeMessage.SUCCESSFULL
+            )
         }
     }
 
     private fun validarFormulario(): Boolean {
-        var respuesta = false
         if (!validarNombreApellido()) {
-            AppMessage.enviarMensaje(binding.root, "Ingrese nombre y apellido",
-                TypeMessage.DANGER)
-        } else {
-            respuesta = true
+            AppMessage.enviarMensaje(
+                binding.root, "Ingrese nombre y apellido",
+                TypeMessage.DANGER
+            )
+
+            return false
+        } else if (!validarDNI()) {
+            return false
+        } else if (!validarCelular()) {
+            return false
         }
 
-        return respuesta
+        return true
     }
 
     private fun validarNombreApellido(): Boolean {
@@ -58,4 +71,51 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
 
         return respuesta
     }
+
+    private fun validarDNI(): Boolean {
+        var respuesta = true
+        if (binding.edDNI.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El DNI no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edDNI.isFocusableInTouchMode = true
+            binding.edDNI.requestFocus()
+            respuesta = false
+        } else if (binding.edDNI.text.toString().trim().length != 8) {
+            AppMessage.enviarMensaje(
+                binding.root, "El DNI solo tiene 8 digitos",
+                TypeMessage.INFO
+            )
+            binding.edDNI.isFocusableInTouchMode = true
+            binding.edDNI.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun validarCelular(): Boolean {
+        var respuesta = true
+        if (binding.edCelular.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Celular no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edCelular.isFocusableInTouchMode = true
+            binding.edCelular.requestFocus()
+            respuesta = false
+        } else if (binding.edCelular.text.toString().trim().length != 9) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Celular solo tiene 9 digitos",
+                TypeMessage.INFO
+            )
+            binding.edCelular.isFocusableInTouchMode = true
+            binding.edCelular.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
 }
