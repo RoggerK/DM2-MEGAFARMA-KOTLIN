@@ -5,4 +5,8 @@
     <string name="Apellido">Ingrese su apellido</string>
     <string name="Celular">Ingrese su celular</string>
     <string name="Nacimiento">Fecha de nacimiento</string>
+    <string name="EmailUser">Ingrese su correo</string>
+    <string name="PasswordUser">Ingrese su contraseña</string>
+    <string name="Registrar">Registrar</string>
+    <string name="Cancelar"> Cancelar</string>
 </resources>
