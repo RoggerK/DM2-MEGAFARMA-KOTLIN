@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/celesteRegistrar"
+    android:background="@color/whiteRegistrar"
     tools:context=".RegistrarActivity">
 
 
@@ -204,6 +204,8 @@
                     android:layout_weight="1"
                     android:layout_marginBottom="10dp"
                     android:text="@string/Registrar"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/verde_registrar"
                     android:textSize="15dp"/>
 
                 <Button
@@ -215,6 +217,8 @@
                     android:layout_weight="1"
                     android:layout_marginBottom="10dp"
                     android:text="@string/Cancelar"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/rojo_cancelar"
                     android:textSize="15dp"/>
             </LinearLayout>
 

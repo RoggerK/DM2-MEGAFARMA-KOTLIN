@@ -9,7 +9,10 @@
     <color name="white">#FFFFFFFF</color>
 
     -- Registrar --
-    <color name="celesteRegistrar">#2196F3</color>
+    <color name="whiteRegistrar">#FCFEFF</color>
+    <!-- Botones -->
+    <color name="rojo_cancelar">#E40606</color>
+    <color name="verde_registrar">#00BC13</color>
 
 
 </resources>
