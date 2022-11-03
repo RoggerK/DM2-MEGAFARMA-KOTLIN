@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MegaFarmaKotlin</string>
+    <string name="DNI">Ingrese su DNI</string>
+    <string name="Nombre">Ingrese su nombre</string>
+    <string name="Apellido">Ingrese su apellido</string>
+    <string name="Celular">Ingrese su celular</string>
+    <string name="Nacimiento">Fecha de nacimiento</string>
 </resources>
