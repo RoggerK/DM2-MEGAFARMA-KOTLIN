@@ -8,11 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    -- Registrar --
+    <!-- Registrar -->
     <color name="whiteRegistrar">#FCFEFF</color>
     <!-- Botones -->
     <color name="rojo_cancelar">#E40606</color>
     <color name="verde_registrar">#00BC13</color>
-
+    <!-- Alerta -->
+    <color name="alertDANGER">#E63123</color>
+    <color name="alertSUCCESS">#4CAF50</color>
+    <color name="alertINFO">#00BCD4</color>
 
 </resources>
