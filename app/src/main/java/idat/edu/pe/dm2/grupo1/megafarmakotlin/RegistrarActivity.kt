@@ -3,10 +3,13 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
+import java.time.LocalDate
+import java.time.Period
 import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
@@ -19,27 +22,40 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.btnRegistrar.setOnClickListener(this)
         binding.btnCancelar.setOnClickListener(this)
-
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             binding.btnRegistrar.id -> registrarCliente()
-            binding.btnCancelar.id -> cancelarActivity()
+            binding.btnCancelar.id -> cerrarActivity()
         }
     }
 
-    private fun cancelarActivity() {
+    private fun cerrarActivity() {
         this.finish()
     }
 
     private fun registrarCliente() {
         if (validarFormulario()) {
-            AppMessage.enviarMensaje(
-                binding.root, "Registro con exito",
-                TypeMessage.SUCCESSFULL
-            )
+            Toast.makeText(applicationContext, "Se registro con exito", Toast.LENGTH_LONG)
+            limpiarCampos()
+            cerrarActivity()
         }
+    }
+
+    private fun limpiarCampos() {
+        binding.edNombreUser.setText("")
+        binding.edApellido.setText("")
+        binding.edDNI.setText("")
+        binding.edCelular.setText("")
+        binding.edDia.setText("")
+        binding.edMes.setText("")
+        binding.edAnio.setText("")
+        binding.edEmailUser.setText("")
+        binding.edPasswordUser.setText("")
+
+        binding.edNombreUser.isFocusableInTouchMode = true
+        binding.edNombreUser.requestFocus()
     }
 
     private fun validarFormulario(): Boolean {
@@ -50,6 +66,8 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         } else if (!validarDNI()) {
             return false
         } else if (!validarCelular()) {
+            return false
+        } else if (!validarFechaNacimiento()) {
             return false
         } else if (!validarCorreo()) {
             return false
@@ -123,6 +141,14 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
             binding.edCelular.isFocusableInTouchMode = true
             binding.edCelular.requestFocus()
             respuesta = false
+        } else if(!(binding.edCelular.text.toString().trim().startsWith("9", 0))) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Celular debe empezar con 9",
+                TypeMessage.INFO
+            )
+            binding.edCelular.isFocusableInTouchMode = true
+            binding.edCelular.requestFocus()
+            respuesta = false
         } else if (binding.edCelular.text.toString().trim().length != 9) {
             AppMessage.enviarMensaje(
                 binding.root, "El Celular solo acepta 9 digitos",
@@ -130,6 +156,120 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
             )
             binding.edCelular.isFocusableInTouchMode = true
             binding.edCelular.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun validarFechaNacimiento(): Boolean {
+        var respuesta = true
+        if (!validarDia()) {
+            respuesta = false
+        } else if (!validarMes()) {
+            respuesta = false
+        } else if (!validarAnio()) {
+            respuesta = false
+        } else if (!validarEdad()) {
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun validarEdad(): Boolean {
+        var respuesta = true
+        val edad = Period.between(
+            LocalDate.of(
+                binding.edAnio.text.toString().trim().toInt(),
+                binding.edMes.text.toString().trim().toInt(),
+                binding.edDia.text.toString().trim().toInt()
+            ),
+            LocalDate.now()
+        )
+        if (edad.years < 18) {
+            AppMessage.enviarMensaje(
+                binding.root, "Debe ser mayor de edad para crear una cuenta",
+                TypeMessage.INFO
+            )
+            binding.edAnio.isFocusableInTouchMode = true
+            binding.edAnio.requestFocus()
+            respuesta = false
+        }
+        return respuesta
+    }
+
+    private fun validarDia(): Boolean {
+        var respuesta = true
+        if (binding.edDia.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Día no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edDia.isFocusableInTouchMode = true
+            binding.edDia.requestFocus()
+            respuesta = false
+        } else if (binding.edDia.text.toString().trim().toInt() !in 1..31) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Día inicia des del 1 al 31",
+                TypeMessage.INFO
+            )
+            binding.edDia.isFocusableInTouchMode = true
+            binding.edDia.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun validarMes(): Boolean {
+        var respuesta = true
+        if (binding.edMes.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Mes no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edMes.isFocusableInTouchMode = true
+            binding.edMes.requestFocus()
+            respuesta = false
+        } else if (binding.edMes.text.toString().trim().toInt() !in 1..12) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Año solo tiene 12 meses",
+                TypeMessage.INFO
+            )
+            binding.edMes.isFocusableInTouchMode = true
+            binding.edMes.requestFocus()
+            respuesta = false
+        }
+
+        return respuesta
+    }
+
+    private fun validarAnio(): Boolean {
+        var respuesta = true
+        if (binding.edAnio.text.toString().trim().isEmpty()) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Año no puede estar vacio",
+                TypeMessage.DANGER
+            )
+            binding.edAnio.isFocusableInTouchMode = true
+            binding.edAnio.requestFocus()
+            respuesta = false
+        } else if (binding.edAnio.text.toString().trim().length != 4) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Año debe tener 4 digitos",
+                TypeMessage.INFO
+            )
+            binding.edAnio.isFocusableInTouchMode = true
+            binding.edAnio.requestFocus()
+            respuesta = false
+        } else if(binding.edAnio.text.toString().trim().toInt() < 1900) {
+            AppMessage.enviarMensaje(
+                binding.root, "El Año aceptable es apartir de 1900 a más",
+                TypeMessage.INFO
+            )
+            binding.edAnio.isFocusableInTouchMode = true
+            binding.edAnio.requestFocus()
             respuesta = false
         }
 
@@ -174,7 +314,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
             binding.edPasswordUser.isFocusableInTouchMode = true
             binding.edPasswordUser.requestFocus()
             respuesta = false
-        } else if(!verificarFormatoContrasenia()) {
+        } else if (!verificarFormatoContrasenia()) {
             AppMessage.enviarMensaje(
                 binding.root, "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
                 TypeMessage.INFO
