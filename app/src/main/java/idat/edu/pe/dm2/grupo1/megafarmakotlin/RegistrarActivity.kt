@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
 import java.time.LocalDate
@@ -37,7 +38,8 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun registrarCliente() {
         if (validarFormulario()) {
-            Toast.makeText(applicationContext, "Se registro con exito", Toast.LENGTH_LONG)
+            Toast.makeText(MyApplication.instance, "Se registro con exito",
+                Toast.LENGTH_LONG)
             limpiarCampos()
             cerrarActivity()
         }

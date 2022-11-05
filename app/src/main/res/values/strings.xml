@@ -12,4 +12,8 @@
     <string name="valdia">dia</string>
     <string name="valmes">mes</string>
     <string name="valanio">año</string>
+    <string name="valinicia_sesion">Iniciar sesion</string>
+    <string name="valregistrarse_login">Registrar me</string>
+    <string name="valInicioContrasena">Ingrese su contraseña</string>
+    <string name="valInicioUsuario">Ingrese su correo</string>
 </resources>

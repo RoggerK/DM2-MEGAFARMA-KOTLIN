@@ -18,17 +18,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
 
                 android:id="@+id/txtNombreUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
                 android:hint="@string/Nombre"
                 android:textColorHint="@color/primaryTextColor"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -38,6 +37,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="text"
                     android:maxLength="45"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -45,11 +45,11 @@
             <com.google.android.material.textfield.TextInputLayout
 
                 android:id="@+id/txtApellido"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:hint="@string/Apellido"
                 android:textColorHint="@color/primaryTextColor"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -59,6 +59,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="text"
                     android:maxLength="45"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -80,6 +81,7 @@
                 android:layout_weight="1"
                 android:hint="@string/DNI"
                 android:textColorHint="@color/primaryTextColor"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_contacto">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -89,6 +91,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="number"
                     android:maxLength="8"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -101,6 +104,7 @@
                 android:layout_weight="1"
                 android:hint="@string/Celular"
                 android:textColorHint="@color/primaryTextColor"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -110,6 +114,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="number"
                     android:maxLength="9"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -119,9 +124,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:textColor="@color/primaryTextColor"
             android:layout_height="wrap_content"
             android:text="@string/Nacimiento"
+            android:textColor="@color/primaryTextColor"
             android:textSize="13sp" />
 
         <LinearLayout
@@ -148,6 +153,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="number"
                     android:maxLength="2"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -171,6 +177,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="number"
                     android:maxLength="2"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -193,6 +200,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="number"
                     android:maxLength="4"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -213,6 +221,7 @@
                 android:layout_marginBottom="10dp"
                 android:hint="@string/EmailUser"
                 android:textColorHint="@color/primaryTextColor"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_correo">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -221,6 +230,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:inputType="textEmailAddress"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -243,6 +253,7 @@
                     android:fontFamily="sans-serif"
                     android:inputType="textPassword"
                     android:maxLength="15"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -253,31 +264,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnRegistrar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/verde_registrar"
-                android:text="@string/Registrar"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="15dp" />
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btnCancelar"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
                 android:backgroundTint="@color/rojo_cancelar"
                 android:text="@string/Cancelar"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="15dp" />
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/verde_registrar"
+                android:text="@string/Registrar"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </LinearLayout>
