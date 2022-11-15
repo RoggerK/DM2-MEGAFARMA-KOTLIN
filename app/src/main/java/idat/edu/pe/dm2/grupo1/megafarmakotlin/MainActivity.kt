@@ -40,7 +40,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 binding.root, "Iniciaste sesion",
                 TypeMessage.SUCCESSFULL
             )
+            limpiarCampos()
         }
+    }
+
+    private fun limpiarCampos() {
+        binding.edLogCorreo.setText("")
+        binding.edLogContrsenia.setText("")
+        binding.edLogCorreo.isFocusableInTouchMode = true
+        binding.edLogCorreo.requestFocus()
     }
 
     private fun validarFormulario(): Boolean {
