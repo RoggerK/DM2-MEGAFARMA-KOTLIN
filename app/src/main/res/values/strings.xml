@@ -16,4 +16,28 @@
     <string name="valregistrarse_login">Registrar me</string>
     <string name="valInicioContrasena">Ingrese su contraseña</string>
     <string name="valInicioUsuario">Ingrese su correo</string>
+    <string name="Actualizar">Actualizar Contraseña</string>
+    <string name="NDni">Dni</string>
+    <string name="APELLIDOS">Apellidos</string>
+    <string name="NOMBRES">Nombres</string>
+    <string name="CORREO">Email</string>
+    <string name="CELULAR">Ingrese Numero Celular</string>
+    <string name="valfragmentprincipal">Principal</string>
+    <string name="valfragmentcarrito">Carrito</string>
+    <string name="valfragmentusuario">Usuario</string>
+    <string name="valfragmentlibro">Libro</string>
+    <string name="valfragmentayuda">Ayuda</string>
+
+    <string name="fragmentprincipal">Principal</string>
+    <string name="fragmentcarrito">Carrito</string>
+    <string name="fragmentusuario">Usuario</string>
+    <string name="fragmentlibro">Libro</string>
+    <string name="fragmentayuda">Ayuda</string>
+    <string name="title_activity_menu_cliente">MenuClienteActivity</string>
+    <string name="libro_de_reclamacion">Libro De Reclamacion</string>
+    <string name="necesito_ayuda">Necesito Ayuda</string>
+    <string name="todo">TODO</string>
+    <string name="celular">CELULAR</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
+
 </resources>

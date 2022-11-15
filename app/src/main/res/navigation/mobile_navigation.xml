@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/principalFragment">
+    <fragment
+        android:id="@+id/principalFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.PrincipalFragment"
+        android:label="@string/fragmentprincipal"
+        tools:layout="@layout/fragment_principal" />
+    <fragment
+        android:id="@+id/carritoFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.CarritoFragment"
+        android:label="@string/fragmentcarrito"
+        tools:layout="@layout/fragment_carrito" />
+    <fragment
+        android:id="@+id/usuarioFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.UsuarioFragment"
+        android:label="@string/fragmentusuario"
+        tools:layout="@layout/fragment_usuario"/>
+
+    <fragment
+        android:id="@+id/libroFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.LibroFragment"
+        android:label="@string/fragmentlibro"
+        tools:layout="@layout/fragment_libro" />
+
+    <fragment
+        android:id="@+id/ayudaFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.AyudaFragment"
+        android:label="@string/fragmentayuda"
+        tools:layout="@layout/fragment_ayuda" />
+</navigation>
