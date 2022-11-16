@@ -9,9 +9,19 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.intz.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginUsuario
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.TokenUsuario
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
+    private var urlFarma =
+        "https://megafarma.herokuapp.com/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +30,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.btnLogIniciarSesion.setOnClickListener(this)
         binding.btnLogRegistrarse.setOnClickListener(this)
+
     }
 
     override fun onClick(view: View) {
-        when(view.id) {
+        when (view.id) {
             binding.btnLogIniciarSesion.id -> iniciarSesion()
             binding.btnLogRegistrarse.id -> abrirRegistrarMe()
         }
@@ -35,11 +46,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun iniciarSesion() {
-        if(validarFormulario()) {
-            AppMessage.enviarMensaje(
-                binding.root, "Iniciaste sesion",
-                TypeMessage.SUCCESSFULL
+        if (validarFormulario()) {
+            var retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl(urlFarma)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            var usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
+
+            var call: Call<TokenUsuario> = usuarioAPI.iniciarSesion(
+                LoginUsuario(
+                    binding.edLogCorreo.text.toString().trim(),
+                    binding.edLogContrsenia.text.toString().trim()
+                )
             )
+
+            call.enqueue(object : Callback<TokenUsuario> {
+                override fun onResponse(
+                    call: Call<TokenUsuario>,
+                    response: Response<TokenUsuario>
+                ) {
+                    var tokenUsuario: TokenUsuario = response.body()!!
+                    AppMessage.enviarMensaje(
+                        binding.root, "Token: ${tokenUsuario.token}",
+                        TypeMessage.INFO
+                    )
+                }
+
+                override fun onFailure(call: Call<TokenUsuario>, t: Throwable) {
+                    println(t.message)
+                    AppMessage.enviarMensaje(
+                        binding.root, "Error: ${t.message}",
+                        TypeMessage.DANGER
+                    )
+                }
+            })
+
             limpiarCampos()
         }
     }
@@ -52,9 +94,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validarFormulario(): Boolean {
-        if(!validarCorreo()) {
+        if (!validarCorreo()) {
             return false
-        } else if(!validarContrasenia()) {
+        } else if (!validarContrasenia()) {
             return false
         }
 
@@ -81,7 +123,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             respuesta = false
         }
 
-        return  respuesta
+        return respuesta
     }
 
     private fun verificarFormatoCorreo(): Boolean {
