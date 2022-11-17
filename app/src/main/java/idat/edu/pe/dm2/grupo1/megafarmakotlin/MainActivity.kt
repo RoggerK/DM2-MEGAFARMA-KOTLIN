@@ -66,11 +66,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<TokenUsuario>,
                     response: Response<TokenUsuario>
                 ) {
-                    var tokenUsuario: TokenUsuario = response.body()!!
-                    AppMessage.enviarMensaje(
-                        binding.root, "Token: ${tokenUsuario.token}",
-                        TypeMessage.INFO
-                    )
+                    if(response.isSuccessful) {
+                        var tokenUsuario: TokenUsuario = response.body()!!
+                        AppMessage.enviarMensaje(
+                            binding.root, "codigo:${response.code()} id: ${tokenUsuario.idcliente}\t nombre: ${tokenUsuario.nombre} ",
+                            TypeMessage.INFO
+                        )
+                    } else {
+                        AppMessage.enviarMensaje(
+                            binding.root, "codigo:${response.code()} - usuario no encontrado",
+                            TypeMessage.INFO
+                        )
+                    }
+
                 }
 
                 override fun onFailure(call: Call<TokenUsuario>, t: Throwable) {
