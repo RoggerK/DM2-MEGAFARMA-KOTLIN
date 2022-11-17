@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.TokenUsuario
 
 class MenuClienteActivity : AppCompatActivity() {
 
@@ -18,9 +19,15 @@ class MenuClienteActivity : AppCompatActivity() {
         this.supportActionBar?.hide()
         setContentView(R.layout.item_productos)
 
-
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val listaToken = intent
+            .getSerializableExtra("token") as ArrayList<String>
+        val token = TokenUsuario(token = listaToken[0], nombre = listaToken[1],
+            apellido = listaToken[2], correo = listaToken[3], idcliente = listaToken[4].toInt())
+
+        println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ncorreo: ${token.correo}")
 
         val navView: BottomNavigationView = binding.navView
 

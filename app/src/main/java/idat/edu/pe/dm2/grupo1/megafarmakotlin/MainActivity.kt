@@ -47,12 +47,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun iniciarSesion() {
         if (validarFormulario()) {
-            var retrofit: Retrofit = Retrofit.Builder()
+            val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(urlFarma)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-            var usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
+            val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
 
             var call: Call<TokenUsuario> = usuarioAPI.iniciarSesion(
                 LoginUsuario(
@@ -66,19 +66,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<TokenUsuario>,
                     response: Response<TokenUsuario>
                 ) {
-                    if(response.isSuccessful) {
-                        var tokenUsuario: TokenUsuario = response.body()!!
-                        AppMessage.enviarMensaje(
-                            binding.root, "codigo:${response.code()} id: ${tokenUsuario.idcliente}\t nombre: ${tokenUsuario.nombre} ",
-                            TypeMessage.INFO
-                        )
+                    if (response.isSuccessful) {
+                        val tokenUsuario: TokenUsuario = response.body()!!
+                        iniciarMenuCliente(tokenUsuario)
                     } else {
                         AppMessage.enviarMensaje(
-                            binding.root, "codigo:${response.code()} - usuario no encontrado",
+                            binding.root, "Error: usuario/contraseña",
                             TypeMessage.INFO
                         )
                     }
-
                 }
 
                 override fun onFailure(call: Call<TokenUsuario>, t: Throwable) {
@@ -92,6 +88,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             limpiarCampos()
         }
+    }
+
+    private fun iniciarMenuCliente(tokenUsuario: TokenUsuario) {
+        val arrayToken = ArrayList<String>()
+        arrayToken.add(tokenUsuario.token)
+        arrayToken.add(tokenUsuario.nombre)
+        arrayToken.add(tokenUsuario.apellido)
+        arrayToken.add(tokenUsuario.correo)
+        arrayToken.add(tokenUsuario.idcliente.toString())
+
+        val intentMenuClienteActivity = Intent(
+            this, MenuClienteActivity::class.java
+        ).apply {
+            putExtra("token", arrayToken)
+        }
+        finalizarAtivity()
+        startActivity(intentMenuClienteActivity)
+    }
+
+    private fun finalizarAtivity() {
+        this.finish()
     }
 
     private fun limpiarCampos() {
