@@ -3,18 +3,25 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.intz.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.Mensaje
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.RegistrarCliente
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.time.Period
 import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegistrarBinding
+    private val urlFarma = "https://megafarma.herokuapp.com/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,21 +35,71 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             binding.btnRegistrar.id -> registrarCliente()
-            binding.btnCancelar.id -> cerrarActivity()
+            binding.btnCancelar.id -> finalizarActivity()
         }
-    }
-
-    private fun cerrarActivity() {
-        this.finish()
     }
 
     private fun registrarCliente() {
         if (validarFormulario()) {
-            Toast.makeText(MyApplication.instance, "Se registro con exito",
-                Toast.LENGTH_LONG)
-            limpiarCampos()
-            cerrarActivity()
+            val fechaNacimiento = binding.edAnio.text.toString().trim() + "-" +
+                    binding.edMes.text.toString().trim() + "-" +
+                    binding.edDia.text.toString().trim() + "-"
+
+            val retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl(urlFarma)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
+
+            var call: Call<Mensaje> = usuarioAPI.registrarUsuario(
+                RegistrarCliente(
+                    binding.edNombreUser.text.toString().trim(),
+                    binding.edApellido.text.toString().trim(),
+                    binding.edCelular.text.toString().trim(),
+                    binding.edDNI.text.toString().trim(),
+                    fechaNacimiento,
+                    binding.edEmailUser.text.toString().trim(),
+                    binding.edPasswordUser.text.toString().trim(),
+                    true,
+                    true
+                )
+            )
+
+            call.enqueue(object: Callback<Mensaje> {
+                override fun onResponse(call: Call<Mensaje>, response: Response<Mensaje>) {
+                    if(response.isSuccessful) {
+                        AppMessage.enviarMensaje(
+                            binding.root, "INFO: Usuario registrado con exito",
+                            TypeMessage.SUCCESSFULL
+                        )
+                        limpiarCampos()
+                        finalizarActivity()
+                    } else if(response.code() == 400) {
+                        AppMessage.enviarMensaje(
+                            binding.root, "INFO: Correo o DNI existente",
+                            TypeMessage.INFO
+                        )
+                    } else {
+                        AppMessage.enviarMensaje(
+                            binding.root, "INFO: Error en sistema",
+                            TypeMessage.INFO
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Mensaje>, t: Throwable) {
+                    AppMessage.enviarMensaje(
+                        binding.root, "Error: ${t.message}",
+                        TypeMessage.DANGER
+                    )
+                }
+            })
         }
+    }
+
+    private fun finalizarActivity() {
+        this.finish()
     }
 
     private fun limpiarCampos() {

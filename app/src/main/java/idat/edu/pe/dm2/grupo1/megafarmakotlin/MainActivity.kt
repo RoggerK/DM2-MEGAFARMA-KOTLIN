@@ -20,8 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
-    private var urlFarma =
-        "https://megafarma.herokuapp.com/"
+    private val urlFarma = "https://megafarma.herokuapp.com/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,14 +70,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         iniciarMenuCliente(tokenUsuario)
                     } else {
                         AppMessage.enviarMensaje(
-                            binding.root, "Error: usuario/contraseña",
+                            binding.root, "Error: usuario o contraseña",
                             TypeMessage.INFO
                         )
                     }
                 }
 
                 override fun onFailure(call: Call<TokenUsuario>, t: Throwable) {
-                    println(t.message)
                     AppMessage.enviarMensaje(
                         binding.root, "Error: ${t.message}",
                         TypeMessage.DANGER
