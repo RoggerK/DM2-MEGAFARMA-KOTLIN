@@ -4,6 +4,7 @@ data class TokenUsuario(
     var token: String,
     var nombre: String,
     var apellido: String,
+    var dni: String,
     var correo: String,
     var idcliente: Int
 )

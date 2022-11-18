@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         arrayToken.add(tokenUsuario.token)
         arrayToken.add(tokenUsuario.nombre)
         arrayToken.add(tokenUsuario.apellido)
+        arrayToken.add(tokenUsuario.dni)
         arrayToken.add(tokenUsuario.correo)
         arrayToken.add(tokenUsuario.idcliente.toString())
 

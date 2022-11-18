@@ -18,16 +18,15 @@ class MenuClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.supportActionBar?.hide()
         setContentView(R.layout.item_productos)
-
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val listaToken = intent
             .getSerializableExtra("token") as ArrayList<String>
         val token = TokenUsuario(token = listaToken[0], nombre = listaToken[1],
-            apellido = listaToken[2], correo = listaToken[3], idcliente = listaToken[4].toInt())
+            apellido = listaToken[2], dni = listaToken[3], correo = listaToken[4], idcliente = listaToken[5].toInt())
 
-        println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ncorreo: ${token.correo}")
+        println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
 
         val navView: BottomNavigationView = binding.navView
 
