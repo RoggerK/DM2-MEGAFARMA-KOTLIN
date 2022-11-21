@@ -1,20 +1,20 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 
-class MenuClienteActivity : AppCompatActivity() {
+class MenuClienteActivity : AppCompatActivity(),
+    OnFramentUsuarioListerne {
 
     private lateinit var binding: ActivityMenuClienteBinding
-    private var principalFragment = PrincipalFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MenuClienteActivity : AppCompatActivity() {
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val listaToken = intent
+        /*val listaToken = intent
             .getSerializableExtra("token") as ArrayList<String>
         val token = LoginResponse(
             token = listaToken[0],
@@ -35,7 +35,7 @@ class MenuClienteActivity : AppCompatActivity() {
         )
 
         println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
-        principalFragment.token = token.token
+        principalFragment.token = token.token*/
 
         val navView: BottomNavigationView = binding.navView
 
@@ -50,13 +50,24 @@ class MenuClienteActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        //cargarFragmentPrincipal()
     }
 
-    /*private fun cargarFragmentPrincipal() {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment_activity_menu_cliente, principalFragment)
-        transaction.commit()
-    }*/
+    override fun onClickButtonUsuarioLibro() {
+        cargarActivityLibro()
+    }
+
+    override fun onClickButtonUsuarioAyuda() {
+        cargarActivityAyuda()
+    }
+
+    private fun cargarActivityLibro() {
+        val intent = Intent(this, LibroActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun cargarActivityAyuda() {
+        val intent = Intent(this, AyudaActivity::class.java)
+        startActivity(intent)
+    }
+
 }

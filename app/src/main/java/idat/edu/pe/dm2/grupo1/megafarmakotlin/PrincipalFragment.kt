@@ -32,7 +32,7 @@ class PrincipalFragment : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.fragment_principal, container, false)
         recyclerView = view.findViewById(R.id.recyclerCarrito)
-        llenarlistaMedicamentos(view)
+        //llenarlistaMedicamentos(view)
         return view
     }
 
