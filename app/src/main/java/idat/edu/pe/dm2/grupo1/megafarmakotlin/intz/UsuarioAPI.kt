@@ -1,17 +1,17 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.intz
 
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginUsuario
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.Mensaje
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.RegistrarCliente
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.TokenUsuario
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UsuarioAPI {
-    @POST("megafarma/rest/api/v1/auth/login")
-    fun iniciarSesion(@Body loginUsuario: LoginUsuario): Call<TokenUsuario>
+    @POST("auth/login")
+    fun iniciarSesion(@Body loginUsuario: LoginRequest): Call<LoginResponse>
 
-    @POST("megafarma/rest/api/v1/auth/registrar")
+    @POST("auth/registrar")
     fun registrarUsuario(@Body registrarCliente: RegistrarCliente): Call<Mensaje>
 }

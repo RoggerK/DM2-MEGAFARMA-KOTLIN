@@ -3,43 +3,35 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
 
-class PrincipalAdapter: RecyclerView.Adapter<PrincipalAdapter.ViewHolder>(){
+class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>) :
+    RecyclerView.Adapter<PrincipalAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var itemImage: ImageView
         var itemTitle: TextView
         var itemDetail: TextView
+        var itemPrec: TextView
+        var itemAgregar: Button
 
         init {
             itemImage = itemView.findViewById(R.id.imageProducto1)
             itemTitle = itemView.findViewById(R.id.tvProducto1)
             itemDetail = itemView.findViewById(R.id.tvProducto2)
-            itemDetail = itemView.findViewById(R.id.tvProducto3)
-
+            itemPrec = itemView.findViewById(R.id.tvProducto3)
+            itemAgregar = itemView.findViewById(R.id.btAgregar)
         }
     }
-
-    val titles = arrayOf(
-        "Vick 44",
-        "Chao Tableta ",
-        "Panadol "
-    )
-
-    val details = arrayOf(
-        "S/ 16.70",
-        "S/ 92.50",
-        "S/ 14.40"
-    )
-
-
-    val images = intArrayOf(
-        R.drawable.jarabe, R.drawable.chao, R.drawable.panadol, R.drawable.mejoral, R.drawable.vita
-    )
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
@@ -48,13 +40,20 @@ class PrincipalAdapter: RecyclerView.Adapter<PrincipalAdapter.ViewHolder>(){
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = titles[i]
-        viewHolder.itemDetail.text = details[i]
-        viewHolder.itemImage.setImageResource(images[i])
+        viewHolder.itemTitle.text = listaMedicamento[i].nombre_producto
+        viewHolder.itemDetail.text = listaMedicamento[i].presentacion
+        viewHolder.itemPrec.text = listaMedicamento[i].precio_unitario.toString()
+        viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
+            println("Agregaste " + listaMedicamento[i].nombre_producto)
+        })
 
+        Picasso.get()
+            .load(listaMedicamento[i].imagen_producto)
+            .error(R.drawable.ic_launcher_foreground)
+            .into(viewHolder.itemImage)
     }
 
     override fun getItemCount(): Int {
-        return titles.size
+        return listaMedicamento.size
     }
 }

@@ -8,10 +8,9 @@ import android.view.View
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.intz.UsuarioAPI
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginUsuario
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.TokenUsuario
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
-    private val urlFarma = "https://megafarma.herokuapp.com/"
+    private val urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +52,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
 
-            var call: Call<TokenUsuario> = usuarioAPI.iniciarSesion(
-                LoginUsuario(
+            var call: Call<LoginResponse> = usuarioAPI.iniciarSesion(
+                LoginRequest(
                     binding.edLogCorreo.text.toString().trim(),
                     binding.edLogContrsenia.text.toString().trim()
                 )
             )
 
-            call.enqueue(object : Callback<TokenUsuario> {
+            call.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
-                    call: Call<TokenUsuario>,
-                    response: Response<TokenUsuario>
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
                 ) {
                     if (response.isSuccessful) {
-                        val tokenUsuario: TokenUsuario = response.body()!!
+                        val tokenUsuario: LoginResponse = response.body()!!
                         iniciarMenuCliente(tokenUsuario)
                     } else {
                         AppMessage.enviarMensaje(
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
-                override fun onFailure(call: Call<TokenUsuario>, t: Throwable) {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     AppMessage.enviarMensaje(
                         binding.root, "Error: ${t.message}",
                         TypeMessage.DANGER
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun iniciarMenuCliente(tokenUsuario: TokenUsuario) {
+    private fun iniciarMenuCliente(tokenUsuario: LoginResponse) {
         val arrayToken = ArrayList<String>()
         arrayToken.add(tokenUsuario.token)
         arrayToken.add(tokenUsuario.nombre)
