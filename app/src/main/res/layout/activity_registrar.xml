@@ -230,6 +230,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:inputType="textEmailAddress"
+                    android:maxLength="45"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="13sp" />
 

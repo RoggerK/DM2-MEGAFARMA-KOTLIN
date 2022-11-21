@@ -10,11 +10,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
 
 class MenuClienteActivity : AppCompatActivity(),
     OnFramentUsuarioListerne {
 
     private lateinit var binding: ActivityMenuClienteBinding
+    private lateinit var token: LoginResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +25,9 @@ class MenuClienteActivity : AppCompatActivity(),
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*val listaToken = intent
+        val listaToken = intent
             .getSerializableExtra("token") as ArrayList<String>
-        val token = LoginResponse(
+        token = LoginResponse(
             token = listaToken[0],
             nombre = listaToken[1],
             apellido = listaToken[2],
@@ -35,7 +37,6 @@ class MenuClienteActivity : AppCompatActivity(),
         )
 
         println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
-        principalFragment.token = token.token*/
 
         val navView: BottomNavigationView = binding.navView
 
@@ -52,6 +53,10 @@ class MenuClienteActivity : AppCompatActivity(),
         navView.setupWithNavController(navController)
     }
 
+    override fun onClickButtonGuardarCambios() {
+
+    }
+
     override fun onClickButtonUsuarioLibro() {
         cargarActivityLibro()
     }
@@ -61,7 +66,9 @@ class MenuClienteActivity : AppCompatActivity(),
     }
 
     private fun cargarActivityLibro() {
-        val intent = Intent(this, LibroActivity::class.java)
+        val intent = Intent(this, LibroActivity::class.java).apply {
+            putExtra("token", token.token)
+        }
         startActivity(intent)
     }
 
