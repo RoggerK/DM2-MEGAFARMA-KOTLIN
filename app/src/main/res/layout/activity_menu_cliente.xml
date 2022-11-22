@@ -18,6 +18,8 @@
     <fragment
         android:id="@+id/nav_host_fragment_activity_menu_cliente"
         android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="75dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"

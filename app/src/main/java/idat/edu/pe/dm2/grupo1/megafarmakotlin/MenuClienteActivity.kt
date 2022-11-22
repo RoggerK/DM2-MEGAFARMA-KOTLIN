@@ -3,7 +3,10 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -36,7 +39,9 @@ class MenuClienteActivity : AppCompatActivity(),
             idcliente = listaToken[5].toInt()
         )
 
-        println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
+        enviarDatosFragmentPrincipal()
+
+        //println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
 
         val navView: BottomNavigationView = binding.navView
 
@@ -51,6 +56,14 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun enviarDatosFragmentPrincipal() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
+        val fragment = navHostFragment.childFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
+        fragment.token = token.token
     }
 
     override fun onClickButtonGuardarCambios() {

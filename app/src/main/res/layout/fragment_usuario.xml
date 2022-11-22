@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:textSize="15sp" />
-
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:backgroundTint="#2e2e2e"
-            android:text="@string/guardar_cambios"
+            android:text="@string/valActualizar"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -163,32 +162,32 @@
             <Button
                 android:id="@+id/btLibroReclamacion"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/libro_de_reclamacion" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgAyuda"
                 android:layout_width="25dp"
                 android:layout_height="60dp"
+                android:layout_marginBottom="50dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_ayuda_foreground" />
 
             <Button
                 android:id="@+id/btNecesitoAyuda"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/necesito_ayuda" />
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

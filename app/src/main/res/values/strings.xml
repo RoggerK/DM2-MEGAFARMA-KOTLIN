@@ -38,10 +38,12 @@
     <string name="necesito_ayuda">Necesito Ayuda</string>
     <string name="todo">TODO</string>
     <string name="celular">CELULAR</string>
-    <string name="guardar_cambios">Guardar Cambios</string>
     <string name="valExplicacion">Explicación de reclamo</string>
     <string name="valMotivoReclamo">Causa de Reclamo</string>
     <string name="btReclamo">Registrar Reclamo</string>
     <string name="valAyudaPregunta">Preguntas Frecuentes</string>
+    <string name="valSoles">S/. </string>
+    <string name="valPrec">0.00</string>
+    <string name="valActualizar">Actualizar Datos Ingresados</string>
 
 </resources>

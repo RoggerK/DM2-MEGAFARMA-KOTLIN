@@ -1,5 +1,6 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ class PrincipalFragment : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.fragment_principal, container, false)
         recyclerView = view.findViewById(R.id.recyclerCarrito)
-        //llenarlistaMedicamentos(view)
+        llenarlistaMedicamentos(view)
         return view
     }
 
@@ -46,7 +47,7 @@ class PrincipalFragment : Fragment() {
 
         val medicamentoAPI: MedicamentoAPI = retrofit.create(MedicamentoAPI::class.java)
 
-        var call: Call<ArrayList<MedicamentoResponse>> = medicamentoAPI.listarProducto("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb2dnZXI5MDgxQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2Njg5OTIwNzksImV4cCI6MTY2ODk5MjQzOX0.Dj6iSlozX3CcPgZVxnwmROkFtBdl3IcUylXWIbzBvTQgYSOdtKlQoIdGHqSGwE8GdRL4iaqBMXBLOBuSCPIPXQ")
+        var call: Call<ArrayList<MedicamentoResponse>> = medicamentoAPI.listarProducto("Bearer $token")
 
         call.enqueue(object : Callback<ArrayList<MedicamentoResponse>> {
             override fun onResponse(
@@ -73,5 +74,9 @@ class PrincipalFragment : Fragment() {
                 )
             }
         })
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 }
