@@ -3,10 +3,9 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -24,7 +23,6 @@ class MenuClienteActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.supportActionBar?.hide()
-        setContentView(R.layout.item_productos)
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -56,6 +54,10 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     private fun enviarDatosFragmentPrincipal() {

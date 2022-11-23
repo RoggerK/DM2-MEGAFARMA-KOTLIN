@@ -45,5 +45,6 @@
     <string name="valSoles">S/. </string>
     <string name="valPrec">0.00</string>
     <string name="valActualizar">Actualizar Datos Ingresados</string>
+    <string name="valAgregar">Agregar</string>
 
 </resources>

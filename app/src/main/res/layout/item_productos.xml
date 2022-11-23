@@ -32,7 +32,6 @@
                     android:id="@+id/tvProducto1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
                     android:text="@string/app_name" />
 
                 <TextView
@@ -66,7 +65,7 @@
                     android:id="@+id/btAgregar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar" />
+                    android:text="@string/valAgregar" />
 
             </LinearLayout>
 

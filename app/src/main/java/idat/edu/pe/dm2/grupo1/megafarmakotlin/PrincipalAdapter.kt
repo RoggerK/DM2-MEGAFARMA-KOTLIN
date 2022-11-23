@@ -13,7 +13,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
 
-class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>) :
+class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var listaAgregado: ArrayList<String>) :
     RecyclerView.Adapter<PrincipalAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,17 +40,24 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = listaMedicamento[i].nombre_producto
-        viewHolder.itemDetail.text = listaMedicamento[i].presentacion
-        viewHolder.itemPrec.text = listaMedicamento[i].precio_unitario.toString()
-        viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
-            println("Agregaste " + listaMedicamento[i].nombre_producto)
-        })
+        val id = listaMedicamento[i].idproducto
+        val url = listaMedicamento[i].imagen_producto
+        val nombre = listaMedicamento[i].nombre_producto
+        val presentacion = listaMedicamento[i].presentacion
+        val precio = listaMedicamento[i].precio_unitario.toString()
 
         Picasso.get()
-            .load(listaMedicamento[i].imagen_producto)
+            .load(url)
             .error(R.drawable.ic_launcher_foreground)
             .into(viewHolder.itemImage)
+
+        viewHolder.itemTitle.text = nombre
+        viewHolder.itemDetail.text = presentacion
+        viewHolder.itemPrec.text = precio
+        viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
+            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio")
+            AppMessage.enviarMensaje(viewHolder.itemView,"Se añadio ${listaMedicamento[i].nombre_producto}",TypeMessage.SUCCESSFULL)
+        })
     }
 
     override fun getItemCount(): Int {

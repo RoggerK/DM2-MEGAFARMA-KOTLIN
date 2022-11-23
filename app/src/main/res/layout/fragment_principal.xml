@@ -20,7 +20,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
 
-                android:id="@+id/tvPrincipal"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="306dp"
                 android:layout_height="74dp"
@@ -32,7 +31,7 @@
                 android:text="">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/iddPrincipal"
+                    android:id="@+id/edBuscarProducto"
                     android:layout_width="300dp"
                     android:layout_height="54dp"
                     android:layout_marginTop="10dp"
@@ -44,14 +43,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
-                android:id="@+id/btnBuscar"
+                android:id="@+id/imvBuscar"
                 android:layout_width="54dp"
                 android:layout_height="66dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="4dp"
-                android:layout_toEndOf="@+id/tvPrincipal"
                 android:src="@drawable/ic_buscar_foreground" />
         </RelativeLayout>
 
