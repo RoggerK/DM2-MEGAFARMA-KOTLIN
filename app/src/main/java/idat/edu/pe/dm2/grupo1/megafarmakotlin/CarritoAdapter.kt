@@ -20,12 +20,18 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
         var itemTitle: TextView
         var itemPrec: TextView
         var itemDelete: ImageView
+        var itemUni: EditText
+        var itemMas: ImageView
+        var itemMenos: ImageView
 
         init {
             itemImage = itemView.findViewById(R.id.imgProducto1)
+            itemDelete = itemView.findViewById(R.id.imvEliminar)
             itemTitle = itemView.findViewById(R.id.tvNombreProducto1)
             itemPrec = itemView.findViewById(R.id.tvPrecio)
-            itemDelete = itemView.findViewById(R.id.imvEliminar)
+            itemUni = itemView.findViewById(R.id.edtCantidad)
+            itemMas = itemView.findViewById(R.id.imvMas)
+            itemMenos = itemView.findViewById(R.id.imvMenos)
         }
     }
 
@@ -37,10 +43,10 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        val id = listaAgregados[i].idproducto
         val url = listaAgregados[i].imagen_producto
         val nombre = listaAgregados[i].nombre_producto
         val precio = listaAgregados[i].precio_unitario.toString()
+        val unitario = listaAgregados[i].pedido.toString()
 
         Picasso.get()
             .load(url)
@@ -49,9 +55,18 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
 
         viewHolder.itemTitle.text = nombre
         viewHolder.itemPrec.text = precio
+        viewHolder.itemUni.setText(unitario)
 
         viewHolder.itemDelete.setOnClickListener(View.OnClickListener {
             eliminarProducto(i)
+        })
+
+        viewHolder.itemMas.setOnClickListener(View.OnClickListener {
+            aumentarCantidad(i)
+        })
+
+        viewHolder.itemMenos.setOnClickListener(View.OnClickListener {
+            disminnuirCantidad(i)
         })
     }
 
@@ -60,8 +75,20 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
     }
 
     private fun eliminarProducto(i: Int) {
-        listaAgregados.removeAt(i)
         notifyItemRangeRemoved(i, itemCount)
-        edtCantidad.setText(itemCount.toString())
+        edtCantidad.setText((itemCount - 1).toString())
+        listaAgregados.removeAt(i)
+    }
+
+    private fun aumentarCantidad(i: Int) {
+        listaAgregados[i].pedido++
+        notifyItemRangeChanged(i, itemCount)
+    }
+
+    private fun disminnuirCantidad(i: Int) {
+        if(listaAgregados[i].pedido >= 2) {
+            listaAgregados[i].pedido--
+            notifyItemRangeChanged(i, itemCount)
+        }
     }
 }

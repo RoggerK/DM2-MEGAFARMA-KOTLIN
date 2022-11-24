@@ -23,6 +23,8 @@ class CarritoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        listaAgregados.clear()
+
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
             this, FragmentResultListener { requestKey, bundle ->
                 val agregados = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
@@ -37,16 +39,17 @@ class CarritoFragment : Fragment() {
                         val nombre = array[2]
                         val presentacion = array[3]
                         val precio = array[4].toDouble()
+                        val pedido = array[5].toInt()
                         listaAgregados.add(
                             MedicamentoResponse(
                                 idproducto = id,
                                 imagen_producto = url,
                                 nombre_producto = nombre,
                                 presentacion = presentacion,
-                                precio_unitario = precio
+                                precio_unitario = precio,
+                                pedido = pedido
                             )
                         )
-                        println("$id;$url;$nombre;$presentacion;$precio")
                     }
                 }
             })

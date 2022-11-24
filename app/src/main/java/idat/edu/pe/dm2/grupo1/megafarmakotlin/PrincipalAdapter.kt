@@ -55,7 +55,7 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
         viewHolder.itemDetail.text = presentacion
         viewHolder.itemPrec.text = precio
         viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
-            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio")
+            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio;1")
             AppMessage.enviarMensaje(viewHolder.itemView,"Se añadio ${listaMedicamento[i].nombre_producto}",TypeMessage.SUCCESSFULL)
         })
     }

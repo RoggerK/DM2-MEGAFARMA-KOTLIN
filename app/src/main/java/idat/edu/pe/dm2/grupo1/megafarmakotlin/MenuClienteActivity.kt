@@ -39,8 +39,6 @@ class MenuClienteActivity : AppCompatActivity(),
 
         enviarDatosFragmentPrincipal()
 
-        //println("id: ${token.idcliente}\ntoken: ${token.token}\nnombre: ${token.nombre}\napellido: ${token.apellido}\ndni: ${token.dni}\ncorreo: ${token.correo}")
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_menu_cliente)
@@ -54,10 +52,6 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun enviarDatosFragmentPrincipal() {
