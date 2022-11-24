@@ -17,22 +17,22 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
 
 class CarritoFragment : Fragment() {
 
-    private val listaAgregados = ArrayList<MedicamentoResponse>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var carritoAdapter: CarritoAdapter
+    private var listaAgregado =  ArrayList<String>()
+    private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listaAgregados.clear()
 
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
             this, FragmentResultListener { requestKey, bundle ->
-                val agregados = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
-                if (agregados.size == 0) {
+                listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
+                if (listaAgregado.size == 0) {
                     AppMessage.enviarMensaje(requireView(), "No hay productos agregados",
                         TypeMessage.INFO)
                 } else {
-                    for (medicamento in agregados) {
+                    for (medicamento in listaAgregado) {
                         val array = medicamento.split(";")
                         val id = array[0].toInt()
                         val url = array[1]
@@ -40,7 +40,7 @@ class CarritoFragment : Fragment() {
                         val presentacion = array[3]
                         val precio = array[4].toDouble()
                         val pedido = array[5].toInt()
-                        listaAgregados.add(
+                        listaMedicamentosAgregados.add(
                             MedicamentoResponse(
                                 idproducto = id,
                                 imagen_producto = url,
@@ -63,11 +63,18 @@ class CarritoFragment : Fragment() {
         var edtCantidad = view.findViewById<EditText>(R.id.edtCantidad)
         recyclerView = view.findViewById(R.id.reCarrito)
         recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
-        carritoAdapter = CarritoAdapter(listaAgregados, edtCantidad)
+        carritoAdapter = CarritoAdapter(listaAgregado, listaMedicamentosAgregados, edtCantidad)
         recyclerView.adapter = carritoAdapter
 
         edtCantidad.setText(carritoAdapter.itemCount.toString())
 
         return view
     }
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val bundle = Bundle()
+        bundle.putStringArrayList("listaCarrito", listaAgregado)
+        parentFragmentManager.setFragmentResult("llaveCarrito", bundle)
+    }*/
 }

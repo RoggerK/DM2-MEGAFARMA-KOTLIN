@@ -37,8 +37,6 @@ class MenuClienteActivity : AppCompatActivity(),
             idcliente = listaToken[5].toInt()
         )
 
-        enviarDatosFragmentPrincipal()
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_menu_cliente)
@@ -54,12 +52,18 @@ class MenuClienteActivity : AppCompatActivity(),
         navView.setupWithNavController(navController)
     }
 
+    override fun onStart() {
+        super.onStart()
+        enviarDatosFragmentPrincipal()
+    }
+
     private fun enviarDatosFragmentPrincipal() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
         val fragment = navHostFragment.childFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
         fragment.token = token.token
+        fragment.llenarlistaMedicamentos()
     }
 
     override fun onClickButtonGuardarCambios() {

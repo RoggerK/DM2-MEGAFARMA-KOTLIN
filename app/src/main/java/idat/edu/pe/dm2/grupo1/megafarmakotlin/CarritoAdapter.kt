@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
 
-class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edtCantidad: EditText) :
+class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamentosAgregados: ArrayList<MedicamentoResponse>, var edtCantidad: EditText) :
     RecyclerView.Adapter<CarritoAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,10 +43,10 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        val url = listaAgregados[i].imagen_producto
-        val nombre = listaAgregados[i].nombre_producto
-        val precio = listaAgregados[i].precio_unitario.toString()
-        val unitario = listaAgregados[i].pedido.toString()
+        val url = listaMedicamentosAgregados[i].imagen_producto
+        val nombre = listaMedicamentosAgregados[i].nombre_producto
+        val precio = listaMedicamentosAgregados[i].precio_unitario.toString()
+        val unitario = listaMedicamentosAgregados[i].pedido.toString()
 
         Picasso.get()
             .load(url)
@@ -71,23 +71,24 @@ class CarritoAdapter(var listaAgregados: ArrayList<MedicamentoResponse>, var edt
     }
 
     override fun getItemCount(): Int {
-        return listaAgregados.size
+        return listaMedicamentosAgregados.size
     }
 
     private fun eliminarProducto(i: Int) {
         notifyItemRangeRemoved(i, itemCount)
         edtCantidad.setText((itemCount - 1).toString())
-        listaAgregados.removeAt(i)
+        //listaAgregados.removeAt(i)
+        listaMedicamentosAgregados.removeAt(i)
     }
 
     private fun aumentarCantidad(i: Int) {
-        listaAgregados[i].pedido++
+        listaMedicamentosAgregados[i].pedido++
         notifyItemRangeChanged(i, itemCount)
     }
 
     private fun disminnuirCantidad(i: Int) {
-        if(listaAgregados[i].pedido >= 2) {
-            listaAgregados[i].pedido--
+        if(listaMedicamentosAgregados[i].pedido >= 2) {
+            listaMedicamentosAgregados[i].pedido--
             notifyItemRangeChanged(i, itemCount)
         }
     }
