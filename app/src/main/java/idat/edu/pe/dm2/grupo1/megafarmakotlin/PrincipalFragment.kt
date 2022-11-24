@@ -68,11 +68,11 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.imvBuscar -> buscarProducto(view, edBuscarProducto.text.toString().trim())
+            R.id.imvBuscar -> buscarProducto(edBuscarProducto.text.toString().trim())
         }
     }
 
-    private fun buscarProducto(view: View, nombre: String) {
+    private fun buscarProducto(nombre: String) {
         listaMedicamentosAgregados.clear()
 
         val retrofit: Retrofit = Retrofit.Builder()
@@ -98,7 +98,7 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
                     recyclerPrincipal.adapter = principalAdapter
                 } else {
                     AppMessage.enviarMensaje(
-                        view, "Error: Token",
+                        requireView(), "Error: Token",
                         TypeMessage.INFO
                     )
                 }
@@ -106,7 +106,7 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
             override fun onFailure(call: Call<ArrayList<MedicamentoResponse>>, t: Throwable) {
                 AppMessage.enviarMensaje(
-                    view, "Error: ${t.message}",
+                    requireView(), "Error: ${t.message}",
                     TypeMessage.INFO
                 )
             }

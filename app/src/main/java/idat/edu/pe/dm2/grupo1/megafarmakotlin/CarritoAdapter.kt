@@ -36,10 +36,10 @@ class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamento
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val v = LayoutInflater.from(viewGroup.context)
+        val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_carrito, viewGroup, false)
         edtCantidad.setText(itemCount.toString())
-        return ViewHolder(v)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {

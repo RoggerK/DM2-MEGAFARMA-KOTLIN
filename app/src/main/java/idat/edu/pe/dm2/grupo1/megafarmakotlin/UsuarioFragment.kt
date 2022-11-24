@@ -18,7 +18,6 @@ import java.util.regex.Pattern
 class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListener {
 
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
-    private lateinit var vista: View
     private lateinit var edCorreo: EditText
     private lateinit var edCelular: EditText
     private lateinit var edContrasenia: EditText
@@ -28,7 +27,6 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_usuario, container, false)
-        vista = view
         edCorreo = view.findViewById(R.id.edtCorreo)
         edCelular = view.findViewById(R.id.edtCelular)
         edContrasenia = view.findViewById(R.id.edtContrasenia)
@@ -73,7 +71,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
         var respuesta = true
         if (edCorreo.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
-                vista, "El Correo no puede estar vacio",
+                requireView(), "El Correo no puede estar vacio",
                 TypeMessage.DANGER
             )
             edCorreo.isFocusableInTouchMode = true
@@ -81,7 +79,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
             respuesta = false
         } else if (!verificarFormatoCorreo()) {
             AppMessage.enviarMensaje(
-                vista, "El formato del Correo es invalido ",
+                requireView(), "El formato del Correo es invalido ",
                 TypeMessage.INFO
             )
             edCorreo.isFocusableInTouchMode = true
@@ -101,7 +99,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
         var respuesta = true
         if (edCelular.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
-                vista, "El Celular no puede estar vacio",
+                requireView(), "El Celular no puede estar vacio",
                 TypeMessage.DANGER
             )
             edCelular.isFocusableInTouchMode = true
@@ -109,7 +107,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
             respuesta = false
         } else if (!(edCelular.text.toString().trim().startsWith("9", 0))) {
             AppMessage.enviarMensaje(
-                vista, "El Celular debe empezar con 9",
+                requireView(), "El Celular debe empezar con 9",
                 TypeMessage.INFO
             )
             edCelular.isFocusableInTouchMode = true
@@ -117,7 +115,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
             respuesta = false
         } else if (edCelular.text.toString().trim().length != 9) {
             AppMessage.enviarMensaje(
-                vista, "El Celular solo acepta 9 digitos",
+                requireView(), "El Celular solo acepta 9 digitos",
                 TypeMessage.INFO
             )
             edCelular.isFocusableInTouchMode = true
@@ -132,7 +130,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
         var respuesta = true
         if (edContrasenia.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
-                vista, "La Contraseña no puede estar vacio",
+                requireView(), "La Contraseña no puede estar vacio",
                 TypeMessage.DANGER
             )
             edContrasenia.isFocusableInTouchMode = true
@@ -140,7 +138,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
             respuesta = false
         } else if (!verificarFormatoContrasenia()) {
             AppMessage.enviarMensaje(
-                vista, "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
+                requireView(), "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
                 TypeMessage.INFO
             )
             edContrasenia.isFocusableInTouchMode = true
