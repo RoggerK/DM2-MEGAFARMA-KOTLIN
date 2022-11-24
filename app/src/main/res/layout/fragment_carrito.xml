@@ -54,13 +54,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/tvCantidad"
-                android:layout_width="50dp"
-                android:layout_height="35dp"
+                android:id="@+id/edtCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="34dp"
                 android:layout_toEndOf="@+id/tvPrecio"
                 android:clickable="false"
-                android:editable="false"
                 android:enabled="true"
                 android:focusable="false"
                 android:inputType="none"
