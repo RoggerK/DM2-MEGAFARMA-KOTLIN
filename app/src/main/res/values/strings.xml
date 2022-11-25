@@ -8,6 +8,7 @@
     <string name="EmailUser">Ingrese su correo</string>
     <string name="PasswordUser">Ingrese su contraseña</string>
     <string name="Registrar">Registrar</string>
+    <string name="Salir">Salir</string>
     <string name="Cancelar"> Cancelar</string>
     <string name="valdia">dia</string>
     <string name="valmes">mes</string>

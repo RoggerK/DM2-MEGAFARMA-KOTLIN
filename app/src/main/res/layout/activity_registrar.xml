@@ -272,7 +272,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/rojo_cancelar"
-                android:text="@string/Cancelar"
+                android:text="@string/Salir"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="20dp" />
 

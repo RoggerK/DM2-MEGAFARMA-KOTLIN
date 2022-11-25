@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.RegistrarClienteResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,85 +24,64 @@ import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegistrarBinding
-    private val urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         binding = ActivityRegistrarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
         binding.btnRegistrar.setOnClickListener(this)
         binding.btnCancelar.setOnClickListener(this)
+
+        authViewModel.responseRegistro.observe(this, Observer { response ->
+            obtenerRespuestaRegistrar(response)
+        })
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             binding.btnRegistrar.id -> registrarCliente()
-            binding.btnCancelar.id -> finalizarActivity()
+            binding.btnCancelar.id -> finish()
         }
     }
 
+    private fun obtenerRespuestaRegistrar(response: RegistrarClienteResponse?) {
+        if(response != null) {
+            AppMessage.enviarMensaje(binding.root, "INFO: ${response.mensaje}", TypeMessage.SUCCESSFULL)
+            limpiarCampos()
+        } else {
+            AppMessage.enviarMensaje(binding.root, "INFO: DNI y/o correo existe", TypeMessage.INFO)
+        }
+        binding.btnCancelar.isEnabled = true
+        binding.btnRegistrar.isEnabled = true
+    }
+
     private fun registrarCliente() {
+        binding.btnCancelar.isEnabled = false
+        binding.btnRegistrar.isEnabled = false
+
         if (validarFormulario()) {
             val fechaNacimiento = binding.edAnio.text.toString().trim() + "-" +
                     binding.edMes.text.toString().trim() + "-" +
                     binding.edDia.text.toString().trim() + "-"
 
-            val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(urlFarma)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
-
-            var call: Call<RegistrarClienteResponse> = usuarioAPI.registrarUsuario(
-                RegistrarClienteRequest(
-                    binding.edNombreUser.text.toString().trim(),
-                    binding.edApellido.text.toString().trim(),
-                    binding.edCelular.text.toString().trim(),
-                    binding.edDNI.text.toString().trim(),
-                    fechaNacimiento,
-                    binding.edEmailUser.text.toString().trim(),
-                    binding.edPasswordUser.text.toString().trim(),
-                    true,
-                    true
-                )
-            )
-
-            call.enqueue(object: Callback<RegistrarClienteResponse> {
-                override fun onResponse(call: Call<RegistrarClienteResponse>, response: Response<RegistrarClienteResponse>) {
-                    if(response.isSuccessful) {
-                        AppMessage.enviarMensaje(
-                            binding.root, "INFO: Usuario registrado con exito",
-                            TypeMessage.SUCCESSFULL
-                        )
-                        limpiarCampos()
-                        finalizarActivity()
-                    } else if(response.code() == 400) {
-                        AppMessage.enviarMensaje(
-                            binding.root, "INFO: Correo o DNI existente",
-                            TypeMessage.INFO
-                        )
-                    } else {
-                        AppMessage.enviarMensaje(
-                            binding.root, "INFO: Error en sistema",
-                            TypeMessage.INFO
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<RegistrarClienteResponse>, t: Throwable) {
-                    AppMessage.enviarMensaje(
-                        binding.root, "Error: ${t.message}",
-                        TypeMessage.DANGER
-                    )
-                }
-            })
+            authViewModel.registroUsuario(binding.edNombreUser.text.toString().trim(),
+                binding.edApellido.text.toString().trim(),
+                binding.edCelular.text.toString().trim(),
+                binding.edDNI.text.toString().trim(),
+                fechaNacimiento,
+                binding.edEmailUser.text.toString().trim(),
+                binding.edPasswordUser.text.toString().trim(),
+                true,
+                true)
+        } else {
+            binding.btnCancelar.isEnabled = true
+            binding.btnRegistrar.isEnabled = true
         }
-    }
-
-    private fun finalizarActivity() {
-        this.finish()
     }
 
     private fun limpiarCampos() {

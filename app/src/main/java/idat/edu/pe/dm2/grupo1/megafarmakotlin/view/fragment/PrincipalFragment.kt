@@ -14,7 +14,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MedicamentoAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MedicamentoService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -80,10 +80,10 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val medicamentoAPI: MedicamentoAPI = retrofit.create(MedicamentoAPI::class.java)
+        val medicamentoService: MedicamentoService = retrofit.create(MedicamentoService::class.java)
 
         var call: Call<ArrayList<MedicamentoResponse>> =
-            medicamentoAPI.listarFiltroProducto(nombre, "Bearer $token")
+            medicamentoService.listarFiltroProducto(nombre, "Bearer $token")
 
         call.enqueue(object : Callback<ArrayList<MedicamentoResponse>> {
             override fun onResponse(
@@ -121,10 +121,10 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val medicamentoAPI: MedicamentoAPI = retrofit.create(MedicamentoAPI::class.java)
+        val medicamentoService: MedicamentoService = retrofit.create(MedicamentoService::class.java)
 
         var call: Call<ArrayList<MedicamentoResponse>> =
-            medicamentoAPI.listarProducto("Bearer $token")
+            medicamentoService.listarProducto("Bearer $token")
 
         call.enqueue(object : Callback<ArrayList<MedicamentoResponse>> {
             override fun onResponse(

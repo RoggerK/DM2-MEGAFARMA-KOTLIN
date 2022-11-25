@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,17 +22,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
-    private val urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.supportActionBar?.hide()
+        supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         binding.btnLogIniciarSesion.setOnClickListener(this)
         binding.btnLogRegistrarse.setOnClickListener(this)
 
+        authViewModel.responseLogin.observe(this, Observer { response ->
+            obtenerRespuestaLogin(response)
+        })
     }
 
     override fun onClick(view: View) {
@@ -39,52 +47,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun obtenerRespuestaLogin(response: LoginResponse?) {
+        if(response != null) {
+            limpiarCampos()
+            iniciarMenuCliente(response)
+        }
+
+        binding.btnLogIniciarSesion.isEnabled = true
+        binding.btnLogRegistrarse.isEnabled = true
+    }
+
     private fun abrirRegistrarMe() {
         val intent = Intent(this, RegistrarActivity::class.java)
         startActivity(intent)
     }
 
     private fun iniciarSesion() {
+        binding.btnLogIniciarSesion.isEnabled = false
+        binding.btnLogRegistrarse.isEnabled = false
         if (validarFormulario()) {
-            val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(urlFarma)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
-
-            var call: Call<LoginResponse> = usuarioAPI.iniciarSesion(
-                LoginRequest(
-                    binding.edLogCorreo.text.toString().trim(),
-                    binding.edLogContrsenia.text.toString().trim()
-                )
-            )
-
-            call.enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val tokenUsuario: LoginResponse = response.body()!!
-                        iniciarMenuCliente(tokenUsuario)
-                    } else {
-                        AppMessage.enviarMensaje(
-                            binding.root, "Error: usuario o contraseña",
-                            TypeMessage.INFO
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    AppMessage.enviarMensaje(
-                        binding.root, "Error: ${t.message}",
-                        TypeMessage.DANGER
-                    )
-                }
-            })
-
-            limpiarCampos()
+            authViewModel.inciarSesion(binding.edLogCorreo.text.toString(),
+                binding.edLogContrsenia.text.toString(), binding.root)
+        } else {
+            binding.btnLogIniciarSesion.isEnabled = true
+            binding.btnLogRegistrarse.isEnabled = true
         }
     }
 
@@ -102,12 +88,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ).apply {
             putExtra("token", arrayToken)
         }
-        finalizarAtivity()
-        startActivity(intentMenuClienteActivity)
-    }
 
-    private fun finalizarAtivity() {
-        this.finish()
+        finish()
+
+        startActivity(intentMenuClienteActivity)
     }
 
     private fun limpiarCampos() {
