@@ -1,6 +1,6 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request
 
-data class RegistrarCliente(
+data class RegistrarClienteRequest(
     var nombre: String,
     var apellido: String,
     var celular: String,

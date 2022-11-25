@@ -1,4 +1,4 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

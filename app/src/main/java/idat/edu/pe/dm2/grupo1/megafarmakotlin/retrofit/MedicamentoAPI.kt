@@ -1,6 +1,6 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin.intz
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit
 
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

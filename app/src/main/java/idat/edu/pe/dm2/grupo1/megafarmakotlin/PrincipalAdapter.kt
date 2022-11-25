@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 
 class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var listaAgregado: ArrayList<String>) :
     RecyclerView.Adapter<PrincipalAdapter.ViewHolder>() {

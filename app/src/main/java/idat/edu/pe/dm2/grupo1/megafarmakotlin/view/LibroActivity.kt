@@ -1,9 +1,8 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityLibroBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
 
 class LibroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLibroBinding

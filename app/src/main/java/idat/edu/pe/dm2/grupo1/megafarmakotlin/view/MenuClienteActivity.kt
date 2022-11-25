@@ -1,18 +1,19 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PrincipalFragment
 
 class MenuClienteActivity : AppCompatActivity(),
     OnFramentUsuarioListerne {

@@ -1,4 +1,4 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,9 +8,9 @@ import android.view.View
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.intz.UsuarioAPI
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginRequest
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.LoginResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -6,17 +6,17 @@
     app:startDestination="@id/principalFragment">
     <fragment
         android:id="@+id/principalFragment"
-        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.PrincipalFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PrincipalFragment"
         android:label="@string/fragmentprincipal"
         tools:layout="@layout/fragment_principal" />
     <fragment
         android:id="@+id/carritoFragment"
-        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.CarritoFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.CarritoFragment"
         android:label="@string/fragmentcarrito"
         tools:layout="@layout/fragment_carrito" />
     <fragment
         android:id="@+id/usuarioFragment"
-        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.UsuarioFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.UsuarioFragment"
         android:label="@string/fragmentusuario"
         tools:layout="@layout/fragment_usuario"/>
 

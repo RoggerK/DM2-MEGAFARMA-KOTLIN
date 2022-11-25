@@ -3,13 +3,12 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 
 class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamentosAgregados: ArrayList<MedicamentoResponse>, var edtCantidad: EditText) :
     RecyclerView.Adapter<CarritoAdapter.ViewHolder>() {

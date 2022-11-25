@@ -1,4 +1,4 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import android.os.Bundle
 import android.util.Patterns
@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.intz.UsuarioAPI
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.Mensaje
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo.RegistrarCliente
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioAPI
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.RegistrarClienteResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,8 +52,8 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
 
             val usuarioAPI: UsuarioAPI = retrofit.create(UsuarioAPI::class.java)
 
-            var call: Call<Mensaje> = usuarioAPI.registrarUsuario(
-                RegistrarCliente(
+            var call: Call<RegistrarClienteResponse> = usuarioAPI.registrarUsuario(
+                RegistrarClienteRequest(
                     binding.edNombreUser.text.toString().trim(),
                     binding.edApellido.text.toString().trim(),
                     binding.edCelular.text.toString().trim(),
@@ -66,8 +66,8 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
                 )
             )
 
-            call.enqueue(object: Callback<Mensaje> {
-                override fun onResponse(call: Call<Mensaje>, response: Response<Mensaje>) {
+            call.enqueue(object: Callback<RegistrarClienteResponse> {
+                override fun onResponse(call: Call<RegistrarClienteResponse>, response: Response<RegistrarClienteResponse>) {
                     if(response.isSuccessful) {
                         AppMessage.enviarMensaje(
                             binding.root, "INFO: Usuario registrado con exito",
@@ -88,7 +88,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
-                override fun onFailure(call: Call<Mensaje>, t: Throwable) {
+                override fun onFailure(call: Call<RegistrarClienteResponse>, t: Throwable) {
                     AppMessage.enviarMensaje(
                         binding.root, "Error: ${t.message}",
                         TypeMessage.DANGER

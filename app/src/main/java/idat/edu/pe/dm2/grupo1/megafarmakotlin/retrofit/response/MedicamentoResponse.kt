@@ -1,4 +1,4 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin.pojo
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response
 
 data class MedicamentoResponse(
     var idproducto: Int,
