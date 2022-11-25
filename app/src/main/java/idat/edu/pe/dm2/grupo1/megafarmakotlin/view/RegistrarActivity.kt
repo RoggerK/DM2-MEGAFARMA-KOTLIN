@@ -14,13 +14,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.time.Period
 import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegistrarBinding
-    private val urlFarma = "https://megafarma.herokuapp.com/"
+    private val urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
