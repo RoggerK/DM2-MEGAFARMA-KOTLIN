@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class PrincipalFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentPrincipalBinding
     private lateinit var principalAdapter: PrincipalAdapter
+    private lateinit var medicamentoViewModel: MedicamentoViewModel
 
-    private var urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
     private var listaAgregado = ArrayList<String>()
     var token = ""
@@ -49,9 +50,27 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
+        medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
+        medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
+            response -> obtenerDatosMedicamentos(response)
+        })
         llenarlistaMedicamentos()
         return binding.root
+    }
+
+    private fun obtenerDatosMedicamentos(response: ArrayList<MedicamentoResponse>?) {
+        if (response != null) {
+            listaMedicamentosAgregados = response
+            println(listaMedicamentosAgregados.toString())
+            principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
+            binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
+            binding.recyclerCarrito.adapter = principalAdapter
+        } else {
+            AppMessage.enviarMensaje(binding.root, "ERROR: Token invalido",
+                TypeMessage.DANGER)
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,81 +88,12 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     private fun buscarProducto(nombre: String) {
         listaMedicamentosAgregados.clear()
+        medicamentoViewModel.listaFiltroMedicamento(nombre, "Bearer $token")
 
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(urlFarma)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val medicamentoService: MedicamentoService = retrofit.create(MedicamentoService::class.java)
-
-        var call: Call<ArrayList<MedicamentoResponse>> =
-            medicamentoService.listarFiltroProducto(nombre, "Bearer $token")
-
-        call.enqueue(object : Callback<ArrayList<MedicamentoResponse>> {
-            override fun onResponse(
-                call: Call<ArrayList<MedicamentoResponse>>,
-                response: Response<ArrayList<MedicamentoResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    for (medicamento in response.body()!!) {
-                        listaMedicamentosAgregados.add(medicamento)
-                    }
-
-                    principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
-                    binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
-                    binding.recyclerCarrito.adapter = principalAdapter
-                } else {
-                    AppMessage.enviarMensaje(
-                        requireView(), "Error: Token",
-                        TypeMessage.INFO
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<MedicamentoResponse>>, t: Throwable) {
-                AppMessage.enviarMensaje(
-                    requireView(), "Error: ${t.message}",
-                    TypeMessage.INFO
-                )
-            }
-        })
     }
 
     fun llenarlistaMedicamentos() {
         listaMedicamentosAgregados.clear()
-
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(urlFarma)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val medicamentoService: MedicamentoService = retrofit.create(MedicamentoService::class.java)
-
-        var call: Call<ArrayList<MedicamentoResponse>> =
-            medicamentoService.listarProducto("Bearer $token")
-
-        call.enqueue(object : Callback<ArrayList<MedicamentoResponse>> {
-            override fun onResponse(
-                call: Call<ArrayList<MedicamentoResponse>>,
-                response: Response<ArrayList<MedicamentoResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    for (medicamento in response.body()!!) {
-                        listaMedicamentosAgregados.add(medicamento)
-                    }
-                    principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
-                    binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
-                    binding.recyclerCarrito.adapter = principalAdapter
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<MedicamentoResponse>>, t: Throwable) {
-                AppMessage.enviarMensaje(
-                    requireView(), "Error: ${t.message}",
-                    TypeMessage.INFO
-                )
-            }
-        })
+        medicamentoViewModel.listaMedicamento("Bearer $token")
     }
 }
