@@ -4,24 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.CarritoAdapter
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 
 
 class CarritoFragment : Fragment() {
-
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentCarritoBinding
     private lateinit var carritoAdapter: CarritoAdapter
-    private var listaAgregado =  ArrayList<String>()
+    private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +28,10 @@ class CarritoFragment : Fragment() {
             this, FragmentResultListener { requestKey, bundle ->
                 listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
                 if (listaAgregado.size == 0) {
-                    AppMessage.enviarMensaje(requireView(), "No hay productos agregados",
-                        TypeMessage.INFO)
+                    AppMessage.enviarMensaje(
+                        requireView(), "No hay productos agregados",
+                        TypeMessage.INFO
+                    )
                 } else {
                     for (medicamento in listaAgregado) {
                         val array = medicamento.split(";")
@@ -60,17 +59,15 @@ class CarritoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        var view = inflater.inflate(R.layout.fragment_carrito, container, false)
-        var edtCantidad = view.findViewById<EditText>(R.id.edtCantidad)
-        recyclerView = view.findViewById(R.id.reCarrito)
-        recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
-        carritoAdapter = CarritoAdapter(listaAgregado, listaMedicamentosAgregados, edtCantidad)
-        recyclerView.adapter = carritoAdapter
+    ): View {
+        binding = FragmentCarritoBinding.inflate(inflater, container, false)
+        binding.reCarrito.layoutManager = LinearLayoutManager(context)
+        carritoAdapter =
+            CarritoAdapter(listaAgregado, listaMedicamentosAgregados, binding.edtCantidad)
+        binding.reCarrito.adapter = carritoAdapter
+        binding.edtCantidad.setText(carritoAdapter.itemCount.toString())
 
-        edtCantidad.setText(carritoAdapter.itemCount.toString())
-
-        return view
+        return binding.root
     }
 
     /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

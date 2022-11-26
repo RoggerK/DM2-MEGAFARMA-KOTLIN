@@ -11,7 +11,7 @@ object MegaFarmaCliente {
         .connectTimeout(1, TimeUnit.MINUTES)
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)
-        .addInterceptor(ApiInterceptor()) //para usar el token en toda la consulta
+        //.addInterceptor(ApiInterceptor()) //para usar el token en toda la consulta
         .build()
 
     private fun buildRetrofit() = Retrofit.Builder()

@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.PrincipalAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentPrincipalBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MedicamentoService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,10 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class PrincipalFragment : Fragment(), View.OnClickListener {
-    private lateinit var recyclerPrincipal: RecyclerView
+    private lateinit var binding: FragmentPrincipalBinding
     private lateinit var principalAdapter: PrincipalAdapter
-    private lateinit var edBuscarProducto: EditText
-    private lateinit var imvBuscar: ImageView
 
     private var urlFarma = "https://megafarma.herokuapp.com/megafarma/rest/api/v1/"
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
@@ -47,20 +48,14 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_principal, container, false)
-        edBuscarProducto = view.findViewById(R.id.edBuscarProducto)
-        imvBuscar = view.findViewById(R.id.imvBuscar)
-        imvBuscar.setOnClickListener(this)
-
-        recyclerPrincipal = view.findViewById(R.id.recyclerCarrito)
-        recyclerPrincipal.layoutManager = LinearLayoutManager(MyApplication.instance)
+        binding = FragmentPrincipalBinding.inflate(inflater, container, false)
+        binding.imvBuscar.setOnClickListener(this)
         llenarlistaMedicamentos()
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val bundle = Bundle()
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
@@ -68,7 +63,7 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.imvBuscar -> buscarProducto(edBuscarProducto.text.toString().trim())
+            R.id.imvBuscar -> buscarProducto(binding.edBuscarProducto.text.toString().trim())
         }
     }
 
@@ -94,8 +89,10 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
                     for (medicamento in response.body()!!) {
                         listaMedicamentosAgregados.add(medicamento)
                     }
+
                     principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
-                    recyclerPrincipal.adapter = principalAdapter
+                    binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
+                    binding.recyclerCarrito.adapter = principalAdapter
                 } else {
                     AppMessage.enviarMensaje(
                         requireView(), "Error: Token",
@@ -136,7 +133,8 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
                         listaMedicamentosAgregados.add(medicamento)
                     }
                     principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
-                    recyclerPrincipal.adapter = principalAdapter
+                    binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
+                    binding.recyclerCarrito.adapter = principalAdapter
                 }
             }
 

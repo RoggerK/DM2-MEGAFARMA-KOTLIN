@@ -7,12 +7,12 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthRepository
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.RegistrarClienteResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 
 class AuthViewModel: ViewModel() {
 
     var responseLogin: LiveData<LoginResponse>
-    var responseRegistro: LiveData<RegistrarClienteResponse>
+    var responseRegistro: LiveData<GlobalResponse>
     private var repository = AuthRepository()
 
     init {

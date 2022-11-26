@@ -4,8 +4,9 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class ApiInterceptor: Interceptor {
+    var token: String = ""
+
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token: String = ""
         val request = chain.request().newBuilder().addHeader("Authorization",
             "Bearer $token").build()
         return chain.proceed(request)

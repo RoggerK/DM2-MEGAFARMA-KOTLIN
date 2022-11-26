@@ -12,34 +12,27 @@ import androidx.fragment.app.Fragment
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import java.util.regex.Pattern
 
 
-class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListener {
-
+class UsuarioFragment : Fragment(), View.OnClickListener {
+    private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
-    private lateinit var edCorreo: EditText
-    private lateinit var edCelular: EditText
-    private lateinit var edContrasenia: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_usuario, container, false)
-        edCorreo = view.findViewById(R.id.edtCorreo)
-        edCelular = view.findViewById(R.id.edtCelular)
-        edContrasenia = view.findViewById(R.id.edtContrasenia)
+    ): View {
+        binding = FragmentUsuarioBinding.inflate(inflater, container, false)
 
-        val buttonGuardar = view.findViewById<Button>(R.id.btGuardarCambios)
-        val buttonLibro = view.findViewById<Button>(R.id.btLibroReclamacion)
-        val buttonAyuda = view.findViewById<Button>(R.id.btNecesitoAyuda)
+        binding.btGuardarCambios.setOnClickListener(this)
+        binding.btLibroReclamacion.setOnClickListener(this)
+        binding.btNecesitoAyuda.setOnClickListener(this)
 
-        buttonGuardar.setOnClickListener(this)
-        buttonLibro.setOnClickListener(this)
-        buttonAyuda.setOnClickListener(this)
-        return view
+        return binding.root
     }
 
     override fun onClick(view: View) {
@@ -70,21 +63,21 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
 
     private fun validarCorreo(): Boolean {
         var respuesta = true
-        if (edCorreo.text.toString().trim().isEmpty()) {
+        if (binding.edtCorreo.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
                 requireView(), "El Correo no puede estar vacio",
                 TypeMessage.DANGER
             )
-            edCorreo.isFocusableInTouchMode = true
-            edCorreo.requestFocus()
+            binding.edtCorreo.isFocusableInTouchMode = true
+            binding.edtCorreo.requestFocus()
             respuesta = false
         } else if (!verificarFormatoCorreo()) {
             AppMessage.enviarMensaje(
                 requireView(), "El formato del Correo es invalido ",
                 TypeMessage.INFO
             )
-            edCorreo.isFocusableInTouchMode = true
-            edCorreo.requestFocus()
+            binding.edtCorreo.isFocusableInTouchMode = true
+            binding.edtCorreo.requestFocus()
             respuesta = false
         }
 
@@ -93,34 +86,34 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
 
     private fun verificarFormatoCorreo(): Boolean {
         val pattern = Patterns.EMAIL_ADDRESS
-        return pattern.matcher(edCorreo.text.toString().trim()).matches()
+        return pattern.matcher(binding.edtCorreo.text.toString().trim()).matches()
     }
 
     private fun validarCelular(): Boolean {
         var respuesta = true
-        if (edCelular.text.toString().trim().isEmpty()) {
+        if (binding.edtCelular.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
                 requireView(), "El Celular no puede estar vacio",
                 TypeMessage.DANGER
             )
-            edCelular.isFocusableInTouchMode = true
-            edCelular.requestFocus()
+            binding.edtCelular.isFocusableInTouchMode = true
+            binding.edtCelular.requestFocus()
             respuesta = false
-        } else if (!(edCelular.text.toString().trim().startsWith("9", 0))) {
+        } else if (!(binding.edtCelular.text.toString().trim().startsWith("9", 0))) {
             AppMessage.enviarMensaje(
                 requireView(), "El Celular debe empezar con 9",
                 TypeMessage.INFO
             )
-            edCelular.isFocusableInTouchMode = true
-            edCelular.requestFocus()
+            binding.edtCelular.isFocusableInTouchMode = true
+            binding.edtCelular.requestFocus()
             respuesta = false
-        } else if (edCelular.text.toString().trim().length != 9) {
+        } else if (binding.edtCelular.text.toString().trim().length != 9) {
             AppMessage.enviarMensaje(
                 requireView(), "El Celular solo acepta 9 digitos",
                 TypeMessage.INFO
             )
-            edCelular.isFocusableInTouchMode = true
-            edCelular.requestFocus()
+            binding.edtCelular.isFocusableInTouchMode = true
+            binding.edtCelular.requestFocus()
             respuesta = false
         }
 
@@ -129,21 +122,21 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
 
     private fun validarContrasenia(): Boolean {
         var respuesta = true
-        if (edContrasenia.text.toString().trim().isEmpty()) {
+        if (binding.edtContrasenia.text.toString().trim().isEmpty()) {
             AppMessage.enviarMensaje(
                 requireView(), "La Contraseña no puede estar vacio",
                 TypeMessage.DANGER
             )
-            edContrasenia.isFocusableInTouchMode = true
-            edContrasenia.requestFocus()
+            binding.edtContrasenia.isFocusableInTouchMode = true
+            binding.edtContrasenia.requestFocus()
             respuesta = false
         } else if (!verificarFormatoContrasenia()) {
             AppMessage.enviarMensaje(
                 requireView(), "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
                 TypeMessage.INFO
             )
-            edContrasenia.isFocusableInTouchMode = true
-            edContrasenia.requestFocus()
+            binding.edtContrasenia.isFocusableInTouchMode = true
+            binding.edtContrasenia.requestFocus()
             respuesta = false
         }
 
@@ -162,7 +155,7 @@ class UsuarioFragment : Fragment(R.layout.fragment_usuario), View.OnClickListene
                     "$"
         )
 
-        return pattern.matcher(edContrasenia.text.toString().trim()).matches()
+        return pattern.matcher(binding.edtContrasenia.text.toString().trim()).matches()
     }
 
     override fun onAttach(context: Context) {

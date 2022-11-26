@@ -8,8 +8,13 @@ import retrofit2.http.Query
 
 interface MedicamentoService {
     @GET("producto/listar")
-    fun listarProducto(@Header("Authorization") token: String): Call<ArrayList<MedicamentoResponse>>
+    fun listarProducto(
+        @Header("Authorization") token: String
+    ): Call<ArrayList<MedicamentoResponse>>
 
     @GET("producto/filtro")
-    fun listarFiltroProducto(@Query("nombre_producto") nombre: String, @Header("Authorization") token: String): Call<ArrayList<MedicamentoResponse>>
+    fun listarFiltroProducto(
+        @Query("nombre_producto") nombre: String,
+        @Header("Authorization") token: String
+    ): Call<ArrayList<MedicamentoResponse>>
 }

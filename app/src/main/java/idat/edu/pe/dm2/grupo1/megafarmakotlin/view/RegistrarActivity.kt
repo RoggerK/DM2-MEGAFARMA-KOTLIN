@@ -9,15 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioService
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.RegistrarClienteResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.time.Period
 import java.util.regex.Pattern
@@ -49,7 +42,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun obtenerRespuestaRegistrar(response: RegistrarClienteResponse?) {
+    private fun obtenerRespuestaRegistrar(response: GlobalResponse?) {
         if(response != null) {
             AppMessage.enviarMensaje(binding.root, "INFO: ${response.mensaje}", TypeMessage.SUCCESSFULL)
             limpiarCampos()
