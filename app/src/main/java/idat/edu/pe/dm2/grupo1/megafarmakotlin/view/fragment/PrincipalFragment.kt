@@ -52,17 +52,16 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
+        llenarlistaMedicamentos()
         medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
             response -> obtenerDatosMedicamentos(response)
         })
-        llenarlistaMedicamentos()
         return binding.root
     }
 
     private fun obtenerDatosMedicamentos(response: ArrayList<MedicamentoResponse>?) {
         if (response != null) {
             listaMedicamentosAgregados = response
-            println(listaMedicamentosAgregados.toString())
             principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
             binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
             binding.recyclerCarrito.adapter = principalAdapter

@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/tvMisCompras"
         android:layout_width="match_parent"
@@ -23,8 +22,8 @@
 
             <LinearLayout
                 android:id="@+id/tvCarrito1"
-                android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -70,25 +69,49 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/valSoles"
-                        android:textColor="#302E2E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvPrecio"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valPrec"
-                        android:textColor="#302E2E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/valTotal"
+                            android:textAlignment="center"
+                            android:textColor="#302E2E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valSoles"
+                                android:textColor="#302E2E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPrecio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valPrec"
+                                android:textColor="#302E2E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/imvMenos"
@@ -118,6 +141,62 @@
                         android:background="#F4F2F2"
                         android:src="@drawable/ic_add_item" />
 
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="15" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/valPrecio"
+                            android:textAlignment="center"
+                            android:textColor="#302E2E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/valSoles"
+                                android:textColor="#302E2E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPrecioUnitario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/valPrec"
+                                android:textColor="#302E2E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

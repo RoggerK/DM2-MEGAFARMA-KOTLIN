@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.CarritoAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
@@ -39,15 +38,17 @@ class CarritoFragment : Fragment() {
                         val url = array[1]
                         val nombre = array[2]
                         val presentacion = array[3]
-                        val precio = array[4].toDouble()
-                        val pedido = array[5].toInt()
+                        val precioUnitario = array[4].toDouble()
+                        val precioTotal = array[5].toDouble()
+                        val pedido = array[6].toInt()
                         listaMedicamentosAgregados.add(
                             MedicamentoResponse(
                                 idproducto = id,
                                 imagen_producto = url,
                                 nombre_producto = nombre,
                                 presentacion = presentacion,
-                                precio_unitario = precio,
+                                precio_unitario = precioUnitario,
+                                precio_total = precioTotal,
                                 pedido = pedido
                             )
                         )
@@ -61,13 +62,27 @@ class CarritoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCarritoBinding.inflate(inflater, container, false)
+
         binding.reCarrito.layoutManager = LinearLayoutManager(context)
         carritoAdapter =
-            CarritoAdapter(listaAgregado, listaMedicamentosAgregados, binding.edtCantidad)
+            CarritoAdapter(
+                listaAgregado, listaMedicamentosAgregados,
+                binding.tvTotalPrecioProductos, binding.edtCantidad
+            )
         binding.reCarrito.adapter = carritoAdapter
+        actualizarTotales()
         binding.edtCantidad.setText(carritoAdapter.itemCount.toString())
 
         return binding.root
+    }
+
+    private fun actualizarTotales() {
+        var total = 0.00
+        for ( medicamento in listaMedicamentosAgregados) {
+            total += medicamento.precio_unitario * medicamento.pedido
+        }
+
+        binding.tvTotalPrecioProductos.text = total.toString()
     }
 
     /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

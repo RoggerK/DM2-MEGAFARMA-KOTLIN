@@ -6,5 +6,6 @@ data class MedicamentoResponse(
     var nombre_producto: String,
     var presentacion: String,
     var precio_unitario: Double,
+    var precio_total: Double,
     var pedido: Int = 1
 )

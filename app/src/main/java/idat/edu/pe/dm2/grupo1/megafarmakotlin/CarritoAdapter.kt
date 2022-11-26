@@ -10,27 +10,34 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 
-class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamentosAgregados: ArrayList<MedicamentoResponse>, var edtCantidad: EditText) :
+class CarritoAdapter(
+    var listaAgregados: ArrayList<String>,
+    var listaMedicamentosAgregados: ArrayList<MedicamentoResponse>,
+    var tvTotalPrecioProductos: TextView,
+    var edtCantidad: EditText
+) :
     RecyclerView.Adapter<CarritoAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var itemImage: ImageView
         var itemTitle: TextView
-        var itemPrec: TextView
+        var itemTotal: TextView
         var itemDelete: ImageView
         var itemUni: EditText
         var itemMas: ImageView
         var itemMenos: ImageView
+        var itemPrecUni: TextView
 
         init {
             itemImage = itemView.findViewById(R.id.imgProducto1)
             itemDelete = itemView.findViewById(R.id.imvEliminar)
             itemTitle = itemView.findViewById(R.id.tvNombreProducto1)
-            itemPrec = itemView.findViewById(R.id.tvPrecio)
+            itemTotal = itemView.findViewById(R.id.tvPrecio)
             itemUni = itemView.findViewById(R.id.edtCantidad)
             itemMas = itemView.findViewById(R.id.imvMas)
             itemMenos = itemView.findViewById(R.id.imvMenos)
+            itemPrecUni = itemView.findViewById(R.id.tvPrecioUnitario)
         }
     }
 
@@ -44,8 +51,11 @@ class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamento
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         val url = listaMedicamentosAgregados[i].imagen_producto
         val nombre = listaMedicamentosAgregados[i].nombre_producto
-        val precio = listaMedicamentosAgregados[i].precio_unitario.toString()
-        val unitario = listaMedicamentosAgregados[i].pedido.toString()
+        val precioUnitario = listaMedicamentosAgregados[i].precio_unitario
+        val cantidad = listaMedicamentosAgregados[i].pedido
+        val total = precioUnitario * cantidad
+
+        listaMedicamentosAgregados[i].precio_total = total
 
         Picasso.get()
             .load(url)
@@ -53,8 +63,9 @@ class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamento
             .into(viewHolder.itemImage)
 
         viewHolder.itemTitle.text = nombre
-        viewHolder.itemPrec.text = precio
-        viewHolder.itemUni.setText(unitario)
+        viewHolder.itemTotal.text = total.toString()
+        viewHolder.itemUni.setText(cantidad.toString())
+        viewHolder.itemPrecUni.text = precioUnitario.toString()
 
         viewHolder.itemDelete.setOnClickListener(View.OnClickListener {
             eliminarProducto(i)
@@ -62,10 +73,12 @@ class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamento
 
         viewHolder.itemMas.setOnClickListener(View.OnClickListener {
             aumentarCantidad(i)
+            actualizarTotales(i, viewHolder)
         })
 
         viewHolder.itemMenos.setOnClickListener(View.OnClickListener {
-            disminnuirCantidad(i)
+            disminuirCantidad(i)
+            actualizarTotales(i, viewHolder)
         })
     }
 
@@ -85,10 +98,26 @@ class CarritoAdapter(var listaAgregados: ArrayList<String>, var listaMedicamento
         notifyItemRangeChanged(i, itemCount)
     }
 
-    private fun disminnuirCantidad(i: Int) {
-        if(listaMedicamentosAgregados[i].pedido >= 2) {
+    private fun disminuirCantidad(i: Int) {
+        if (listaMedicamentosAgregados[i].pedido >= 2) {
             listaMedicamentosAgregados[i].pedido--
             notifyItemRangeChanged(i, itemCount)
         }
+    }
+
+    private fun actualizarTotales(i: Int, viewHolder: ViewHolder) {
+        val total
+            = listaMedicamentosAgregados[i].precio_unitario * listaMedicamentosAgregados[i].pedido
+        listaMedicamentosAgregados[i].precio_total = total
+        actualizarMontoTotal()
+        viewHolder.itemTotal.text = total.toString()
+    }
+
+    private fun actualizarMontoTotal() {
+        val total = listaMedicamentosAgregados.sumOf {
+            p -> p.precio_total
+        }
+
+        tvTotalPrecioProductos.text = total.toString()
     }
 }
