@@ -69,16 +69,19 @@ class CarritoAdapter(
 
         viewHolder.itemDelete.setOnClickListener(View.OnClickListener {
             eliminarProducto(i)
+            actualizarMontoTotal()
         })
 
         viewHolder.itemMas.setOnClickListener(View.OnClickListener {
             aumentarCantidad(i)
             actualizarTotales(i, viewHolder)
+            actualizarMontoTotal()
         })
 
         viewHolder.itemMenos.setOnClickListener(View.OnClickListener {
             disminuirCantidad(i)
             actualizarTotales(i, viewHolder)
+            actualizarMontoTotal()
         })
     }
 
@@ -109,7 +112,6 @@ class CarritoAdapter(
         val total
             = listaMedicamentosAgregados[i].precio_unitario * listaMedicamentosAgregados[i].pedido
         listaMedicamentosAgregados[i].precio_total = total
-        actualizarMontoTotal()
         viewHolder.itemTotal.text = total.toString()
     }
 

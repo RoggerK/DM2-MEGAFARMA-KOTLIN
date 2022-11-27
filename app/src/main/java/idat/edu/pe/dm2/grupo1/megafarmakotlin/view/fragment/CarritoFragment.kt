@@ -52,6 +52,8 @@ class CarritoFragment : Fragment() {
                                 pedido = pedido
                             )
                         )
+                        mostrarCantidadAgregados()
+                        actualizarTotales()
                     }
                 }
             })
@@ -70,15 +72,17 @@ class CarritoFragment : Fragment() {
                 binding.tvTotalPrecioProductos, binding.edtCantidad
             )
         binding.reCarrito.adapter = carritoAdapter
-        actualizarTotales()
-        binding.edtCantidad.setText(carritoAdapter.itemCount.toString())
 
         return binding.root
     }
 
+    private fun mostrarCantidadAgregados() {
+        binding.edtCantidad.setText(carritoAdapter.itemCount.toString())
+    }
+
     private fun actualizarTotales() {
         var total = 0.00
-        for ( medicamento in listaMedicamentosAgregados) {
+        for (medicamento in listaMedicamentosAgregados) {
             total += medicamento.precio_unitario * medicamento.pedido
         }
 
