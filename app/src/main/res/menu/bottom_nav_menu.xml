@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/principalFragment"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/valfragmentprincipal" />
+
+    <item
+        android:id="@+id/carritoFragment"
+        android:icon="@drawable/carrito"
+        android:title="@string/valfragmentcarrito" />
+
+    <item
+        android:id="@+id/usuarioFragment"
+        android:icon="@drawable/usuario"
+        android:title="@string/valfragmentusuario" />
+
+
+</menu>

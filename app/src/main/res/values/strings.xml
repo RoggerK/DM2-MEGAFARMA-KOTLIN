@@ -1,3 +1,53 @@
 <resources>
     <string name="app_name">MegaFarmaKotlin</string>
+    <string name="DNI">Ingrese su DNI</string>
+    <string name="Nombre">Ingrese su nombre</string>
+    <string name="Apellido">Ingrese su apellido</string>
+    <string name="Celular">Ingrese su celular</string>
+    <string name="Nacimiento">Fecha de nacimiento</string>
+    <string name="EmailUser">Ingrese su correo</string>
+    <string name="PasswordUser">Ingrese su contraseña</string>
+    <string name="Registrar">Registrar</string>
+    <string name="Salir">Salir</string>
+    <string name="Cancelar"> Cancelar</string>
+    <string name="valdia">dia</string>
+    <string name="valmes">mes</string>
+    <string name="valanio">año</string>
+    <string name="valinicia_sesion">Iniciar sesion</string>
+    <string name="valregistrarse_login">Registrar me</string>
+    <string name="valInicioContrasena">Ingrese su contraseña</string>
+    <string name="valInicioUsuario">Ingrese su correo</string>
+    <string name="Actualizar">Actualizar Contraseña</string>
+    <string name="NDni">Dni</string>
+    <string name="APELLIDOS">Apellidos</string>
+    <string name="NOMBRES">Nombres</string>
+    <string name="CORREO">Email</string>
+    <string name="CELULAR">Ingrese Numero Celular</string>
+    <string name="valfragmentprincipal">Principal</string>
+    <string name="valfragmentcarrito">Carrito</string>
+    <string name="valfragmentusuario">Usuario</string>
+    <string name="valfragmentlibro">Libro</string>
+    <string name="valfragmentayuda">Ayuda</string>
+
+    <string name="fragmentprincipal">Principal</string>
+    <string name="fragmentcarrito">Carrito</string>
+    <string name="fragmentusuario">Usuario</string>
+    <string name="fragmentlibro">Libro</string>
+    <string name="fragmentayuda">Ayuda</string>
+    <string name="title_activity_menu_cliente">MenuClienteActivity</string>
+    <string name="libro_de_reclamacion">Libro De Reclamacion</string>
+    <string name="necesito_ayuda">Necesito Ayuda</string>
+    <string name="todo">TODO</string>
+    <string name="celular">CELULAR</string>
+    <string name="valExplicacion">Explicación de reclamo</string>
+    <string name="valMotivoReclamo">Causa de Reclamo</string>
+    <string name="btReclamo">Registrar Reclamo</string>
+    <string name="valAyudaPregunta">Preguntas Frecuentes</string>
+    <string name="valSoles">S/. </string>
+    <string name="valPrec">0.00</string>
+    <string name="valActualizar">Actualizar Datos Ingresados</string>
+    <string name="valAgregar">Agregar</string>
+    <string name="valPrecio">Precio</string>
+    <string name="valTotal">Total</string>
+
 </resources>
