@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -36,14 +37,14 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     private var listaAgregado = ArrayList<String>()
     var token = ""
 
-    /*override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        parentFragmentManager.setFragmentResultListener("llaveCarrito",
+        //esta se crea una sola vez
+        /*parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener { requestKey, bundle ->
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-            })
-    }*/
+            })*/
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +53,6 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
-        llenarlistaMedicamentos()
         medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
             response -> obtenerDatosMedicamentos(response)
         })
