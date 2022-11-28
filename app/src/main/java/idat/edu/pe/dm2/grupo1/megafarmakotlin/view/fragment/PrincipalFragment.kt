@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -37,15 +38,6 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     private var listaAgregado = ArrayList<String>()
     var token = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //esta se crea una sola vez
-        /*parentFragmentManager.setFragmentResultListener("llaveCarrito",
-            this, FragmentResultListener { requestKey, bundle ->
-                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-            })*/
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,6 +66,14 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llaveCarrito",
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+            })
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         val bundle = Bundle()
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)

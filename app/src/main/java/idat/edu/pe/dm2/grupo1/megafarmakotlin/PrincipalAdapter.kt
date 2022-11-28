@@ -43,19 +43,21 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
         val url = listaMedicamento[i].imagen_producto
         val nombre = listaMedicamento[i].nombre_producto
         val presentacion = listaMedicamento[i].presentacion
-        val precio = listaMedicamento[i].precio_unitario.toString()
+        val precio = listaMedicamento[i].precio_unitario
 
         Picasso.get()
             .load(url)
             .error(R.drawable.ic_launcher_foreground)
             .into(viewHolder.itemImage)
 
+        //viewHolder.itemAgregar.isEnabled = estaSeleccionado(i)
+        //arrayString valor activo para true o false
         viewHolder.itemTitle.text = nombre
         viewHolder.itemDetail.text = presentacion
-        viewHolder.itemPrec.text = precio
+        viewHolder.itemPrec.text = precio.toString()
         viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
-            //viewHolder.itemAgregar.isEnabled = false
-            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio;0.00;1")
+            viewHolder.itemAgregar.isEnabled = false
+            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio;$precio;1")
             AppMessage.enviarMensaje(viewHolder.itemView,"Se añadio ${listaMedicamento[i].nombre_producto}",TypeMessage.SUCCESSFULL)
         })
     }
@@ -63,4 +65,13 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
     override fun getItemCount(): Int {
         return listaMedicamento.size
     }
+
+    /*private fun estaSeleccionado(i: Int): Boolean {
+        var respuesta = true
+        var array = listaAgregado[i].split(";").toMutableList()
+        if(array[0].toInt() == listaMedicamento[i].idproducto) {
+            respuesta = false
+        }
+        return respuesta
+    }*/
 }

@@ -9,14 +9,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 class CarritoAdapter(
     var listaAgregados: ArrayList<String>,
     var listaMedicamentosAgregados: ArrayList<MedicamentoResponse>,
     var tvTotalPrecioProductos: TextView,
-    var edtCantidad: EditText
+    var edtCantidad: EditText,
 ) :
     RecyclerView.Adapter<CarritoAdapter.ViewHolder>() {
+    private val df = DecimalFormat("#.##")
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -38,6 +42,8 @@ class CarritoAdapter(
             itemMas = itemView.findViewById(R.id.imvMas)
             itemMenos = itemView.findViewById(R.id.imvMenos)
             itemPrecUni = itemView.findViewById(R.id.tvPrecioUnitario)
+
+            df.roundingMode = RoundingMode.DOWN
         }
     }
 
@@ -69,19 +75,25 @@ class CarritoAdapter(
 
         viewHolder.itemDelete.setOnClickListener(View.OnClickListener {
             eliminarProducto(i)
-            actualizarMontoTotal()
+            actualizarMontoTotales()
         })
+
+        if (cantidad == 1) viewHolder.itemMenos.isEnabled = false
 
         viewHolder.itemMas.setOnClickListener(View.OnClickListener {
             aumentarCantidad(i)
-            actualizarTotales(i, viewHolder)
-            actualizarMontoTotal()
+            if (listaMedicamentosAgregados[i].pedido != 1) viewHolder.itemMenos.isEnabled = true
+            actualizarTotal(i, viewHolder)
+            actualizarAgregados(i)
+            actualizarMontoTotales()
         })
 
         viewHolder.itemMenos.setOnClickListener(View.OnClickListener {
             disminuirCantidad(i)
-            actualizarTotales(i, viewHolder)
-            actualizarMontoTotal()
+            if (listaMedicamentosAgregados[i].pedido == 1) viewHolder.itemMenos.isEnabled = false
+            actualizarTotal(i, viewHolder)
+            actualizarAgregados(i)
+            actualizarMontoTotales()
         })
     }
 
@@ -92,7 +104,7 @@ class CarritoAdapter(
     private fun eliminarProducto(i: Int) {
         notifyItemRangeRemoved(i, itemCount)
         edtCantidad.setText((itemCount - 1).toString())
-        //listaAgregados.removeAt(i)
+        listaAgregados.removeAt(i)
         listaMedicamentosAgregados.removeAt(i)
     }
 
@@ -108,18 +120,29 @@ class CarritoAdapter(
         }
     }
 
-    private fun actualizarTotales(i: Int, viewHolder: ViewHolder) {
-        val total
-            = listaMedicamentosAgregados[i].precio_unitario * listaMedicamentosAgregados[i].pedido
+    private fun actualizarTotal(i: Int, viewHolder: ViewHolder) {
+        val total =
+            listaMedicamentosAgregados[i].precio_unitario * listaMedicamentosAgregados[i].pedido
         listaMedicamentosAgregados[i].precio_total = total
-        viewHolder.itemTotal.text = total.toString()
+        val redondeo = df.format(total).toString()
+        viewHolder.itemTotal.text = redondeo
     }
 
-    private fun actualizarMontoTotal() {
-        val total = listaMedicamentosAgregados.sumOf {
-            p -> p.precio_total
+    private fun actualizarMontoTotales() {
+        val totales = listaMedicamentosAgregados.sumOf { p ->
+            p.precio_total
         }
+        val redondeo = df.format(totales).toString()
+        tvTotalPrecioProductos.text = redondeo
+    }
 
-        tvTotalPrecioProductos.text = total.toString()
+    private fun actualizarAgregados(i: Int) {
+        var array = listaAgregados[i].split(";").toMutableList()
+        val precioTotal = listaMedicamentosAgregados[i].precio_total
+        val pedido = listaMedicamentosAgregados[i].pedido
+        array[5] = precioTotal.toString()
+        array[6] = pedido.toString()
+        listaAgregados[i] =
+            "${array[0]};${array[1]};${array[2]};${array[3]};${array[4]};${array[5]};${array[6]}"
     }
 }

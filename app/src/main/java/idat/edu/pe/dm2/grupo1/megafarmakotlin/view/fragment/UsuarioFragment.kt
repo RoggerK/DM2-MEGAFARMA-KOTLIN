@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
@@ -21,6 +22,7 @@ import java.util.regex.Pattern
 class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
+    private var listaAgregado = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,23 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llaveCarrito",
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+                bundle.putStringArrayList("listaAgregado", listaAgregado)
+                parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
+            })
+    }
+
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val bundle = Bundle()
+        bundle.putStringArrayList("listaAgregado", listaAgregado)
+        parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
+    }
+*/
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btGuardarCambios -> guardarCambios()

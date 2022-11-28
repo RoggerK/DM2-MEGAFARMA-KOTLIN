@@ -13,6 +13,8 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 class CarritoFragment : Fragment() {
@@ -20,7 +22,7 @@ class CarritoFragment : Fragment() {
     private lateinit var carritoAdapter: CarritoAdapter
     private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
-
+    private val df = DecimalFormat("#.##")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //esta se crea varias veces ya que Principal esta en segundo plano
@@ -53,6 +55,7 @@ class CarritoFragment : Fragment() {
                                 pedido = pedido
                             )
                         )
+                        realizarAdapterCarrito()
                         mostrarCantidadAgregados()
                         actualizarTotales()
                     }
@@ -65,7 +68,10 @@ class CarritoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCarritoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    private fun realizarAdapterCarrito() {
         binding.reCarrito.layoutManager = LinearLayoutManager(context)
         carritoAdapter =
             CarritoAdapter(
@@ -73,8 +79,6 @@ class CarritoFragment : Fragment() {
                 binding.tvTotalPrecioProductos, binding.edtCantidad
             )
         binding.reCarrito.adapter = carritoAdapter
-
-        return binding.root
     }
 
     private fun mostrarCantidadAgregados() {
@@ -86,14 +90,14 @@ class CarritoFragment : Fragment() {
         for (medicamento in listaMedicamentosAgregados) {
             total += medicamento.precio_unitario * medicamento.pedido
         }
-
-        binding.tvTotalPrecioProductos.text = total.toString()
+        df.roundingMode = RoundingMode.DOWN
+        binding.tvTotalPrecioProductos.text = df.format(total).toString()
     }
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onDestroy() {
+        super.onDestroy()
         val bundle = Bundle()
         bundle.putStringArrayList("listaCarrito", listaAgregado)
         parentFragmentManager.setFragmentResult("llaveCarrito", bundle)
-    }*/
+    }
 }
