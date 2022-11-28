@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,7 @@ class CarritoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //esta se crea varias veces ya que Principal esta en segundo plano
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
             this, FragmentResultListener { requestKey, bundle ->
                 listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
