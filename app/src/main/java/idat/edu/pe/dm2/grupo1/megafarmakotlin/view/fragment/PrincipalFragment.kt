@@ -69,12 +69,14 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener { requestKey, bundle ->
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-            })
+            }
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val bundle = Bundle()
+        bundle.putString("token", token)
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
     }

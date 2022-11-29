@@ -6,54 +6,85 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
 import java.util.regex.Pattern
 
 
 class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
+    private lateinit var authViewModel: AuthViewModel
     private var listaAgregado = ArrayList<String>()
+    private var token = ""
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listernerUsuario = context as OnFramentUsuarioListerne
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context debe implementar interfaz");
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
-
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         binding.btGuardarCambios.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
-
+        authViewModel.responseActualizar.observe(viewLifecycleOwner, Observer {
+            response -> obtenerRespuestaDatos(response)
+        })
         return binding.root
+    }
+
+    private fun obtenerRespuestaDatos(response: GlobalResponse) {
+        if(response.respuesta) {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.SUCCESSFULL
+            )
+            limpiarFormulario()
+        } else {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.INFO
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llavePrincipal",
+            this, FragmentResultListener {
+                requestKey, bundle -> token = bundle.getString("token") as String
+            }
+        )
+
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
-            this, FragmentResultListener { requestKey, bundle ->
+            this, FragmentResultListener {
+                    requestKey, bundle ->
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+                bundle.putString("token", token)
                 bundle.putStringArrayList("listaAgregado", listaAgregado)
                 parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
-            })
+            }
+        )
     }
 
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val bundle = Bundle()
-        bundle.putStringArrayList("listaAgregado", listaAgregado)
-        parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
-    }
-*/
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btGuardarCambios -> guardarCambios()
@@ -63,34 +94,51 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
     }
 
     private fun guardarCambios() {
-        if (validarFormulario()) {
-            //llamar registro
+        val correo = binding.edtCorreo.text.toString()
+        val celular = binding.edtCelular.text.toString()
+        val contrasenia = binding.edtContrasenia.text.toString()
+
+        if (binding.edtCorreo.text.toString() == ""
+            && binding.edtCelular.text.toString() == ""
+            && binding.edtContrasenia.text.toString() == ""
+        ) {
+            AppMessage.enviarMensaje(
+                binding.root, "Ingrese dato donde desea actualizar",
+                TypeMessage.INFO
+            )
+        } else if (validarFormulario()) {
+            authViewModel.actualizarDatosUsuario(6, correo, celular, contrasenia,
+                "Bearer $token")
         }
     }
 
     private fun validarFormulario(): Boolean {
-        if (!validarCorreo()) {
-            return false
-        } else if (!validarCelular()) {
-            return false
-        } else if (!validarContrasenia()) {
-            return false
+        if (binding.edtCorreo.text.toString() != "") {
+            if (!validarCorreo()) {
+                return false
+            } else if (binding.edtCelular.text.toString() != "") {
+                if (!validarCelular()) {
+                    return false
+                } else if (binding.edtContrasenia.text.toString() != "") {
+                    if (!validarContrasenia()) {
+                        return false
+                    }
+                }
+            }
         }
 
         return true
     }
 
+    private fun limpiarFormulario() {
+        binding.edtCorreo.setText("")
+        binding.edtCelular.setText("")
+        binding.edtContrasenia.setText("")
+    }
+
     private fun validarCorreo(): Boolean {
         var respuesta = true
-        if (binding.edtCorreo.text.toString().trim().isEmpty()) {
-            AppMessage.enviarMensaje(
-                requireView(), "El Correo no puede estar vacio",
-                TypeMessage.DANGER
-            )
-            binding.edtCorreo.isFocusableInTouchMode = true
-            binding.edtCorreo.requestFocus()
-            respuesta = false
-        } else if (!verificarFormatoCorreo()) {
+        if (!verificarFormatoCorreo()) {
             AppMessage.enviarMensaje(
                 requireView(), "El formato del Correo es invalido ",
                 TypeMessage.INFO
@@ -110,15 +158,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
 
     private fun validarCelular(): Boolean {
         var respuesta = true
-        if (binding.edtCelular.text.toString().trim().isEmpty()) {
-            AppMessage.enviarMensaje(
-                requireView(), "El Celular no puede estar vacio",
-                TypeMessage.DANGER
-            )
-            binding.edtCelular.isFocusableInTouchMode = true
-            binding.edtCelular.requestFocus()
-            respuesta = false
-        } else if (!(binding.edtCelular.text.toString().trim().startsWith("9", 0))) {
+        if (!(binding.edtCelular.text.toString().trim().startsWith("9", 0))) {
             AppMessage.enviarMensaje(
                 requireView(), "El Celular debe empezar con 9",
                 TypeMessage.INFO
@@ -141,15 +181,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
 
     private fun validarContrasenia(): Boolean {
         var respuesta = true
-        if (binding.edtContrasenia.text.toString().trim().isEmpty()) {
-            AppMessage.enviarMensaje(
-                requireView(), "La Contraseña no puede estar vacio",
-                TypeMessage.DANGER
-            )
-            binding.edtContrasenia.isFocusableInTouchMode = true
-            binding.edtContrasenia.requestFocus()
-            respuesta = false
-        } else if (!verificarFormatoContrasenia()) {
+        if (!verificarFormatoContrasenia()) {
             AppMessage.enviarMensaje(
                 requireView(), "La Contraseña es débil. Debe tener: a-Z 0-9 @#%&+=.",
                 TypeMessage.INFO
@@ -175,14 +207,5 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         )
 
         return pattern.matcher(binding.edtContrasenia.text.toString().trim()).matches()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listernerUsuario = context as OnFramentUsuarioListerne
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$context debe implementar interfaz");
-        }
     }
 }

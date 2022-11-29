@@ -61,7 +61,8 @@ class CarritoFragment : Fragment() {
                         actualizarTotales()
                     }
                 }
-            })
+            }
+        )
     }
 
     override fun onCreateView(
