@@ -23,6 +23,7 @@ class CarritoFragment : Fragment() {
     private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
     private val df = DecimalFormat("#.##")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //esta se crea varias veces ya que Principal esta en segundo plano

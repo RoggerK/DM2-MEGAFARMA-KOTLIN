@@ -50,8 +50,10 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
             .error(R.drawable.ic_launcher_foreground)
             .into(viewHolder.itemImage)
 
-        //viewHolder.itemAgregar.isEnabled = estaSeleccionado(i)
-        //arrayString valor activo para true o false
+        if(listaAgregado.size != 0) {
+            estaAgregado(i, viewHolder)
+        }
+
         viewHolder.itemTitle.text = nombre
         viewHolder.itemDetail.text = presentacion
         viewHolder.itemPrec.text = precio.toString()
@@ -66,12 +68,12 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
         return listaMedicamento.size
     }
 
-    /*private fun estaSeleccionado(i: Int): Boolean {
-        var respuesta = true
-        var array = listaAgregado[i].split(";").toMutableList()
-        if(array[0].toInt() == listaMedicamento[i].idproducto) {
-            respuesta = false
+    private fun estaAgregado(i: Int, viewHolder: ViewHolder) {
+        for(array in listaAgregado) {
+            val valor = array.split(";")
+            if(listaMedicamento[i].idproducto == valor[0].toInt()) {
+                viewHolder.itemAgregar.isEnabled = false
+            }
         }
-        return respuesta
-    }*/
+    }
 }

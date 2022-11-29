@@ -110,13 +110,15 @@ class CarritoAdapter(
 
     private fun aumentarCantidad(i: Int) {
         listaMedicamentosAgregados[i].pedido++
-        notifyItemRangeChanged(i, itemCount)
+        notifyItemChanged(i)
+        //notifyItemRangeChanged(i, itemCount)
     }
 
     private fun disminuirCantidad(i: Int) {
         if (listaMedicamentosAgregados[i].pedido >= 2) {
             listaMedicamentosAgregados[i].pedido--
-            notifyItemRangeChanged(i, itemCount)
+            notifyItemChanged(i)
+            //notifyItemRangeChanged(i, itemCount)
         }
     }
 
@@ -142,7 +144,7 @@ class CarritoAdapter(
         val pedido = listaMedicamentosAgregados[i].pedido
         array[5] = precioTotal.toString()
         array[6] = pedido.toString()
-        listaAgregados[i] =
-            "${array[0]};${array[1]};${array[2]};${array[3]};${array[4]};${array[5]};${array[6]}"
+        listaAgregados[i] = "${array[0]};${array[1]};${array[2]};${array[3]};${array[4]}" +
+                ";${array[5]};${array[6]}"
     }
 }
