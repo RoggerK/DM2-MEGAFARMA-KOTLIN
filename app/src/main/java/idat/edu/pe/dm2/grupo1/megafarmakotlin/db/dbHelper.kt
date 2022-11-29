@@ -6,14 +6,16 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class dbHelper(context: Context) : SQLiteOpenHelper(
-    context, "db.reclamos", null, 1) {
+    context, "db.preguntas", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        var ordenCreacion = "CREATE TABLE reclamos" +
-                "(idReclamo INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "motivo TEXT," +
+        val ordenCreacion = "CREATE TABLE preguntas" +
+                "(idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "titulo TEXT," +
                 "descripcion TEXT)"
+
         db!!.execSQL(ordenCreacion)
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?,
@@ -23,13 +25,14 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
         onCreate(db)
     }
 
-    fun aniadorDatos(motivo: String, descripcion: String){
+    fun aniadirDatos(titulo: String, descripcion: String){
         val datos = ContentValues()
-        datos.put("motivo", motivo)
+        datos.put("titulo",titulo)
         datos.put("descripcion",descripcion)
 
         val db = this.writableDatabase
-        db.insert("reclamos", null, datos)
+        db.insert("preguntas",null, datos)
         db.close()
     }
+
 }
