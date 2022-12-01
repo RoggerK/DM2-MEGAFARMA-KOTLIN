@@ -16,6 +16,14 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
 
         db!!.execSQL(ordenCreacion)
 
+        aniadirDatos("¿Cómo comprar?","Usted puede añadir productos y ver el subtotal en el carrito")
+        aniadirDatos("¿Nuestros productos son originales?","Sí, nuestro productos son 100% originales" +
+                "no vendemos productos genericos")
+        aniadirDatos("¿Tienen libro de reclamaciones?","Así es, contamos con un libro de reclamaciones" +
+                "al cual pueden acceder de manera online a travéz del aplicativo")
+        aniadirDatos("¿Puedo comprar varias veces en un día?","Sí, usted puede realizar las compras que desee" +
+                "durante el día siempre y cuando haya un stock disponible")
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?,
