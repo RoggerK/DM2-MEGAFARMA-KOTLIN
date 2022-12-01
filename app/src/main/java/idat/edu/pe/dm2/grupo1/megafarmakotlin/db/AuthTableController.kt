@@ -1,3 +1,4 @@
+/*
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db
 
 import android.content.ContentValues
@@ -49,4 +50,4 @@ class AuthTableController(context: Context) {
 
         return deleteSuccessful
     }
-}
+}*/

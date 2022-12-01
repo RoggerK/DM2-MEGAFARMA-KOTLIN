@@ -6,16 +6,21 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class dbHelper(context: Context) : SQLiteOpenHelper(
-    context, "db.preguntas", null, 1) {
+    context, "db.megafarma", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val ordenCreacion = "CREATE TABLE preguntas" +
-                "(idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
+        val ordenCreacion = "CREATE TABLE preguntas(" +
+                "idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "titulo TEXT," +
-                "descripcion TEXT)"
+                "descripcion TEXT" +
+                "); "+
+                "INSERT INTO preguntas(titulo, descripcion) VALUES " +
+                "('¿Cómo comprar?', 'Usted puede añadir productos y ver el subtotal en el carrito')," +
+                "('¿Nuestros productos son originales?', 'Sí, nuestro productos son 100% originales no vendemos productos genericos')," +
+                "('¿Tienen libro de reclamaciones?', 'Así es, contamos con un libro de reclamaciones al cual pueden acceder de manera online a travéz del aplicativo')," +
+                "('¿Puedo comprar varias veces en un día?', 'Sí, usted puede realizar las compras que desee durante el día siempre y cuando haya un stock disponible');"
 
         db!!.execSQL(ordenCreacion)
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase?,
