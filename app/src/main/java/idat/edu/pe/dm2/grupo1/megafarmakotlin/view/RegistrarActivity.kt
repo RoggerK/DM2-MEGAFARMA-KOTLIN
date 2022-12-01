@@ -42,12 +42,12 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun obtenerRespuestaRegistrar(response: GlobalResponse?) {
-        if(response != null) {
+    private fun obtenerRespuestaRegistrar(response: GlobalResponse) {
+        if(response.respuesta) {
             AppMessage.enviarMensaje(binding.root, "INFO: ${response.mensaje}", TypeMessage.SUCCESSFULL)
             limpiarCampos()
         } else {
-            AppMessage.enviarMensaje(binding.root, "INFO: DNI y/o correo existe", TypeMessage.INFO)
+            AppMessage.enviarMensaje(binding.root, "INFO: ${response.mensaje}", TypeMessage.INFO)
         }
         binding.btnCancelar.isEnabled = true
         binding.btnRegistrar.isEnabled = true

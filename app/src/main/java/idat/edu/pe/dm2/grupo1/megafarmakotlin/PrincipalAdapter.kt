@@ -43,24 +43,37 @@ class PrincipalAdapter(var listaMedicamento: ArrayList<MedicamentoResponse>, var
         val url = listaMedicamento[i].imagen_producto
         val nombre = listaMedicamento[i].nombre_producto
         val presentacion = listaMedicamento[i].presentacion
-        val precio = listaMedicamento[i].precio_unitario.toString()
+        val precio = listaMedicamento[i].precio_unitario
 
         Picasso.get()
             .load(url)
             .error(R.drawable.ic_launcher_foreground)
             .into(viewHolder.itemImage)
 
+        if(listaAgregado.size != 0) {
+            estaAgregado(i, viewHolder)
+        }
+
         viewHolder.itemTitle.text = nombre
         viewHolder.itemDetail.text = presentacion
-        viewHolder.itemPrec.text = precio
+        viewHolder.itemPrec.text = precio.toString()
         viewHolder.itemAgregar.setOnClickListener(View.OnClickListener {
-            //viewHolder.itemAgregar.isEnabled = false
-            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio;0.00;1")
+            viewHolder.itemAgregar.isEnabled = false
+            listaAgregado.add("$id;$url;$nombre;$presentacion;$precio;$precio;1")
             AppMessage.enviarMensaje(viewHolder.itemView,"Se añadio ${listaMedicamento[i].nombre_producto}",TypeMessage.SUCCESSFULL)
         })
     }
 
     override fun getItemCount(): Int {
         return listaMedicamento.size
+    }
+
+    private fun estaAgregado(i: Int, viewHolder: ViewHolder) {
+        for(array in listaAgregado) {
+            val valor = array.split(";")
+            if(listaMedicamento[i].idproducto == valor[0].toInt()) {
+                viewHolder.itemAgregar.isEnabled = false
+            }
+        }
     }
 }
