@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class dbHelper(context: Context) : SQLiteOpenHelper(
-    context, "db.preguntas", null, 1) {
+    context, "db.megafarma", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         val ordenCreacion = "CREATE TABLE preguntas" +

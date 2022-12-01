@@ -24,7 +24,14 @@ class AyudaActivity : AppCompatActivity() {
         DBHelper = dbHelper(this)
         setContentView(binding.root)
 
-        DBHelper.aniadirDatos("¿Cómo comprar?","Puedes seguir las instrucciones del supervisor")
+        DBHelper.aniadirDatos("¿Cómo comprar?","Usted puede añadir productos y ver el subtotal en el carrito")
+        DBHelper.aniadirDatos("¿Nuestros productos son originales?","Sí, nuestro productos son 100% originales" +
+                "no vendemos productos genericos")
+        DBHelper.aniadirDatos("¿Tienen libro de reclamaciones?","Así es, contamos con un libro de reclamaciones" +
+                "al cual pueden acceder de manera online a travéz del aplicativo")
+        DBHelper.aniadirDatos("¿Puedo comprar varias veces en un día?","Sí, usted puede realizar las compras que desee" +
+                "durante el día siempre y cuando haya un stock disponible")
+
 
         db = DBHelper.readableDatabase
         val cursor: Cursor = db.rawQuery(
