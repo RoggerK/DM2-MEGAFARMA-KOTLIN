@@ -66,19 +66,20 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parentFragmentManager.setFragmentResultListener("llaveCarrito",
-            this, FragmentResultListener { requestKey, bundle ->
-                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+        parentFragmentManager.setFragmentResultListener("llavePrincipal",
+            this, FragmentResultListener {
+                requestKey, bundle ->
+                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
             }
         )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val bundle = Bundle()
-        bundle.putString("token", token)
-        bundle.putStringArrayList("listaAgregado", listaAgregado)
-        parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
+        val bundle1 = Bundle()
+        bundle1.putString("token", token)
+        bundle1.putStringArrayList("listaCarrito", listaAgregado)
+        parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
     }
 
     override fun onClick(view: View) {

@@ -70,19 +70,32 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
             this, FragmentResultListener {
-                requestKey, bundle -> token = bundle.getString("token") as String
+                requestKey, bundle ->
+                    token = bundle.getString("token") as String
+                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
             }
         )
 
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener {
                     requestKey, bundle ->
+                token = bundle.getString("token") as String
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-                bundle.putString("token", token)
-                bundle.putStringArrayList("listaAgregado", listaAgregado)
-                parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
             }
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val bundle1 = Bundle()
+        bundle1.putString("token", token)
+        bundle1.putStringArrayList("listaCarrito", listaAgregado)
+        parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
+
+        val bundle2 = Bundle()
+        bundle2.putString("token", token)
+        bundle2.putStringArrayList("listaAgregado", listaAgregado)
+        parentFragmentManager.setFragmentResult("llavePrincipal", bundle2)
     }
 
     override fun onClick(view: View) {

@@ -53,11 +53,7 @@ class AuthRepository {
                 call: Call<GlobalResponse>,
                 response: Response<GlobalResponse>
             ) {
-                if(response.isSuccessful) {
-                    registroRespose.value = response.body()
-                } else {
-                    registroRespose.value = response.body()
-                }
+                registroRespose.value = response.body()
             }
 
             override fun onFailure(call: Call<GlobalResponse>, t: Throwable) {
@@ -76,11 +72,7 @@ class AuthRepository {
                 call: Call<GlobalResponse>,
                 response: Response<GlobalResponse>
             ) {
-                if(response.isSuccessful) {
-                    actualizarReponse.value = response.body()
-                } else {
-                    actualizarReponse.value = response.body()
-                }
+                actualizarReponse.value = response.body()
             }
 
             override fun onFailure(call: Call<GlobalResponse>, t: Throwable) {
