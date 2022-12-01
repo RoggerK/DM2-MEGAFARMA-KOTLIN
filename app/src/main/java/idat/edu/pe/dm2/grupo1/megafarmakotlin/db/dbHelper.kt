@@ -14,12 +14,11 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
                 "(idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "titulo TEXT," +
                 "descripcion TEXT)"
-
-        val insertPreguntas = "INSERT INTO preguntas(titulo,descripcion)" +
-                "VALUES('¿Cómo comprar','Usted puede añadir productos y ver el subtotal en el carrito')"
+        val insertDatos = "INSERT INTO preguntas(titulo, descripcion)" +
+                "VALUES('¿Puedo comprar varias veces en un día?','Sí, usted puede realizar las compras que desee')"
 
         db!!.execSQL(ordenCreacion)
-        db!!.execSQL(insertPreguntas)
+        db!!.execSQL(insertDatos)
 
     }
 
