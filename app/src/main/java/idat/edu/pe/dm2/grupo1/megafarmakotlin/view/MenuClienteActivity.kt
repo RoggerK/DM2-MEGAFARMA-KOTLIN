@@ -64,10 +64,6 @@ class MenuClienteActivity : AppCompatActivity(),
         fragment.llenarlistaMedicamentos()
     }
 
-    override fun onClickButtonGuardarCambios() {
-
-    }
-
     override fun onClickButtonUsuarioLibro() {
         cargarActivityLibro()
     }

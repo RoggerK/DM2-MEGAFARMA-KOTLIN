@@ -36,6 +36,23 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llavePrincipal",
+            this, FragmentResultListener { requestKey, bundle ->
+                token = bundle.getString("token") as String
+                listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
+            }
+        )
+
+        parentFragmentManager.setFragmentResultListener("llaveCarrito",
+            this, FragmentResultListener { requestKey, bundle ->
+                token = bundle.getString("token") as String
+                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+            }
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,44 +62,10 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         binding.btGuardarCambios.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
-        authViewModel.responseActualizar.observe(viewLifecycleOwner, Observer {
-            response -> obtenerRespuestaDatos(response)
+        authViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
+            obtenerRespuestaDatos(response)
         })
         return binding.root
-    }
-
-    private fun obtenerRespuestaDatos(response: GlobalResponse) {
-        if(response.respuesta) {
-            AppMessage.enviarMensaje(
-                binding.root, "INFO: ${response.mensaje}",
-                TypeMessage.SUCCESSFULL
-            )
-            limpiarFormulario()
-        } else {
-            AppMessage.enviarMensaje(
-                binding.root, "INFO: ${response.mensaje}",
-                TypeMessage.INFO
-            )
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        parentFragmentManager.setFragmentResultListener("llavePrincipal",
-            this, FragmentResultListener {
-                requestKey, bundle ->
-                    token = bundle.getString("token") as String
-                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
-            }
-        )
-
-        parentFragmentManager.setFragmentResultListener("llaveCarrito",
-            this, FragmentResultListener {
-                    requestKey, bundle ->
-                token = bundle.getString("token") as String
-                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-            }
-        )
     }
 
     override fun onDestroy() {
@@ -106,11 +89,22 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun guardarCambios() {
-        val correo = binding.edtCorreo.text.toString()
-        val celular = binding.edtCelular.text.toString()
-        val contrasenia = binding.edtContrasenia.text.toString()
+    private fun obtenerRespuestaDatos(response: GlobalResponse) {
+        if (response.respuesta) {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.SUCCESSFULL
+            )
+            limpiarFormulario()
+        } else {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.INFO
+            )
+        }
+    }
 
+    private fun guardarCambios() {
         if (binding.edtCorreo.text.toString() == ""
             && binding.edtCelular.text.toString() == ""
             && binding.edtContrasenia.text.toString() == ""
@@ -120,8 +114,12 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
                 TypeMessage.INFO
             )
         } else if (validarFormulario()) {
-            authViewModel.actualizarDatosUsuario(6, correo, celular, contrasenia,
-                "Bearer $token")
+            authViewModel.actualizarDatosUsuario(
+                6, binding.edtCorreo.text.toString().trim(),
+                binding.edtCelular.text.toString().trim(),
+                binding.edtContrasenia.text.toString().trim(),
+                "Bearer $token"
+            )
         }
     }
 
@@ -129,14 +127,18 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         if (binding.edtCorreo.text.toString() != "") {
             if (!validarCorreo()) {
                 return false
-            } else if (binding.edtCelular.text.toString() != "") {
-                if (!validarCelular()) {
-                    return false
-                } else if (binding.edtContrasenia.text.toString() != "") {
-                    if (!validarContrasenia()) {
-                        return false
-                    }
-                }
+            }
+        }
+
+        if (binding.edtCelular.text.toString() != "") {
+            if (!validarCelular()) {
+                return false
+            }
+        }
+
+        if (binding.edtContrasenia.text.toString() != "") {
+            if (!validarContrasenia()) {
+                return false
             }
         }
 
