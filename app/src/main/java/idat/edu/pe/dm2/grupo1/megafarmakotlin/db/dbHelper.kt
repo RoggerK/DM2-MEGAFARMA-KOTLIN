@@ -15,6 +15,8 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
                 "descripcion TEXT)"
 
         db!!.execSQL(ordenCreacion)
+        db.isOpen
+
 
         aniadirDatos("¿Cómo comprar?","Usted puede añadir productos y ver el subtotal en el carrito")
         aniadirDatos("¿Nuestros productos son originales?","Sí, nuestro productos son 100% originales" +
