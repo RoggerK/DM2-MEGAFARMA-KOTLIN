@@ -24,8 +24,6 @@ class AyudaActivity : AppCompatActivity() {
         DBHelper = dbHelper(this)
         setContentView(binding.root)
 
-        DBHelper.aniadirDatos("¿Cómo comprar?","Puedes seguir las instrucciones del supervisor")
-
         db = DBHelper.readableDatabase
         val cursor: Cursor = db.rawQuery(
             "SELECT * FROM preguntas" , null)

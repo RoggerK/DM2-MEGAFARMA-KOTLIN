@@ -10,17 +10,34 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
         val ordenCreacion = "CREATE TABLE preguntas(" +
-                "idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "titulo TEXT," +
-                "descripcion TEXT" +
-                "); "+
-                "INSERT INTO preguntas(titulo, descripcion) VALUES " +
-                "('¿Cómo comprar?', 'Usted puede añadir productos y ver el subtotal en el carrito')," +
-                "('¿Nuestros productos son originales?', 'Sí, nuestro productos son 100% originales no vendemos productos genericos')," +
-                "('¿Tienen libro de reclamaciones?', 'Así es, contamos con un libro de reclamaciones al cual pueden acceder de manera online a travéz del aplicativo')," +
-                "('¿Puedo comprar varias veces en un día?', 'Sí, usted puede realizar las compras que desee durante el día siempre y cuando haya un stock disponible');"
+                                "idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "titulo TEXT," +
+                                "descripcion TEXT" +
+                            ")"
 
         db!!.execSQL(ordenCreacion)
+
+        val dato1 = ContentValues()
+        val dato2 = ContentValues()
+        val dato3 = ContentValues()
+        val dato4 = ContentValues()
+
+        dato1.put("titulo", "¿Cómo comprar?")
+        dato1.put("descripcion", "Usted puede añadir productos y ver el subtotal en el carrito")
+
+        dato2.put("titulo", "¿Nuestros productos son originales?")
+        dato2.put("descripcion", "Sí, nuestro productos son 100% originales no vendemos productos genericos")
+
+        dato3.put("titulo", "¿Tienen libro de reclamaciones?")
+        dato3.put("descripcion", "Así es, contamos con un libro de reclamaciones al cual pueden acceder de manera online a travéz del aplicativo")
+
+        dato4.put("titulo", "¿Puedo comprar varias veces en un día?")
+        dato4.put("descripcion", "Sí, usted puede realizar las compras que desee durante el día siempre y cuando haya un stock disponible")
+
+        db.insert("preguntas", null, dato1)
+        db.insert("preguntas", null, dato2)
+        db.insert("preguntas", null, dato3)
+        db.insert("preguntas", null, dato4)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?,
@@ -29,15 +46,4 @@ class dbHelper(context: Context) : SQLiteOpenHelper(
         db!!.execSQL(ordenBorrado)
         onCreate(db)
     }
-
-    fun aniadirDatos(titulo: String, descripcion: String){
-        val datos = ContentValues()
-        datos.put("titulo",titulo)
-        datos.put("descripcion",descripcion)
-
-        val db = this.writableDatabase
-        db.insert("preguntas",null, datos)
-        db.close()
-    }
-
 }
