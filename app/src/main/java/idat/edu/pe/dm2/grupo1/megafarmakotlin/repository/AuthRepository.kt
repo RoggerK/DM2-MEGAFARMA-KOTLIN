@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MegaFarmaCliente
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.ActualizarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
@@ -17,6 +18,7 @@ import retrofit2.Response
 class AuthRepository {
     var loginResponse = MutableLiveData<LoginResponse>()
     var registroRespose = MutableLiveData<GlobalResponse>()
+    val actualizarReponse = MutableLiveData<GlobalResponse>()
 
     fun autenticarUsuario(loginRequest: LoginRequest, view: View)
             : MutableLiveData<LoginResponse> {
@@ -51,11 +53,7 @@ class AuthRepository {
                 call: Call<GlobalResponse>,
                 response: Response<GlobalResponse>
             ) {
-                if(response.isSuccessful) {
-                    registroRespose.value = response.body()
-                } else {
-                    registroRespose.value = response.body()
-                }
+                registroRespose.value = response.body()
             }
 
             override fun onFailure(call: Call<GlobalResponse>, t: Throwable) {
@@ -63,5 +61,24 @@ class AuthRepository {
             }
         })
         return registroRespose
+    }
+
+    fun actualizarDatosUsuario(id: Int, actualizarClienteRequest: ActualizarClienteRequest,
+                               token: String): MutableLiveData<GlobalResponse> {
+        val call: Call<GlobalResponse> =
+            MegaFarmaCliente.retrofitUsuarioService.actualizarDatos(id, actualizarClienteRequest, token)
+        call.enqueue(object : Callback<GlobalResponse> {
+            override fun onResponse(
+                call: Call<GlobalResponse>,
+                response: Response<GlobalResponse>
+            ) {
+                actualizarReponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<GlobalResponse>, t: Throwable) {
+                Log.e("ErrorDatos", t.message.toString())
+            }
+        })
+        return actualizarReponse
     }
 }
