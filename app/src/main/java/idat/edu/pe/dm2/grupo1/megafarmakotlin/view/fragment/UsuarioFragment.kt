@@ -115,7 +115,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
             )
         } else if (validarFormulario()) {
             authViewModel.actualizarDatosUsuario(
-                6, binding.edtCorreo.text.toString().trim(),
+                1, binding.edtCorreo.text.toString().trim(),
                 binding.edtCelular.text.toString().trim(),
                 binding.edtContrasenia.text.toString().trim(),
                 "Bearer $token"

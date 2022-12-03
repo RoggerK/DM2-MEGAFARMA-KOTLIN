@@ -5,12 +5,9 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.PreguntasAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityAyudaBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dbHelper
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.PreguntasResponse
 
 class AyudaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAyudaBinding
@@ -23,7 +20,6 @@ class AyudaActivity : AppCompatActivity() {
         binding = ActivityAyudaBinding.inflate(layoutInflater)
         DBHelper = dbHelper(this)
         setContentView(binding.root)
-
 
         db = DBHelper.readableDatabase
         val cursor: Cursor = db.rawQuery(
