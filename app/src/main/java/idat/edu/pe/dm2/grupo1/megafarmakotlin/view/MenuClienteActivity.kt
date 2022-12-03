@@ -29,8 +29,6 @@ class MenuClienteActivity : AppCompatActivity(),
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        obtenerToken()
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_menu_cliente)
@@ -44,12 +42,16 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        enviarDatosFragmentPrincipal()
     }
 
-    private fun obtenerToken() {
-        val db = AuthTableController(MyApplication.instance)
-        val auth = db.getAuth()
-        token = auth.token
+    private fun enviarDatosFragmentPrincipal() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
+        val fragment = navHostFragment.childFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
+        fragment.llenarlistaMedicamentos()
     }
 
     override fun onClickButtonUsuarioLibro() {
@@ -61,9 +63,7 @@ class MenuClienteActivity : AppCompatActivity(),
     }
 
     private fun cargarActivityLibro() {
-        val intent = Intent(this, LibroActivity::class.java).apply {
-            putExtra("token", token)
-        }
+        val intent = Intent(this, LibroActivity::class.java)
         startActivity(intent)
     }
 

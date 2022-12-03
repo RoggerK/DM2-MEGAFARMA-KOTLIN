@@ -47,7 +47,6 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
-        llenarlistaMedicamentos()
         medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
             response -> obtenerDatosMedicamentos(response)
         })
