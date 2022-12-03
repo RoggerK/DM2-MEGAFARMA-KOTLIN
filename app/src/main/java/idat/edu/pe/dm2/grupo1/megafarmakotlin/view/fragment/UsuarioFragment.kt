@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
@@ -24,6 +26,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
     private lateinit var authViewModel: AuthViewModel
+
     private var listaAgregado = ArrayList<String>()
     private var token = ""
 
@@ -40,14 +43,12 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
             this, FragmentResultListener { requestKey, bundle ->
-                token = bundle.getString("token") as String
                 listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
             }
         )
 
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener { requestKey, bundle ->
-                token = bundle.getString("token") as String
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
             }
         )
@@ -58,6 +59,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
+        obtenerToken()
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         binding.btGuardarCambios.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
@@ -68,15 +70,19 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    private fun obtenerToken() {
+        val db = AuthTableController(MyApplication.instance)
+        val auth = db.getAuth()
+        token = auth.token
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         val bundle1 = Bundle()
-        bundle1.putString("token", token)
         bundle1.putStringArrayList("listaCarrito", listaAgregado)
         parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
 
         val bundle2 = Bundle()
-        bundle2.putString("token", token)
         bundle2.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle2)
     }

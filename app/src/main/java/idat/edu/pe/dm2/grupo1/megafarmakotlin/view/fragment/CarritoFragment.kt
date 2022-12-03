@@ -20,9 +20,10 @@ import java.text.DecimalFormat
 class CarritoFragment : Fragment() {
     private lateinit var binding: FragmentCarritoBinding
     private lateinit var carritoAdapter: CarritoAdapter
+
     private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
-    private var token = ""
+    //private var token = ""
     private val df = DecimalFormat("#.##")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +31,6 @@ class CarritoFragment : Fragment() {
         //esta se crea varias veces ya que Principal esta en segundo plano
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener { requestKey, bundle ->
-                token = bundle.getString("token") as String
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
                 if (listaAgregado.size == 0) {
                     AppMessage.enviarMensaje(
@@ -78,7 +78,6 @@ class CarritoFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         val bundle = Bundle()
-        bundle.putString("token", token)
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
     }

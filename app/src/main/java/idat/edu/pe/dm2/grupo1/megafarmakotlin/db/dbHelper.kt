@@ -5,17 +5,29 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class dbHelper(context: Context) : SQLiteOpenHelper(
+open class dbHelper(context: Context) : SQLiteOpenHelper(
     context, "db.megafarma", null, 1
 ) {
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        val ordenCreacion = "CREATE TABLE preguntas(" +
-                "idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "titulo TEXT," +
-                "descripcion TEXT)"
+    override fun onCreate(db: SQLiteDatabase) {
+        val authCreacion = "CREATE TABLE auth(" +
+                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "idcliente INTEGER," +
+                                "nombre TEXT," +
+                                "apellido TEXT," +
+                                "dni TEXT," +
+                                "correo TEXT," +
+                                "token TEXT" +
+                            ")"
 
-        db!!.execSQL(ordenCreacion)
+        val preguntasCreacion = "CREATE TABLE preguntas(" +
+                                    "idPreguntas INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                    "titulo TEXT," +
+                                    "descripcion TEXT" +
+                                ")"
+
+        db.execSQL(authCreacion)
+        db.execSQL(preguntasCreacion)
 
         val dato1 = ContentValues()
         val dato2 = ContentValues()

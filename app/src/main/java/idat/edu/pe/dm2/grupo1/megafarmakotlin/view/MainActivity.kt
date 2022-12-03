@@ -8,8 +8,11 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.model.AuthTable
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.ApiInterceptor
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.UsuarioService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
@@ -53,7 +56,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun obtenerRespuestaLogin(response: LoginResponse?) {
         if(response != null) {
             limpiarCampos()
-            iniciarMenuCliente(response)
+            guardarDatosSQLite(response)
+            iniciarMenuCliente()
         }
 
         binding.btnLogIniciarSesion.isEnabled = true
@@ -77,24 +81,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun iniciarMenuCliente(tokenUsuario: LoginResponse) {
-        val arrayToken = ArrayList<String>()
-        arrayToken.add(tokenUsuario.token)
-        arrayToken.add(tokenUsuario.nombre)
-        arrayToken.add(tokenUsuario.apellido)
-        arrayToken.add(tokenUsuario.dni)
-        arrayToken.add(tokenUsuario.correo)
-        arrayToken.add(tokenUsuario.idcliente.toString())
+    private fun guardarDatosSQLite(auth: LoginResponse) {
+        val db = AuthTableController(MyApplication.instance)
+        val authTable = AuthTable(0, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
+            auth.idcliente)
+        db.createAuth(authTable)
+    }
 
-        val intentMenuClienteActivity = Intent(
-            this, MenuClienteActivity::class.java
-        ).apply {
-            putExtra("token", arrayToken)
-        }
-
-        finish()
-
+    private fun iniciarMenuCliente() {
+        val intentMenuClienteActivity = Intent(this, MenuClienteActivity::class.java)
         startActivity(intentMenuClienteActivity)
+        finish()
     }
 
     private fun limpiarCampos() {

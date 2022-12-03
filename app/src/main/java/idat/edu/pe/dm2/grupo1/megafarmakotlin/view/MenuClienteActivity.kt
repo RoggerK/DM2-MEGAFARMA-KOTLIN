@@ -10,7 +10,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PrincipalFragment
@@ -19,7 +21,7 @@ class MenuClienteActivity : AppCompatActivity(),
     OnFramentUsuarioListerne {
 
     private lateinit var binding: ActivityMenuClienteBinding
-    private lateinit var token: LoginResponse
+    private var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +29,7 @@ class MenuClienteActivity : AppCompatActivity(),
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val listaToken = intent
-            .getSerializableExtra("token") as ArrayList<String>
-        token = LoginResponse(
-            token = listaToken[0],
-            nombre = listaToken[1],
-            apellido = listaToken[2],
-            dni = listaToken[3],
-            correo = listaToken[4],
-            idcliente = listaToken[5].toInt()
-        )
+        obtenerToken()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -51,17 +44,12 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        enviarDatosFragmentPrincipal()
     }
 
-    private fun enviarDatosFragmentPrincipal() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
-        val fragment = navHostFragment.childFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
-        fragment.token = token.token
-        fragment.llenarlistaMedicamentos()
+    private fun obtenerToken() {
+        val db = AuthTableController(MyApplication.instance)
+        val auth = db.getAuth()
+        token = auth.token
     }
 
     override fun onClickButtonUsuarioLibro() {
@@ -74,7 +62,7 @@ class MenuClienteActivity : AppCompatActivity(),
 
     private fun cargarActivityLibro() {
         val intent = Intent(this, LibroActivity::class.java).apply {
-            putExtra("token", token.token)
+            putExtra("token", token)
         }
         startActivity(intent)
     }

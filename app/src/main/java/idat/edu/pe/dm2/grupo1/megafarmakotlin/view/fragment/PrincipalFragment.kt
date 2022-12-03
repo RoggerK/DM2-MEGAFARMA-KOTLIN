@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.PrincipalAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentPrincipalBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MedicamentoService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoViewModel
@@ -36,7 +38,7 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
     private var listaAgregado = ArrayList<String>()
-    var token = ""
+    private var token = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,9 +47,11 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
+        llenarlistaMedicamentos()
         medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
             response -> obtenerDatosMedicamentos(response)
         })
+
         return binding.root
     }
 
@@ -77,7 +81,6 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val bundle1 = Bundle()
-        bundle1.putString("token", token)
         bundle1.putStringArrayList("listaCarrito", listaAgregado)
         parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
     }
@@ -91,10 +94,12 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     private fun buscarProducto(nombre: String) {
         listaMedicamentosAgregados.clear()
         medicamentoViewModel.listaFiltroMedicamento(nombre, "Bearer $token")
-
     }
 
     fun llenarlistaMedicamentos() {
+        val db = AuthTableController(MyApplication.instance)
+        val auth = db.getAuth()
+        token = auth.token
         listaMedicamentosAgregados.clear()
         medicamentoViewModel.listaMedicamento("Bearer $token")
     }

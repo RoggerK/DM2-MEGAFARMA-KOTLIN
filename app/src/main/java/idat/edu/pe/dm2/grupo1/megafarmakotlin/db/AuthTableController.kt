@@ -1,31 +1,58 @@
-/*
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.model.AuthTable
 
-class AuthTableController(context: Context) {
-    private lateinit var db: SQLiteDatabase
+class AuthTableController(context: Context) : dbHelper(context) {
 
-
-    fun create(ContactoEntity contactoEntity): Boolean {
+    fun createAuth(auth: AuthTable): Boolean {
         val values = ContentValues()
 
-        values.put("nombre", contactoEntity.getNombre())
-        values.put("email", contactoEntity.getEmail())
+        values.put("token", auth.token)
+        values.put("nombre", auth.nombre)
+        values.put("apellido", auth.apellido)
+        values.put("dni", auth.dni)
+        values.put("correo", auth.correo)
+        values.put("idcliente", auth.idcliente)
 
         //usar de tipo insert - de tipo escritura
-        db = this.getWritableDatabase()
+        val db = this.writableDatabase
 
         //sole devolvera un boolean si en caso si la confirmacion es mayor a 0, sino retorna -1
-        val createSuccessful: Boolean = db.insert ("contactos", null, values) > 0
+        val createSuccessful: Boolean = db.insert("auth", null, values) > 0
         db.close()
 
         return createSuccessful
     }
 
-    fun update(ContactoEntity contactoEntity): Boolean {
+    fun getAuth(): AuthTable {
+        val sql = "SELECT id, token, nombre, apellido, dni, correo, idcliente FROM auth WHERE id = 1"
+        var authTable = AuthTable(0,"","","","","",0)
+
+        //usamos formato lectura
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(sql, null)
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getString(0).toInt()
+            val token = cursor.getString(1).toString()
+            val nombre = cursor.getString(2).toString()
+            val apellido = cursor.getString(3).toString()
+            val dni = cursor.getString(4).toString()
+            val correo = cursor.getString(5).toString()
+            val idcliente = cursor.getString(6).toInt()
+
+            authTable = AuthTable(id, token, nombre, apellido, dni, correo, idcliente)
+        }
+
+        cursor.close()
+        db.close()
+
+        return authTable
+    }
+
+    /*fun update(ContactoEntity contactoEntity): Boolean {
         val values = ContentValues()
 
         values.put("nombre", contactoEntity.getNombre())
@@ -41,13 +68,13 @@ class AuthTableController(context: Context) {
         db.close()
 
         return updateSuccessful
-    }
+    }*/
 
-    fun delete(id: Int): Boolean {
+    /*fun delete(id: Int): Boolean {
         db = this.getWritableDatabase()
         val deleteSuccessful: Boolean = db.delete("contactos", "id = '" + id + "'", null) > 0
         db.close()
 
         return deleteSuccessful
-    }
-}*/
+    }*/
+}
