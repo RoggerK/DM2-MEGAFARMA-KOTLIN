@@ -1,15 +1,42 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dao.AuthDAO
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dao.PreguntaDAO
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.PreguntaEntity
 
-open class dbHelper(context: Context) : SQLiteOpenHelper(
-    context, "db.megafarma", null, 1
-) {
+@Database(entities = [AuthEntity::class, PreguntaEntity::class], version = 1)
+abstract class MegaFarmaRoomDatabase : RoomDatabase() { //(context: Context) : SQLiteOpenHelper(context, "db.megafarma", null, 1) {
 
-    override fun onCreate(db: SQLiteDatabase) {
+    abstract fun authDAO(): AuthDAO
+    abstract fun preguntaDAO(): PreguntaDAO
+    //Todo lo que tenga este bloque serán definidos como static
+    companion object{
+        @Volatile
+        private var INSTANCE: MegaFarmaRoomDatabase? = null
+
+        fun getDatabase(context: Context) : MegaFarmaRoomDatabase{
+            val tempInstance = INSTANCE
+            if(tempInstance != null){
+                return tempInstance
+            }
+            synchronized(this){
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MegaFarmaRoomDatabase::class.java,
+                    "megafarmadb"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
+
+    /*override fun onCreate(db: SQLiteDatabase) {
         val authCreacion = "CREATE TABLE auth(" +
                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                 "idcliente INTEGER," +
@@ -57,10 +84,7 @@ open class dbHelper(context: Context) : SQLiteOpenHelper(
         val ordenBorrado = "DROP TABLE IF EXISTS reclamos"
         db!!.execSQL(ordenBorrado)
         onCreate(db)
-    }
-
-
-
+    }*/
 }
 
 

@@ -10,14 +10,14 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityRegistrarBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
 import java.time.LocalDate
 import java.time.Period
 import java.util.regex.Pattern
 
 class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegistrarBinding
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +25,12 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityRegistrarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        authRetrofitViewModel = ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
 
         binding.btnRegistrar.setOnClickListener(this)
         binding.btnCancelar.setOnClickListener(this)
 
-        authViewModel.responseRegistro.observe(this, Observer { response ->
+        authRetrofitViewModel.responseRegistro.observe(this, Observer { response ->
             obtenerRespuestaRegistrar(response)
         })
     }
@@ -62,7 +62,7 @@ class RegistrarActivity : AppCompatActivity(), View.OnClickListener {
                     binding.edMes.text.toString().trim() + "-" +
                     binding.edDia.text.toString().trim() + "-"
 
-            authViewModel.registroUsuario(binding.edNombreUser.text.toString().trim(),
+            authRetrofitViewModel.registroUsuario(binding.edNombreUser.text.toString().trim(),
                 binding.edApellido.text.toString().trim(),
                 binding.edCelular.text.toString().trim(),
                 binding.edDNI.text.toString().trim(),

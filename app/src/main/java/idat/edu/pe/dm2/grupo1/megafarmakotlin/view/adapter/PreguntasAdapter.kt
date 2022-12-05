@@ -1,4 +1,4 @@
-package idat.edu.pe.dm2.grupo1.megafarmakotlin
+package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter
 
 import android.content.Context
 import android.database.Cursor
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ItemPreguntasAyudaBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.PreguntasResponse
 
 class PreguntasAdapter
     : RecyclerView.Adapter<PreguntasAdapter.ViewHolder>(){
@@ -23,7 +23,8 @@ class PreguntasAdapter
 
     override fun onCreateViewHolder(view: ViewGroup, int: Int): ViewHolder {
         val inflater = LayoutInflater.from(view.context)
-        return ViewHolder(inflater.inflate(R.layout.item_preguntas_ayuda,
+        return ViewHolder(inflater.inflate(
+            R.layout.item_preguntas_ayuda,
             view, false))
     }
 

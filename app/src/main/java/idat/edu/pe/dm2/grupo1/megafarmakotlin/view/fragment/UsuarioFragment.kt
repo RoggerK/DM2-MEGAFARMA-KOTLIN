@@ -12,23 +12,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 import java.util.regex.Pattern
 
 
 class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
+    private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
+    private lateinit var authEntity: AuthEntity
 
     private var listaAgregado = ArrayList<String>()
-    private var token = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,21 +60,25 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
-        obtenerToken()
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        authRetrofitViewModel = ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
+        authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
         binding.btGuardarCambios.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
-        authViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
+
+        authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer {
+                response ->
+                    authEntity = response
+                    binding.edtNombres.setText(response.nombre)
+                    binding.edtApellidos.setText(response.apellido)
+                    binding.edtDni.setText(response.dni)
+        })
+
+        authRetrofitViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
             obtenerRespuestaDatos(response)
         })
-        return binding.root
-    }
 
-    private fun obtenerToken() {
-        val db = AuthTableController(MyApplication.instance)
-        val auth = db.getAuth()
-        token = auth.token
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -120,11 +125,11 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
                 TypeMessage.INFO
             )
         } else if (validarFormulario()) {
-            authViewModel.actualizarDatosUsuario(
-                1, binding.edtCorreo.text.toString().trim(),
+            authRetrofitViewModel.actualizarDatosUsuario(
+                authEntity.idcliente, binding.edtCorreo.text.toString().trim(),
                 binding.edtCelular.text.toString().trim(),
                 binding.edtContrasenia.text.toString().trim(),
-                "Bearer $token"
+                "Bearer ${authEntity.token}"
             )
         }
     }

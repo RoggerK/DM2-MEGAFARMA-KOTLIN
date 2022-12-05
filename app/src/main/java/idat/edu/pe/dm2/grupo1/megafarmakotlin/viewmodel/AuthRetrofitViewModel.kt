@@ -3,19 +3,19 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthRepository
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthRetrofitRepository
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.ActualizarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 
-class AuthViewModel: ViewModel() {
+class AuthRetrofitViewModel: ViewModel() {
 
     var responseLogin: LiveData<LoginResponse>
     var responseRegistro: LiveData<GlobalResponse>
     var responseActualizar: LiveData<GlobalResponse>
-    private var repository = AuthRepository()
+    private var repository = AuthRetrofitRepository()
 
     init {
         responseLogin = repository.loginResponse

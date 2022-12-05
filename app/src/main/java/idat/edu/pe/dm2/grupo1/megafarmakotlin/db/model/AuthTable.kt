@@ -1,3 +1,4 @@
+/*
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db.model
 
 data class AuthTable(
@@ -9,3 +10,4 @@ data class AuthTable(
     var correo: String,
     var idcliente: Int
 )
+*/

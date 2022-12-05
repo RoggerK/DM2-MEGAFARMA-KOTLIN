@@ -5,23 +5,23 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.PreguntasAdapter
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PreguntasAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityAyudaBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dbHelper
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.MegaFarmaRoomDatabase
 
 class AyudaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAyudaBinding
-    private lateinit var DBHelper: dbHelper
-    private lateinit var db: SQLiteDatabase
+    //private lateinit var MegaFarmaRoomDatabase: MegaFarmaRoomDatabase
+    //private lateinit var db: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityAyudaBinding.inflate(layoutInflater)
-        DBHelper = dbHelper(this)
+        //MegaFarmaRoomDatabase = MegaFarmaRoomDatabase(this)
         setContentView(binding.root)
 
-        db = DBHelper.readableDatabase
+        /*db = MegaFarmaRoomDatabase.readableDatabase
         val cursor: Cursor = db.rawQuery(
             "SELECT * FROM preguntas" , null)
 
@@ -31,11 +31,11 @@ class AyudaActivity : AppCompatActivity() {
         binding.idPreguntasRecycler.setHasFixedSize(true)
         binding.idPreguntasRecycler.layoutManager = LinearLayoutManager(this)
         binding.idPreguntasRecycler.adapter = adapter
-
+        */
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         db.close()
-    }
+    }*/
 }

@@ -8,18 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityLoginBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.model.AuthTable
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthSQLiteRepository
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.PreguntaSQLiteRepository
+//import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
+    private lateinit var authSQLiteRepository: AuthSQLiteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +32,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        authRetrofitViewModel = ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
+        authSQLiteRepository = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
 
         binding.btnLogIniciarSesion.setOnClickListener(this)
         binding.btnLogRegistrarse.setOnClickListener(this)
 
-        authViewModel.responseLogin.observe(this, Observer { response ->
+        authRetrofitViewModel.responseLogin.observe(this, Observer { response ->
             obtenerRespuestaLogin(response)
         })
     }
@@ -50,7 +53,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun obtenerRespuestaLogin(response: LoginResponse?) {
         if(response != null) {
             limpiarCampos()
-            guardarDatosSQLite(response)
+            guardarAuthSQLite(response)
             iniciarMenuCliente()
         }
 
@@ -67,7 +70,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnLogIniciarSesion.isEnabled = false
         binding.btnLogRegistrarse.isEnabled = false
         if (validarFormulario()) {
-            authViewModel.inciarSesion(binding.edLogCorreo.text.toString(),
+            authRetrofitViewModel.inciarSesion(binding.edLogCorreo.text.toString(),
                 binding.edLogContrsenia.text.toString(), binding.root)
         } else {
             binding.btnLogIniciarSesion.isEnabled = true
@@ -75,11 +78,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun guardarDatosSQLite(auth: LoginResponse) {
-        val db = AuthTableController(MyApplication.instance)
+    private fun guardarAuthSQLite(auth: LoginResponse) {
+        val authEntity = AuthEntity(0, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
+            auth.idcliente)
+        authSQLiteRepository.insertar(authEntity)
+
+       /* val db = AuthTableController(MyApplication.instance)
         val authTable = AuthTable(0, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
             auth.idcliente)
-        db.createAuth(authTable)
+        db.createAuth(authTable)*/
     }
 
     private fun iniciarMenuCliente() {

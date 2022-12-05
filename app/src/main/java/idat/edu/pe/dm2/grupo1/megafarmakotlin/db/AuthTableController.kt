@@ -1,10 +1,11 @@
+/*
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db
 
 import android.content.ContentValues
 import android.content.Context
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.model.AuthTable
 
-class AuthTableController(context: Context) : dbHelper(context) {
+class AuthTableController(context: Context) : MegaFarmaRoomDatabase(context) {
 
     fun createAuth(auth: AuthTable): Boolean {
         val values = ContentValues()
@@ -52,7 +53,8 @@ class AuthTableController(context: Context) : dbHelper(context) {
         return authTable
     }
 
-    /*fun update(ContactoEntity contactoEntity): Boolean {
+    */
+/*fun update(ContactoEntity contactoEntity): Boolean {
         val values = ContentValues()
 
         values.put("nombre", contactoEntity.getNombre())
@@ -68,13 +70,17 @@ class AuthTableController(context: Context) : dbHelper(context) {
         db.close()
 
         return updateSuccessful
-    }*/
+    }*//*
 
-    /*fun delete(id: Int): Boolean {
+
+    */
+/*fun delete(id: Int): Boolean {
         db = this.getWritableDatabase()
         val deleteSuccessful: Boolean = db.delete("contactos", "id = '" + id + "'", null) > 0
         db.close()
 
         return deleteSuccessful
-    }*/
+    }*//*
+
 }
+*/
