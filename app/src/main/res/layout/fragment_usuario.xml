@@ -16,7 +16,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
 
-            android:id="@+id/tvNombres"
+            android:id="@+id/idNombre"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:hint="@string/NOMBRES">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/iddNombres"
+                android:id="@+id/idNombreComprador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"

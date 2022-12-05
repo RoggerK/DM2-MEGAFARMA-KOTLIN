@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.math.roundToInt
 
 class CarritoAdapter(
     var listaAgregados: ArrayList<String>,
@@ -37,7 +36,7 @@ class CarritoAdapter(
             itemImage = itemView.findViewById(R.id.imgProducto1)
             itemDelete = itemView.findViewById(R.id.imvEliminar)
             itemTitle = itemView.findViewById(R.id.tvNombreProducto1)
-            itemTotal = itemView.findViewById(R.id.tvPrecio)
+            itemTotal = itemView.findViewById(R.id.idImporte)
             itemUni = itemView.findViewById(R.id.edtCantidad)
             itemMas = itemView.findViewById(R.id.imvMas)
             itemMenos = itemView.findViewById(R.id.imvMenos)
