@@ -31,8 +31,8 @@ class MenuClienteActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
-        authSQLiteViewModel.obtener().observe(this, Observer {
-                response -> enviarDatosFragmentPrincipal(response)
+        authSQLiteViewModel.obtener().observe(this, Observer { response ->
+            enviarDatosFragmentPrincipal(response)
         })
 
         val navView: BottomNavigationView = binding.navView
@@ -50,13 +50,20 @@ class MenuClienteActivity : AppCompatActivity(),
         navView.setupWithNavController(navController)
     }
 
-    private fun enviarDatosFragmentPrincipal(response: AuthEntity) {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
-        val fragment = navHostFragment.childFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
-        fragment.token = response.token
-        fragment.llenarlistaMedicamentos()
+    private fun enviarDatosFragmentPrincipal(response: AuthEntity?) {
+        if (response != null) {
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
+            val fragment = navHostFragment.childFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
+            fragment.token = response.token
+            fragment.llenarlistaMedicamentos()
+        }
+    }
+
+    override fun onClickButtonCerrarSesion() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     override fun onClickButtonUsuarioLibro() {
@@ -68,13 +75,11 @@ class MenuClienteActivity : AppCompatActivity(),
     }
 
     private fun cargarActivityLibro() {
-        val intent = Intent(this, LibroActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, LibroActivity::class.java))
     }
 
     private fun cargarActivityAyuda() {
-        val intent = Intent(this, AyudaActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, AyudaActivity::class.java))
     }
 
 }

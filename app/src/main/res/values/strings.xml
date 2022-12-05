@@ -49,5 +49,6 @@
     <string name="valAgregar">Agregar</string>
     <string name="valPrecio">Precio</string>
     <string name="valTotal">Total</string>
+    <string name="valCerrarSesion">Cerrar Sesion</string>
 
 </resources>

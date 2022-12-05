@@ -146,6 +146,17 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/btCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#2e2e2e"
+            android:text="@string/valCerrarSesion"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

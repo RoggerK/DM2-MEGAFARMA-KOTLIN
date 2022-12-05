@@ -1,6 +1,7 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.LoginActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 import java.util.regex.Pattern
@@ -60,17 +62,22 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
+
         authRetrofitViewModel = ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
         authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
+
         binding.btGuardarCambios.setOnClickListener(this)
+        binding.btCerrarSesion.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
 
         authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer { response ->
-            authEntity = response
-            binding.edtNombres.setText(response.nombre)
-            binding.edtApellidos.setText(response.apellido)
-            binding.edtDni.setText(response.dni)
+            if(response != null) {
+                authEntity = response
+                binding.edtNombres.setText(response.nombre)
+                binding.edtApellidos.setText(response.apellido)
+                binding.edtDni.setText(response.dni)
+            }
         })
 
         return binding.root
@@ -90,9 +97,15 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btGuardarCambios -> guardarCambios()
+            R.id.btCerrarSesion -> cerrarSesion()
             R.id.btLibroReclamacion -> listernerUsuario.onClickButtonUsuarioLibro()
             R.id.btNecesitoAyuda -> listernerUsuario.onClickButtonUsuarioAyuda()
         }
+    }
+
+    private fun cerrarSesion() {
+        authSQLiteViewModel.eliminarTodo()
+        listernerUsuario.onClickButtonCerrarSesion()
     }
 
     private fun guardarCambios() {

@@ -82,8 +82,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun iniciarMenuCliente() {
-        val intentMenuClienteActivity = Intent(this, MenuClienteActivity::class.java)
-        startActivity(intentMenuClienteActivity)
+        startActivity(Intent(this, MenuClienteActivity::class.java))
         finish()
     }
 
