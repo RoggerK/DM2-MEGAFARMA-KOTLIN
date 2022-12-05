@@ -11,9 +11,6 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityLoginBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthSQLiteRepository
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.PreguntaSQLiteRepository
-//import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
@@ -79,14 +76,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun guardarAuthSQLite(auth: LoginResponse) {
-        val authEntity = AuthEntity(0, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
+        val authEntity = AuthEntity(1, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
             auth.idcliente)
         authSQLiteRepository.insertar(authEntity)
-
-       /* val db = AuthTableController(MyApplication.instance)
-        val authTable = AuthTable(0, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
-            auth.idcliente)
-        db.createAuth(authTable)*/
     }
 
     private fun iniciarMenuCliente() {

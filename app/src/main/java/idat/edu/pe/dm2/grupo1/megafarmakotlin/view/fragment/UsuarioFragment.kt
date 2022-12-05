@@ -74,10 +74,6 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
                     binding.edtDni.setText(response.dni)
         })
 
-        authRetrofitViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
-            obtenerRespuestaDatos(response)
-        })
-
         return binding.root
     }
 
@@ -100,21 +96,6 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun obtenerRespuestaDatos(response: GlobalResponse) {
-        if (response.respuesta) {
-            AppMessage.enviarMensaje(
-                binding.root, "INFO: ${response.mensaje}",
-                TypeMessage.SUCCESSFULL
-            )
-            limpiarFormulario()
-        } else {
-            AppMessage.enviarMensaje(
-                binding.root, "INFO: ${response.mensaje}",
-                TypeMessage.INFO
-            )
-        }
-    }
-
     private fun guardarCambios() {
         if (binding.edtCorreo.text.toString() == ""
             && binding.edtCelular.text.toString() == ""
@@ -130,6 +111,25 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
                 binding.edtCelular.text.toString().trim(),
                 binding.edtContrasenia.text.toString().trim(),
                 "Bearer ${authEntity.token}"
+            )
+
+            authRetrofitViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
+                obtenerRespuestaDatos(response)
+            })
+        }
+    }
+
+    private fun obtenerRespuestaDatos(response: GlobalResponse) {
+        if (response.respuesta) {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.SUCCESSFULL
+            )
+            limpiarFormulario()
+        } else {
+            AppMessage.enviarMensaje(
+                binding.root, "INFO: ${response.mensaje}",
+                TypeMessage.INFO
             )
         }
     }
