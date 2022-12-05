@@ -2,8 +2,6 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MegaFarmaCliente
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.ReclamoClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse

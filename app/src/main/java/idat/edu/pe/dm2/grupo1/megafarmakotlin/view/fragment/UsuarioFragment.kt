@@ -66,12 +66,11 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
 
-        authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer {
-                response ->
-                    authEntity = response
-                    binding.edtNombres.setText(response.nombre)
-                    binding.edtApellidos.setText(response.apellido)
-                    binding.edtDni.setText(response.dni)
+        authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer { response ->
+            authEntity = response
+            binding.edtNombres.setText(response.nombre)
+            binding.edtApellidos.setText(response.apellido)
+            binding.edtDni.setText(response.dni)
         })
 
         return binding.root
@@ -113,9 +112,11 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
                 "Bearer ${authEntity.token}"
             )
 
-            authRetrofitViewModel.responseActualizar.observe(viewLifecycleOwner, Observer { response ->
-                obtenerRespuestaDatos(response)
-            })
+            authRetrofitViewModel.responseActualizar.observe(
+                viewLifecycleOwner,
+                Observer { response ->
+                    obtenerRespuestaDatos(response)
+                })
         }
     }
 

@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.CarritoAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.CarritoAdapter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 

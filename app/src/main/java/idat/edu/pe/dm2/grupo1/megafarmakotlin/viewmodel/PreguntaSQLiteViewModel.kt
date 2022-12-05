@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.MegaFarmaRoomDatabase
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.PreguntaEntity
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthSQLiteRepository
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.PreguntaSQLiteRepository
 
 class PreguntaSQLiteViewModel(application: Application) : AndroidViewModel(application) {

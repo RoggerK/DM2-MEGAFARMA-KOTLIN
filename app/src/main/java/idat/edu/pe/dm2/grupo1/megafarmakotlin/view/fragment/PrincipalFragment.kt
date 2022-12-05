@@ -9,14 +9,12 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PrincipalAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentPrincipalBinding
-//import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PrincipalAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoRetrofitViewModel
 
 
@@ -34,12 +32,15 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
-        medicamentoRetrofitViewModel = ViewModelProvider(this)[MedicamentoRetrofitViewModel::class.java]
+        medicamentoRetrofitViewModel =
+            ViewModelProvider(this)[MedicamentoRetrofitViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
 
-        medicamentoRetrofitViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
-            response -> obtenerDatosMedicamentos(response)
-        })
+        medicamentoRetrofitViewModel.responseMedicamento.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                obtenerDatosMedicamentos(response)
+            })
 
         return binding.root
     }
@@ -51,8 +52,10 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
             binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
             binding.recyclerCarrito.adapter = principalAdapter
         } else {
-            AppMessage.enviarMensaje(binding.root, "ERROR: Token invalido",
-                TypeMessage.DANGER)
+            AppMessage.enviarMensaje(
+                binding.root, "ERROR: Token invalido",
+                TypeMessage.DANGER
+            )
         }
 
     }
@@ -60,9 +63,8 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
-            this, FragmentResultListener {
-                requestKey, bundle ->
-                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
             }
         )
     }

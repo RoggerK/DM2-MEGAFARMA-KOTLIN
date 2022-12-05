@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMainBinding
-//import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.AuthTableController
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

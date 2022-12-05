@@ -1,13 +1,9 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.db
 
-import android.content.ContentValues
 import android.content.Context
 import androidx.room.Database
-import androidx.room.DatabaseConfiguration
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteOpenHelper
-import androidx.sqlite.db.SupportSQLiteStatement
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dao.AuthDAO
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.dao.PreguntaDAO
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
