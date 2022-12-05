@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.LibroActivity">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/logofarmacia" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tvReclamo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,14 +28,17 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:hint="@string/valMotivoReclamo"
-            android:text="">
+            android:text=""
+            app:counterEnabled="true"
+            app:counterMaxLength="45">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idMotivo"
+                android:id="@+id/edtAsunto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
+                android:maxLength="45"
                 android:textColorHint="#757575"
                 android:textSize="15sp" />
 
@@ -40,19 +49,20 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-
-                    android:id="@+id/tvReclamo2"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="20dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/valExplicacion">
+                    android:layout_marginBottom="20dp"
+                    android:hint="@string/valExplicacion"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="300">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/idDescripcion"
+                        android:id="@+id/edtDescripcion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:maxLength="300"
                         android:textColorHint="#757575"
                         android:textSize="15sp" />
 
@@ -60,10 +70,17 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/tvRegistrarReclamo"
+                    android:id="@+id/btRegistrarReclamo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btReclamo" />
+
+                <Button
+                    android:id="@+id/btSalir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/rojo_cancelar"
+                    android:text="@string/Salir" />
 
             </LinearLayout>
 

@@ -74,6 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/CORREO"
+            app:counterEnabled="true"
+            app:counterMaxLength="45"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,6 +96,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="9"
             android:hint="@string/CELULAR"
             app:endIconMode="clear_text">
 
@@ -116,6 +120,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/Actualizar"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
