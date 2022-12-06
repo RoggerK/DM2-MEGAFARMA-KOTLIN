@@ -7,16 +7,19 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:backgroundTint="@color/primaryLightColor"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_margin="15dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txvPregunta"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:text="@string/app_name"
                 android:textSize="20dp"
@@ -26,6 +29,7 @@
             <TextView
                 android:id="@+id/txvRespuestaPregunta"
                 android:layout_width="match_parent"
+                android:textColor="@color/white"
                 android:textSize="15dp"
                 android:text="@string/app_name"
                 android:layout_height="wrap_content" />
