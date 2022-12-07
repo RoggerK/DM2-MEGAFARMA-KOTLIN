@@ -38,7 +38,7 @@ abstract class MegaFarmaRoomDatabase : RoomDatabase() {
 
                 //funciona pero cada vez que se abre crea otra vez 4 más de ellos
 
-                /*val dato1 = ContentValues()
+                val dato1 = ContentValues()
                 val dato2 = ContentValues()
                 val dato3 = ContentValues()
                 val dato4 = ContentValues()
@@ -58,7 +58,7 @@ abstract class MegaFarmaRoomDatabase : RoomDatabase() {
                 INSTANCE!!.openHelper.writableDatabase.insert("pregunta", 0, dato1)
                 INSTANCE!!.openHelper.writableDatabase.insert("pregunta", 0, dato2)
                 INSTANCE!!.openHelper.writableDatabase.insert("pregunta", 0, dato3)
-                INSTANCE!!.openHelper.writableDatabase.insert("pregunta", 0, dato4)*/
+                INSTANCE!!.openHelper.writableDatabase.insert("pregunta", 0, dato4)
                 return instance
             }
         }
