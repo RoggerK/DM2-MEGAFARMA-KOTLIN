@@ -3,6 +3,7 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.dialog.OnClickListenerRecordatorio
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -32,6 +34,7 @@ class CarritoAdapter(
         var itemMas: ImageView
         var itemMenos: ImageView
         var itemPrecUni: TextView
+        var itemSave: Button
 
         init {
             itemImage = itemView.findViewById(R.id.imgProducto1)
@@ -42,6 +45,7 @@ class CarritoAdapter(
             itemMas = itemView.findViewById(R.id.imvMas)
             itemMenos = itemView.findViewById(R.id.imvMenos)
             itemPrecUni = itemView.findViewById(R.id.tvPrecioUnitario)
+            itemSave = itemView.findViewById(R.id.btRecodarMedicamento)
 
             df.roundingMode = RoundingMode.DOWN
         }
@@ -95,6 +99,11 @@ class CarritoAdapter(
             actualizarAgregados(i)
             actualizarMontoTotales()
         })
+
+        viewHolder.itemSave.setOnClickListener(
+            OnClickListenerRecordatorio(listaMedicamentosAgregados[i])
+        )
+
     }
 
     override fun getItemCount(): Int {
