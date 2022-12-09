@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/tvMisCompras"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:backgroundTint="#E2E4E6"
         android:elevation="5dp"
         app:cardCornerRadius="10dp">
@@ -22,7 +22,7 @@
 
             <LinearLayout
                 android:id="@+id/tvCarrito1"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:orientation="vertical">
 
@@ -33,6 +33,7 @@
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitXY"
                     android:src="@drawable/panadol" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -217,6 +218,6 @@
 
         </RelativeLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

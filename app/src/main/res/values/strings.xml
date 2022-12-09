@@ -50,7 +50,7 @@
     <string name="valPrecio">Precio</string>
     <string name="valTotal">Total</string>
     <string name="valCerrarSesion">Cerrar Sesion</string>
-    <string name="valMenCalendario">Desea recordar este medicamento dentro de</string>
+    <string name="valMenCalendario">Desea recordar este medicamento dentro de:</string>
     <string name="valMes">Un mes</string>
     <string name="valQuinceDias">Quince días</string>
     <string name="valSemana">Una semana</string>

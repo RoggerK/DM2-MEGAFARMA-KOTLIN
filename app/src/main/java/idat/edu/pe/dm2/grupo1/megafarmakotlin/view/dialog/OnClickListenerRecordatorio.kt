@@ -1,13 +1,15 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.dialog
 
 import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 
 class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.OnClickListener {
@@ -25,20 +27,32 @@ class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.O
         val radgCalRecordar: RadioGroup = formDialogCalendario.findViewById(R.id.radgCalRecordar)
         val radbUnaSemana: RadioButton = formDialogCalendario.findViewById(R.id.radbUnaSemana)
         val radbQuinceDias: RadioButton = formDialogCalendario.findViewById(R.id.radbQuinceDias)
-        val radbUnMesa: RadioButton = formDialogCalendario.findViewById(R.id.radbUnMesa)
+        val radbUnMes: RadioButton = formDialogCalendario.findViewById(R.id.radbUnMes)
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(context)
             .setView(formDialogCalendario)
-            .setTitle("${medicamento.nombre_producto}")
-            .setPositiveButton("Realizar recordatorio",
-                DialogInterface.OnClickListener { dialog, which ->
-
+            .setTitle(medicamento.nombre_producto)
+            .setMessage(context.getString(R.string.valMenCalendario))
+            .setNeutralButton(context.getString(R.string.Salir)) { dialog, which ->
+                dialog.cancel()
+            }
+            .setPositiveButton(context.getString(R.string.valAgendar)) { dialog, which ->
+                if (radgCalRecordar.checkedRadioButtonId != -1) {
+                    when(radgCalRecordar.checkedRadioButtonId) {
+                        radbUnaSemana.id -> Toast.makeText(context, "Semana", Toast.LENGTH_SHORT).show()
+                        radbQuinceDias.id -> Toast.makeText(context, "Quince", Toast.LENGTH_SHORT).show()
+                        radbUnMes.id -> Toast.makeText(context, "Mes", Toast.LENGTH_SHORT).show()
+                    }
                     dialog.cancel()
+                } else {
+                    AppMessage.enviarMensaje(view, "INFO: Debe seleccionar un tiempo para que sea registrado",
+                        TypeMessage.INFO)
                 }
-            ).show()
+            }
+            .show()
+    }
 
-
-        /*@Override
+    /*@Override
                     fun void onClick(DialogInterface dialog, int which) {
                         String contactoNombre = etNombre . getText ().toString();
                         String contactoEmail = etEmail . getText ().toString();
@@ -70,5 +84,4 @@ class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.O
                         dialog.cancel();
                     }
                 }).show();*/
-    }
 }
