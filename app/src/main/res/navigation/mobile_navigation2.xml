@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation2"
-    app:startDestination="@id/mapsFragment">
+    app:startDestination="@id/pedidoFragment">
     <fragment
         android:id="@+id/pedidoFragment"
         android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PedidoFragment"
