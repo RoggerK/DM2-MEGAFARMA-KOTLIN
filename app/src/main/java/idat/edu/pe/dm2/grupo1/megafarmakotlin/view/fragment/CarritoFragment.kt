@@ -1,5 +1,6 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,19 +11,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.CarritoAdapter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 
-class CarritoFragment : Fragment() {
+class CarritoFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentCarritoBinding
+    private lateinit var listernerCarrito: OnFragmentCarritoListerne
     private lateinit var carritoAdapter: CarritoAdapter
 
     private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
     private val df = DecimalFormat("#.##")
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listernerCarrito = context as OnFragmentCarritoListerne
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context debe implementar interfaz");
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +83,7 @@ class CarritoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCarritoBinding.inflate(inflater, container, false)
+        binding.btnFinalizarCompra.setOnClickListener(this)
         return binding.root
     }
 
@@ -78,6 +92,14 @@ class CarritoFragment : Fragment() {
         val bundle = Bundle()
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
+    }
+
+    override fun onClick(view: View) {
+        finalizarCarrito()
+    }
+
+    private fun finalizarCarrito() {
+        listernerCarrito.abrirActivityPedido(listaAgregado)
     }
 
     private fun realizarAdapterCarrito() {

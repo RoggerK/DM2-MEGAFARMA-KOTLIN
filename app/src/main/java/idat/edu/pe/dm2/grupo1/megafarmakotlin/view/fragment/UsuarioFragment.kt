@@ -16,7 +16,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.LoginActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
@@ -26,7 +26,7 @@ import java.util.regex.Pattern
 
 class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
-    private lateinit var listernerUsuario: OnFramentUsuarioListerne
+    private lateinit var listernerUsuario: OnFragmentUsuarioListerne
     private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
     private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
     private lateinit var authEntity: AuthEntity
@@ -36,7 +36,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listernerUsuario = context as OnFramentUsuarioListerne
+            listernerUsuario = context as OnFragmentUsuarioListerne
         } catch (e: ClassCastException) {
             throw ClassCastException("$context debe implementar interfaz");
         }

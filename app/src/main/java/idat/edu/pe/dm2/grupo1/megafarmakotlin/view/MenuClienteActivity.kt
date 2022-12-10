@@ -14,12 +14,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PrincipalFragment
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 
 class MenuClienteActivity : AppCompatActivity(),
-    OnFramentUsuarioListerne {
+    OnFragmentUsuarioListerne, OnFragmentCarritoListerne {
 
     private lateinit var binding: ActivityMenuClienteBinding
     private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
@@ -59,6 +60,12 @@ class MenuClienteActivity : AppCompatActivity(),
             fragment.token = response.token
             fragment.llenarlistaMedicamentos()
         }
+    }
+
+    override fun abrirActivityPedido(listaCarrito: ArrayList<String>) {
+        startActivity(Intent(this, PedidoActivity::class.java).apply {
+            putExtra("listaCarrito", listaCarrito)
+        })
     }
 
     override fun onClickButtonCerrarSesion() {
