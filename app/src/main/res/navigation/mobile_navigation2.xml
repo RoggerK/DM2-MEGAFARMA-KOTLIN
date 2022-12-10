@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@id/pedidoFragment">
+    <fragment
+        android:id="@+id/pedidoFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PedidoFragment"
+        android:label="@string/valPedido"
+        tools:layout="@layout/fragment_pedido" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.MapsFragment"
+        android:label="@string/menu_mapa"
+        tools:layout="@layout/fragment_maps" />
+</navigation>

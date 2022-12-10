@@ -49,11 +49,24 @@
     <string name="valAgregar">Agregar</string>
     <string name="valPrecio">Precio</string>
     <string name="valTotal">Total</string>
+    <string name="title_activity_pedido">PedidoActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="COMPRADOR">Comprador</string>
+    <string name="Geolocalizacion">Geolocalizacion</string>
+    <string name="RealizarPedido">Realizar Pedido</string>
+    <string name="valPedido">Pedido</string>
+    <string name="valMapa">Mapa</string>
+
     <string name="valCerrarSesion">Cerrar Sesion</string>
     <string name="valMenCalendario">Desea recordar este medicamento dentro de:</string>
     <string name="valMes">Un mes</string>
     <string name="valQuinceDias">Quince días</string>
     <string name="valSemana">Una semana</string>
     <string name="valAgendar">Recordar medicamento</string>
+    <string name="menu_mapa">Mapa</string>
 
 </resources>
