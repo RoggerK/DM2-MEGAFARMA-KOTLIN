@@ -6,7 +6,7 @@
         android:title="@string/valPedido" />
 
     <item
-        android:id="@+id/carritoFragment"
+        android:id="@+id/mapsFragment"
         android:icon="@drawable/ic_baseline_map_24"
         android:title="@string/valMapa" />
 

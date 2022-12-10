@@ -4,35 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.PrincipalAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentPrincipalBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MedicamentoService
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PrincipalAdapter
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoRetrofitViewModel
 
 
 class PrincipalFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentPrincipalBinding
     private lateinit var principalAdapter: PrincipalAdapter
-    private lateinit var medicamentoViewModel: MedicamentoViewModel
+    private lateinit var medicamentoRetrofitViewModel: MedicamentoRetrofitViewModel
 
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
     private var listaAgregado = ArrayList<String>()
@@ -43,11 +32,16 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
-        medicamentoViewModel = ViewModelProvider(this)[MedicamentoViewModel::class.java]
+        medicamentoRetrofitViewModel =
+            ViewModelProvider(this)[MedicamentoRetrofitViewModel::class.java]
         binding.imvBuscar.setOnClickListener(this)
-        medicamentoViewModel.responseMedicamento.observe(viewLifecycleOwner, Observer {
-            response -> obtenerDatosMedicamentos(response)
-        })
+
+        medicamentoRetrofitViewModel.responseMedicamento.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                obtenerDatosMedicamentos(response)
+            })
+
         return binding.root
     }
 
@@ -58,8 +52,10 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
             binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
             binding.recyclerCarrito.adapter = principalAdapter
         } else {
-            AppMessage.enviarMensaje(binding.root, "ERROR: Token invalido",
-                TypeMessage.DANGER)
+            AppMessage.enviarMensaje(
+                binding.root, "ERROR: Token invalido",
+                TypeMessage.DANGER
+            )
         }
 
     }
@@ -67,9 +63,8 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentFragmentManager.setFragmentResultListener("llavePrincipal",
-            this, FragmentResultListener {
-                requestKey, bundle ->
-                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
             }
         )
     }
@@ -77,7 +72,6 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val bundle1 = Bundle()
-        bundle1.putString("token", token)
         bundle1.putStringArrayList("listaCarrito", listaAgregado)
         parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
     }
@@ -90,12 +84,11 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
 
     private fun buscarProducto(nombre: String) {
         listaMedicamentosAgregados.clear()
-        medicamentoViewModel.listaFiltroMedicamento(nombre, "Bearer $token")
-
+        medicamentoRetrofitViewModel.listaFiltroMedicamento(nombre, "Bearer $token")
     }
 
     fun llenarlistaMedicamentos() {
         listaMedicamentosAgregados.clear()
-        medicamentoViewModel.listaMedicamento("Bearer $token")
+        medicamentoRetrofitViewModel.listaMedicamento("Bearer $token")
     }
 }

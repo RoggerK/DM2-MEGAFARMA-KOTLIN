@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AuthRepository {
+class AuthRetrofitRepository {
     var loginResponse = MutableLiveData<LoginResponse>()
     var registroRespose = MutableLiveData<GlobalResponse>()
     val actualizarReponse = MutableLiveData<GlobalResponse>()

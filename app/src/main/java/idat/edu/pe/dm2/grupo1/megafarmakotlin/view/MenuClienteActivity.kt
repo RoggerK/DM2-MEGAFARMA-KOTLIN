@@ -3,6 +3,8 @@ package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,15 +13,16 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PrincipalFragment
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 
 class MenuClienteActivity : AppCompatActivity(),
     OnFramentUsuarioListerne {
 
     private lateinit var binding: ActivityMenuClienteBinding
-    private lateinit var token: LoginResponse
+    private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +30,10 @@ class MenuClienteActivity : AppCompatActivity(),
         binding = ActivityMenuClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val listaToken = intent
-            .getSerializableExtra("token") as ArrayList<String>
-        token = LoginResponse(
-            token = listaToken[0],
-            nombre = listaToken[1],
-            apellido = listaToken[2],
-            dni = listaToken[3],
-            correo = listaToken[4],
-            idcliente = listaToken[5].toInt()
-        )
+        authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
+        authSQLiteViewModel.obtener().observe(this, Observer { response ->
+            enviarDatosFragmentPrincipal(response)
+        })
 
         val navView: BottomNavigationView = binding.navView
 
@@ -51,21 +48,22 @@ class MenuClienteActivity : AppCompatActivity(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        enviarDatosFragmentPrincipal()
     }
 
-    private fun enviarDatosFragmentPrincipal() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
-        val fragment = navHostFragment.childFragmentManager
-            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
-        fragment.token = token.token
-        fragment.llenarlistaMedicamentos()
+    private fun enviarDatosFragmentPrincipal(response: AuthEntity?) {
+        if (response != null) {
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
+            val fragment = navHostFragment.childFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
+            fragment.token = response.token
+            fragment.llenarlistaMedicamentos()
+        }
     }
 
-    override fun onClickButtonGuardarCambios() {
-
+    override fun onClickButtonCerrarSesion() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     override fun onClickButtonUsuarioLibro() {
@@ -77,15 +75,11 @@ class MenuClienteActivity : AppCompatActivity(),
     }
 
     private fun cargarActivityLibro() {
-        val intent = Intent(this, LibroActivity::class.java).apply {
-            putExtra("token", token.token)
-        }
-        startActivity(intent)
+        startActivity(Intent(this, LibroActivity::class.java))
     }
 
     private fun cargarActivityAyuda() {
-        val intent = Intent(this, AyudaActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, AyudaActivity::class.java))
     }
 
 }

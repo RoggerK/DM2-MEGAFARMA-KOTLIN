@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
+    android:layout_margin="5dp"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.fragment.PrincipalFragment">
@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="84dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -26,7 +26,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:hint="Nombre del producto "
                 android:text="">
 
@@ -39,7 +38,6 @@
                     android:textColorHint="#757575"
                     android:textSize="15sp" />
 
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -48,9 +46,10 @@
                 android:layout_height="66dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="27dp"
                 android:layout_marginEnd="4dp"
                 android:src="@drawable/ic_buscar_foreground" />
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -64,6 +63,7 @@
             android:id="@+id/recyclerCarrito"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -14,18 +15,23 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFramentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.LoginActivity
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 import java.util.regex.Pattern
 
 
 class UsuarioFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUsuarioBinding
     private lateinit var listernerUsuario: OnFramentUsuarioListerne
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
+    private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
+    private lateinit var authEntity: AuthEntity
+
     private var listaAgregado = ArrayList<String>()
-    private var token = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,23 +42,99 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llavePrincipal",
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
+            }
+        )
+
+        parentFragmentManager.setFragmentResultListener("llaveCarrito",
+            this, FragmentResultListener { requestKey, bundle ->
+                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
+            }
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUsuarioBinding.inflate(inflater, container, false)
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
+        authRetrofitViewModel = ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
+        authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
+
         binding.btGuardarCambios.setOnClickListener(this)
+        binding.btCerrarSesion.setOnClickListener(this)
         binding.btLibroReclamacion.setOnClickListener(this)
         binding.btNecesitoAyuda.setOnClickListener(this)
-        authViewModel.responseActualizar.observe(viewLifecycleOwner, Observer {
-            response -> obtenerRespuestaDatos(response)
+
+        authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer { response ->
+            if(response != null) {
+                authEntity = response
+                binding.edtNombres.setText(response.nombre)
+                binding.edtApellidos.setText(response.apellido)
+                binding.edtDni.setText(response.dni)
+            }
         })
+
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        val bundle1 = Bundle()
+        bundle1.putStringArrayList("listaCarrito", listaAgregado)
+        parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
+
+        val bundle2 = Bundle()
+        bundle2.putStringArrayList("listaAgregado", listaAgregado)
+        parentFragmentManager.setFragmentResult("llavePrincipal", bundle2)
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.btGuardarCambios -> guardarCambios()
+            R.id.btCerrarSesion -> cerrarSesion()
+            R.id.btLibroReclamacion -> listernerUsuario.onClickButtonUsuarioLibro()
+            R.id.btNecesitoAyuda -> listernerUsuario.onClickButtonUsuarioAyuda()
+        }
+    }
+
+    private fun cerrarSesion() {
+        authSQLiteViewModel.eliminarTodo()
+        listernerUsuario.onClickButtonCerrarSesion()
+    }
+
+    private fun guardarCambios() {
+        if (binding.edtCorreo.text.toString() == ""
+            && binding.edtCelular.text.toString() == ""
+            && binding.edtContrasenia.text.toString() == ""
+        ) {
+            AppMessage.enviarMensaje(
+                binding.root, "Ingrese dato donde desea actualizar",
+                TypeMessage.INFO
+            )
+        } else if (validarFormulario()) {
+            authRetrofitViewModel.actualizarDatosUsuario(
+                authEntity.idcliente, binding.edtCorreo.text.toString().trim(),
+                binding.edtCelular.text.toString().trim(),
+                binding.edtContrasenia.text.toString().trim(),
+                "Bearer ${authEntity.token}"
+            )
+
+            authRetrofitViewModel.responseActualizar.observe(
+                viewLifecycleOwner,
+                Observer { response ->
+                    obtenerRespuestaDatos(response)
+                })
+        }
+    }
+
     private fun obtenerRespuestaDatos(response: GlobalResponse) {
-        if(response.respuesta) {
+        if (response.respuesta) {
             AppMessage.enviarMensaje(
                 binding.root, "INFO: ${response.mensaje}",
                 TypeMessage.SUCCESSFULL
@@ -66,77 +148,22 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        parentFragmentManager.setFragmentResultListener("llavePrincipal",
-            this, FragmentResultListener {
-                requestKey, bundle ->
-                    token = bundle.getString("token") as String
-                    listaAgregado = bundle.getStringArrayList("listaAgregado") as ArrayList<String>
-            }
-        )
-
-        parentFragmentManager.setFragmentResultListener("llaveCarrito",
-            this, FragmentResultListener {
-                    requestKey, bundle ->
-                token = bundle.getString("token") as String
-                listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
-            }
-        )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val bundle1 = Bundle()
-        bundle1.putString("token", token)
-        bundle1.putStringArrayList("listaCarrito", listaAgregado)
-        parentFragmentManager.setFragmentResult("llaveCarrito", bundle1)
-
-        val bundle2 = Bundle()
-        bundle2.putString("token", token)
-        bundle2.putStringArrayList("listaAgregado", listaAgregado)
-        parentFragmentManager.setFragmentResult("llavePrincipal", bundle2)
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.btGuardarCambios -> guardarCambios()
-            R.id.btLibroReclamacion -> listernerUsuario.onClickButtonUsuarioLibro()
-            R.id.btNecesitoAyuda -> listernerUsuario.onClickButtonUsuarioAyuda()
-        }
-    }
-
-    private fun guardarCambios() {
-        val correo = binding.edtCorreo.text.toString()
-        val celular = binding.edtCelular.text.toString()
-        val contrasenia = binding.edtContrasenia.text.toString()
-
-        if (binding.edtCorreo.text.toString() == ""
-            && binding.edtCelular.text.toString() == ""
-            && binding.edtContrasenia.text.toString() == ""
-        ) {
-            AppMessage.enviarMensaje(
-                binding.root, "Ingrese dato donde desea actualizar",
-                TypeMessage.INFO
-            )
-        } else if (validarFormulario()) {
-            authViewModel.actualizarDatosUsuario(6, correo, celular, contrasenia,
-                "Bearer $token")
-        }
-    }
-
     private fun validarFormulario(): Boolean {
         if (binding.edtCorreo.text.toString() != "") {
             if (!validarCorreo()) {
                 return false
-            } else if (binding.edtCelular.text.toString() != "") {
-                if (!validarCelular()) {
-                    return false
-                } else if (binding.edtContrasenia.text.toString() != "") {
-                    if (!validarContrasenia()) {
-                        return false
-                    }
-                }
+            }
+        }
+
+        if (binding.edtCelular.text.toString() != "") {
+            if (!validarCelular()) {
+                return false
+            }
+        }
+
+        if (binding.edtContrasenia.text.toString() != "") {
+            if (!validarContrasenia()) {
+                return false
             }
         }
 

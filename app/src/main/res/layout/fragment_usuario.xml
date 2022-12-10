@@ -16,7 +16,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
 
+
             android:id="@+id/idNombre"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +27,9 @@
             android:hint="@string/NOMBRES">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idNombreComprador"
+
+                android:id="@+id/edtNombres"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -35,8 +39,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tvApellidos"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +47,7 @@
             android:hint="@string/APELLIDOS">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/iddApellidos"
+                android:id="@+id/edtApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -54,8 +56,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
-            android:id="@+id/tvDni"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:hint="@string/NDni">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/iddDni"
+                android:id="@+id/edtDni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -80,6 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/CORREO"
+            app:counterEnabled="true"
+            app:counterMaxLength="45"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -100,6 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="9"
             android:hint="@string/CELULAR"
             app:endIconMode="clear_text">
 
@@ -122,6 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/Actualizar"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -142,6 +148,17 @@
             android:layout_marginBottom="10dp"
             android:backgroundTint="#2e2e2e"
             android:text="@string/valActualizar"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#2e2e2e"
+            android:text="@string/valCerrarSesion"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold" />

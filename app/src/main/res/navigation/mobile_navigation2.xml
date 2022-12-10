@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation2"
-    app:startDestination="@id/mapaFragment">
-    <fragment
-        android:id="@+id/mapaFragment"
-        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.MapaFragment"
-        android:label="fragment_mapa"
-        tools:layout="@layout/fragment_mapa" />
+    app:startDestination="@id/mapsFragment">
     <fragment
         android:id="@+id/pedidoFragment"
         android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PedidoFragment"
-        android:label="fragment_pedido"
+        android:label="@string/valPedido"
         tools:layout="@layout/fragment_pedido" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.MapsFragment"
+        android:label="@string/menu_mapa"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

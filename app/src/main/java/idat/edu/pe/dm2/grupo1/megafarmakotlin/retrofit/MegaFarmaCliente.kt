@@ -24,6 +24,10 @@ object MegaFarmaCliente {
         buildRetrofit().create(UsuarioService::class.java)
     }
 
+    val retrofitReclamoService: ReclamoService by lazy {
+        buildRetrofit().create(ReclamoService::class.java)
+    }
+
     val retrofitMedicamentoService: MedicamentoService by lazy {
         buildRetrofit().create(MedicamentoService::class.java)
     }

@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MedicamentoRepository {
+class MedicamentoRetrofitRepository {
     var medicamentoResponse = MutableLiveData<ArrayList<MedicamentoResponse>>()
 
     fun listaMedicamento(token: String): MutableLiveData<ArrayList<MedicamentoResponse>> {

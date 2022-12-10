@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.CarritoAdapter
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.CarritoAdapter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -20,9 +19,9 @@ import java.text.DecimalFormat
 class CarritoFragment : Fragment() {
     private lateinit var binding: FragmentCarritoBinding
     private lateinit var carritoAdapter: CarritoAdapter
+
     private var listaAgregado = ArrayList<String>()
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
-    private var token = ""
     private val df = DecimalFormat("#.##")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +29,6 @@ class CarritoFragment : Fragment() {
         //esta se crea varias veces ya que Principal esta en segundo plano
         parentFragmentManager.setFragmentResultListener("llaveCarrito",
             this, FragmentResultListener { requestKey, bundle ->
-                token = bundle.getString("token") as String
                 listaAgregado = bundle.getStringArrayList("listaCarrito") as ArrayList<String>
                 if (listaAgregado.size == 0) {
                     AppMessage.enviarMensaje(
@@ -78,7 +76,6 @@ class CarritoFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         val bundle = Bundle()
-        bundle.putString("token", token)
         bundle.putStringArrayList("listaAgregado", listaAgregado)
         parentFragmentManager.setFragmentResult("llavePrincipal", bundle)
     }

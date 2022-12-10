@@ -61,4 +61,8 @@
     <string name="valPedido">Pedido</string>
     <string name="valMapa">Mapa</string>
 
+    <string name="valCerrarSesion">Cerrar Sesion</string>
+    <string name="menu_mapa">Mapa</string>
+
+
 </resources>

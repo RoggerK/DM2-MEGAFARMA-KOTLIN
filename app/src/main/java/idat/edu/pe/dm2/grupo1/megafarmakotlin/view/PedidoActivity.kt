@@ -1,6 +1,7 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -17,17 +18,19 @@ class PedidoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        supportActionBar?.hide()
+
         binding = ActivityPedidoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_pedido)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.mapaFragment, R.id.pedidoFragment
+                R.id.mapsFragment, R.id.pedidoFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
