@@ -12,10 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvAgregados"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,12 +49,14 @@
                     android:gravity="center_horizontal"
                     android:hint="Comprador"
                     android:textColorHint="#546E7A" />
+
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -69,17 +68,11 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="Productos" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="97dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvAgregados"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
 
         </LinearLayout>
 

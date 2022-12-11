@@ -17,7 +17,7 @@
                 android:id="@+id/txvIdProducto"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="1"
                 android:layout_height="wrap_content" />
 

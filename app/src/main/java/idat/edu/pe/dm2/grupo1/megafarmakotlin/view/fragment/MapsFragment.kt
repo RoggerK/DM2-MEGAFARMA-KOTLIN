@@ -18,10 +18,27 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 class MapsFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
+        // Set the map coordinates to Kyoto Japan.LatLng kyoto = new LatLng(35.00116, 135.7681);
+        val peru = LatLng(-12.0453, -77.0311)
+        // Set the map type to Hybrid.
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        // Add a marker on the map coordinates.
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(peru)
+                .title("peru")
+        );
+        // Move the camera to the map coordinates and zoom in closer.
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(peru))
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15F))
+        // Display traffic.
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        googleMap.isTrafficEnabled = true
 
-        val sydney = LatLng(-34.0, 151.0)
+
+        /*val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
     }
 
     override fun onCreateView(

@@ -12,7 +12,6 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentCarritoBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.CarritoAdapter
 import java.math.RoundingMode
@@ -99,7 +98,12 @@ class CarritoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun finalizarCarrito() {
-        listernerCarrito.abrirActivityPedido(listaAgregado)
+        if (listaAgregado.size != 0) {
+            listernerCarrito.abrirActivityPedido(listaAgregado)
+        } else {
+            AppMessage.enviarMensaje(binding.root,
+                "INFO: No hay productos agregados", TypeMessage.INFO)
+        }
     }
 
     private fun realizarAdapterCarrito() {
