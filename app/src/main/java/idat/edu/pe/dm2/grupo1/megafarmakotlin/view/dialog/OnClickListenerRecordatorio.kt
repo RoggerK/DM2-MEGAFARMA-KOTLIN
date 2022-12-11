@@ -1,16 +1,21 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.dialog
 
 import android.content.Context
+import android.content.Intent
+import android.icu.util.Calendar
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.OnClickListener {
 
@@ -37,51 +42,65 @@ class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.O
                 dialog.cancel()
             }
             .setPositiveButton(context.getString(R.string.valAgendar)) { dialog, which ->
+                val dateTime = ZonedDateTime.now(ZoneId.of("America/Bogota"))
+
                 if (radgCalRecordar.checkedRadioButtonId != -1) {
-                    when(radgCalRecordar.checkedRadioButtonId) {
-                        radbUnaSemana.id -> Toast.makeText(context, "Semana", Toast.LENGTH_SHORT).show()
-                        radbQuinceDias.id -> Toast.makeText(context, "Quince", Toast.LENGTH_SHORT).show()
-                        radbUnMes.id -> Toast.makeText(context, "Mes", Toast.LENGTH_SHORT).show()
+                    when (radgCalRecordar.checkedRadioButtonId) {
+                        radbUnaSemana.id -> realizarEventoCalendario(
+                            dateTime.dayOfMonth + 7,
+                            dateTime.dayOfMonth,
+                            dateTime.year
+                        )
+                        radbQuinceDias.id -> realizarEventoCalendario(
+                            dateTime.dayOfMonth + 15,
+                            dateTime.dayOfMonth,
+                            dateTime.year
+                        )
+                        radbUnMes.id -> realizarEventoCalendario(
+                            dateTime.dayOfMonth + 30,
+                            dateTime.dayOfMonth,
+                            dateTime.year
+                        )
                     }
                     dialog.cancel()
                 } else {
-                    AppMessage.enviarMensaje(view, "INFO: Debe seleccionar un tiempo para que sea registrado",
-                        TypeMessage.INFO)
+                    AppMessage.enviarMensaje(
+                        view, "INFO: Debe seleccionar un tiempo para que sea registrado",
+                        TypeMessage.INFO
+                    )
+                    dialog.cancel()
                 }
             }
             .show()
     }
 
-    /*@Override
-                    fun void onClick(DialogInterface dialog, int which) {
-                        String contactoNombre = etNombre . getText ().toString();
-                        String contactoEmail = etEmail . getText ().toString();
+    private fun realizarEventoCalendario(dia: Int, mes: Int, anio: Int) {
+        val cal = Calendar.getInstance()
 
-                        ContactoEntity contactoEntity = new ContactoEntity();
-                        contactoEntity.setNombre(contactoNombre);
-                        contactoEntity.setEmail(contactoEmail);
+        cal.set(Calendar.DAY_OF_MONTH, dia)
+        cal.set(Calendar.MONTH, mes)
+        cal.set(Calendar.YEAR, anio)
 
-                        boolean createSuccessful = new ContactoTableController(context).create(
-                            contactoEntity
-                        );
-                        if (createSuccessful) {
-                            Toast.makeText(
-                                context,
-                                "Informacion de contacto guardada",
-                                Toast.LENGTH_SHORT
-                            ).show();
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "No se pudo guardar la informacion en contacto",
-                                Toast.LENGTH_SHORT
-                            ).show();
-                        }
+        cal.set(Calendar.HOUR_OF_DAY, 12)
+        cal.set(Calendar.MINUTE, 30)
 
-                        ((MainActivity) context).readRecords();
-                        ((MainActivity) context).countRecords();
+        val intent = Intent(Intent.ACTION_EDIT)
+        intent.type = "vnd.android.cursor.item/event"
 
-                        dialog.cancel();
-                    }
-                }).show();*/
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, cal.timeInMillis)
+        intent.putExtra(
+            CalendarContract.EXTRA_EVENT_END_TIME, cal.timeInMillis + 60 * 60 * 1000
+        ) //1h
+
+        intent.putExtra(CalendarContract.Events.ALL_DAY, false)
+        intent.putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY")
+        intent.putExtra(CalendarContract.Events.TITLE, "Pedir ${medicamento.nombre_producto}")
+        intent.putExtra(
+            CalendarContract.Events.DESCRIPTION,
+            "La última vez pediste ${medicamento.pedido} UN\nEl precio fue de s/. ${medicamento.precio_total}"
+        )
+
+        startActivity(context, intent, null)
+    }
+
 }
