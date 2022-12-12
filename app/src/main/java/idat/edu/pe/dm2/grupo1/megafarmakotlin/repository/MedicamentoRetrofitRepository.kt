@@ -19,9 +19,7 @@ class MedicamentoRetrofitRepository {
                 call: Call<ArrayList<MedicamentoResponse>>,
                 response: Response<ArrayList<MedicamentoResponse>>
             ) {
-                if (response.isSuccessful) {
-                    medicamentoResponse.value = response.body()
-                }
+                medicamentoResponse.value = response.body()
             }
 
             override fun onFailure(call: Call<ArrayList<MedicamentoResponse>>, t: Throwable) {

@@ -11,9 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne
@@ -35,7 +33,9 @@ class MenuClienteActivity : AppCompatActivity(),
 
         authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
         authSQLiteViewModel.obtener().observe(this, Observer { response ->
-            enviarDatosFragmentPrincipal(response)
+            response?.let {
+                enviarDatosFragmentPrincipal(response)
+            }
         })
 
         val navView: BottomNavigationView = binding.navView
@@ -53,15 +53,13 @@ class MenuClienteActivity : AppCompatActivity(),
         navView.setupWithNavController(navController)
     }
 
-    private fun enviarDatosFragmentPrincipal(response: AuthEntity?) {
-        if (response != null) {
-            val navHostFragment = supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
-            val fragment = navHostFragment.childFragmentManager
-                .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
-            fragment.token = response.token
-            fragment.llenarlistaMedicamentos()
-        }
+    private fun enviarDatosFragmentPrincipal(response: AuthEntity) {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as NavHostFragment
+        val fragment = navHostFragment.childFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_menu_cliente) as PrincipalFragment
+        fragment.token = response.token
+        fragment.llenarlistaMedicamentos()
     }
 
     override fun abrirActivityPedido(listaCarrito: ArrayList<String>) {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ class PedidoFragment : Fragment(), View.OnClickListener {
     private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
     private lateinit var pedidoAdapter: PedidoAdapter
     private val df = DecimalFormat("#.##")
+    private var coordenada = ""
     var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
 
     override fun onCreateView(
@@ -41,6 +43,21 @@ class PedidoFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("llaveMapa",
+            this, FragmentResultListener { requestKey, bundle ->
+                coordenada = bundle.getString("coordenada").toString()
+
+                val bundle = Bundle()
+                bundle.putString("coordenada", coordenada)
+                parentFragmentManager.setFragmentResult("llaveCliente", bundle)
+
+                binding.edtGeolocalizacion.setText(coordenada)
+            }
+        )
+    }
+
     override fun onClick(view: View) {
         realizarPedido()
     }
@@ -55,7 +72,7 @@ class PedidoFragment : Fragment(), View.OnClickListener {
     private fun validarGeolocalizacion(): Boolean {
         var respuesta = true
         if(binding.edtGeolocalizacion.text.toString().trim().isEmpty()) {
-            AppMessage.enviarMensaje(binding.root, "INFO: Debe indicar su geolocalización",
+            AppMessage.enviarMensaje(binding.root, "INFO: Debe indicar su latitud y longitud en el mapa",
                 TypeMessage.INFO)
             respuesta = false
         }
