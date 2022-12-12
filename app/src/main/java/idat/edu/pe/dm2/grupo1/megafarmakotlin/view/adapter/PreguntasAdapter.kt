@@ -1,14 +1,12 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ItemPreguntasAyudaBinding
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.PreguntaEntity
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.PreguntaResponse
 
-class PreguntasAdapter(private var listaPreguntas: List<PreguntaEntity>) :
+class PreguntasAdapter(private var listaPreguntas: List<PreguntaResponse>) :
     RecyclerView.Adapter<PreguntasAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemPreguntasAyudaBinding) :
@@ -23,8 +21,8 @@ class PreguntasAdapter(private var listaPreguntas: List<PreguntaEntity>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(listaPreguntas[position]) {
-                binding.txvPregunta.text = titulo
-                binding.txvRespuestaPregunta.text = descripcion
+                binding.txvPregunta.text = pre
+                binding.txvRespuestaPregunta.text = res
             }
         }
     }

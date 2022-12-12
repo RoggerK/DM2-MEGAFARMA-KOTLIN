@@ -6,42 +6,30 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityAyudaBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.PreguntaResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PreguntasAdapter
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.PreguntaSQLiteViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AtencionRetrofitViewModel
 
 class AyudaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAyudaBinding
-    private lateinit var preguntaSQLiteViewModel: PreguntaSQLiteViewModel
+    private lateinit var atencionRetrofitViewModel: AtencionRetrofitViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityAyudaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.idPreguntasRecycler.layoutManager = LinearLayoutManager(this)
 
-        preguntaSQLiteViewModel = ViewModelProvider(this)[PreguntaSQLiteViewModel::class.java]
-        preguntaSQLiteViewModel.obtener().observe(this, Observer { response ->
-            binding.idPreguntasRecycler.adapter = PreguntasAdapter(response)
+        atencionRetrofitViewModel = ViewModelProvider(this)[AtencionRetrofitViewModel::class.java]
+        atencionRetrofitViewModel.listarPreguntas()
+        atencionRetrofitViewModel.responsePregunta.observe(this, Observer { response ->
+            obtenerLista(response)
         })
-
-
-        //MegaFarmaRoomDatabase = MegaFarmaRoomDatabase(this)
-        /*db = MegaFarmaRoomDatabase.readableDatabase
-        val cursor: Cursor = db.rawQuery(
-            "SELECT * FROM preguntas" , null)
-
-        val adapter = PreguntasAdapter()
-        adapter.RecyclerViewAdapterPreguntas(this, cursor)
-
-        binding.idPreguntasRecycler.setHasFixedSize(true)
-        binding.idPreguntasRecycler.layoutManager = LinearLayoutManager(this)
-        binding.idPreguntasRecycler.adapter = adapter
-        */
     }
 
-    /*override fun onDestroy() {
-        super.onDestroy()
-        db.close()
-    }*/
+    private fun obtenerLista(response: List<PreguntaResponse>) {
+        binding.idPreguntasRecycler.layoutManager = LinearLayoutManager(this)
+        binding.idPreguntasRecycler.adapter = PreguntasAdapter(response)
+    }
+
 }

@@ -11,11 +11,11 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityLibroBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.ReclamoRetrofitViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AtencionRetrofitViewModel
 
 class LibroActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityLibroBinding
-    private lateinit var reclamoRetrofitViewModel: ReclamoRetrofitViewModel
+    private lateinit var atencionRetrofitViewModel: AtencionRetrofitViewModel
     private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
     private lateinit var authEntity: AuthEntity
 
@@ -28,14 +28,14 @@ class LibroActivity : AppCompatActivity(), View.OnClickListener {
         binding.btRegistrarReclamo.setOnClickListener(this)
         binding.btSalir.setOnClickListener(this)
 
-        reclamoRetrofitViewModel = ViewModelProvider(this)[ReclamoRetrofitViewModel::class.java]
+        atencionRetrofitViewModel = ViewModelProvider(this)[AtencionRetrofitViewModel::class.java]
         authSQLiteViewModel = ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
 
         authSQLiteViewModel.obtener().observe(this, Observer { response ->
             authEntity = response
         })
 
-        reclamoRetrofitViewModel.responseReclamo.observe(this, Observer { response ->
+        atencionRetrofitViewModel.responseReclamo.observe(this, Observer { response ->
             obtenerRepuestaReclamo(response)
         })
     }
@@ -73,7 +73,7 @@ class LibroActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun registrarReclamo() {
         if (validarFormulario()) {
-            reclamoRetrofitViewModel.registrarReclamo(
+            atencionRetrofitViewModel.registrarReclamo(
                 binding.edtAsunto.text.toString().trim(),
                 binding.edtDescripcion.text.toString().trim(),
                 authEntity.idcliente,
