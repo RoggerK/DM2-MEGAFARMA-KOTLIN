@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.dialog.OnClickListenerRecordatorio
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.dialog.OnClickListenerCalendario
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -101,7 +101,7 @@ class CarritoAdapter(
         })
 
         viewHolder.itemSave.setOnClickListener(
-            OnClickListenerRecordatorio(listaMedicamentosAgregados[i])
+            OnClickListenerCalendario(listaMedicamentosAgregados[i])
         )
 
     }

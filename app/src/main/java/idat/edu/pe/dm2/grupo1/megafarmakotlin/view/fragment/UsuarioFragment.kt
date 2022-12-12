@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.Constante
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.SharedPreferencesManager
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
@@ -104,6 +106,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
     }
 
     private fun cerrarSesion() {
+        SharedPreferencesManager().deletePreferences(Constante().PREF_ACCESO)
         authSQLiteViewModel.eliminarTodo()
         listernerUsuario.onClickButtonCerrarSesion()
     }

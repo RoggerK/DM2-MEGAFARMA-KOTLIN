@@ -11,7 +11,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.MyApplication
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne

@@ -6,11 +6,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "auth")
 data class AuthEntity(
     @PrimaryKey
-    var id: Int,
+    var idcliente: Int,
     var token: String,
     var nombre: String,
     var apellido: String,
     var dni: String,
     var correo: String,
-    var idcliente: Int
 )

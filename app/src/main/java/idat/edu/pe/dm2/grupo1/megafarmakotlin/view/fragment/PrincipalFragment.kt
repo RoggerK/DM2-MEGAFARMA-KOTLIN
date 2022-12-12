@@ -9,18 +9,24 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.Constante
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.SharedPreferencesManager
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentPrincipalBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.adapter.PrincipalAdapter
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.MedicamentoRetrofitViewModel
 
 
 class PrincipalFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentPrincipalBinding
     private lateinit var principalAdapter: PrincipalAdapter
+    private lateinit var authSQLiteViewModel: AuthSQLiteViewModel
+    private lateinit var authRetrofitViewModel: AuthRetrofitViewModel
     private lateinit var medicamentoRetrofitViewModel: MedicamentoRetrofitViewModel
 
     private var listaMedicamentosAgregados = ArrayList<MedicamentoResponse>()
@@ -32,32 +38,67 @@ class PrincipalFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
+        authSQLiteViewModel =
+            ViewModelProvider(this)[AuthSQLiteViewModel::class.java]
+        authRetrofitViewModel =
+            ViewModelProvider(this)[AuthRetrofitViewModel::class.java]
         medicamentoRetrofitViewModel =
             ViewModelProvider(this)[MedicamentoRetrofitViewModel::class.java]
+
         binding.imvBuscar.setOnClickListener(this)
+
+        if (!verificarAccesoRapido()) {
+            recordarAccesoRapido()
+        }
 
         medicamentoRetrofitViewModel.responseMedicamento.observe(
             viewLifecycleOwner,
             Observer { response ->
-                obtenerDatosMedicamentos(response)
+                if (response != null) {
+                    obtenerDatosMedicamentos(response)
+                } else {
+                    authRetrofitViewModel.refrescarToken(token)
+                }
             })
+
+        authRetrofitViewModel.responseRefrescar.observe(viewLifecycleOwner, Observer { response ->
+            token = response.token
+            authSQLiteViewModel.actualizar(
+                AuthEntity(
+                    response.idcliente, response.token,
+                    response.nombre, response.apellido, response.dni, response.correo
+                )
+            )
+            llenarlistaMedicamentos()
+        })
 
         return binding.root
     }
 
-    private fun obtenerDatosMedicamentos(response: ArrayList<MedicamentoResponse>?) {
-        if (response != null) {
-            listaMedicamentosAgregados = response
-            principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
-            binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
-            binding.recyclerCarrito.adapter = principalAdapter
-        } else {
-            AppMessage.enviarMensaje(
-                binding.root, "ERROR: Token invalido",
-                TypeMessage.DANGER
-            )
-        }
+    private fun recordarAccesoRapido() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Acceso Rápido")
+            .setMessage("Esta de acuerdo en tener un inicio de sesión rápido.")
+            .setNeutralButton(requireContext().getString(R.string.Salir)) { dialog, which ->
+                dialog.cancel()
+            }
+            .setPositiveButton("Sí acepto") { dialog, which ->
+                SharedPreferencesManager().setSomeBooleanValue(Constante().PREF_ACCESO, true)
+                dialog.cancel()
+            }
+            .show()
+    }
 
+    private fun verificarAccesoRapido(): Boolean {
+        return SharedPreferencesManager()
+            .getSomeBooleanValue(Constante().PREF_ACCESO)
+    }
+
+    private fun obtenerDatosMedicamentos(response: ArrayList<MedicamentoResponse>) {
+        listaMedicamentosAgregados = response
+        principalAdapter = PrincipalAdapter(listaMedicamentosAgregados, listaAgregado)
+        binding.recyclerCarrito.layoutManager = LinearLayoutManager(context)
+        binding.recyclerCarrito.adapter = principalAdapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

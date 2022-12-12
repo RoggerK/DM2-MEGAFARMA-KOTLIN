@@ -1,14 +1,17 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.common
 
 import android.app.Application
+import android.content.Context
 
 class MyApplication : Application() {
-    companion object {
-        lateinit var instance: MyApplication
-    }
+    init { INSTANCE = this }
 
-    override fun onCreate() {
-        super.onCreate()
-        instance = this
+    //Agrupa todos las variables y métodos que están definidos como
+    //estáticos
+    companion object {
+        lateinit var INSTANCE: MyApplication
+            private set
+
+        val applicationContext: Context get() { return INSTANCE.applicationContext }
     }
 }

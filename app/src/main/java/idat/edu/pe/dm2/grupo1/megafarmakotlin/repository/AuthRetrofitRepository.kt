@@ -9,6 +9,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MegaFarmaCliente
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.ActualizarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.TokenRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 import retrofit2.Call
@@ -17,6 +18,7 @@ import retrofit2.Response
 
 class AuthRetrofitRepository {
     var loginResponse = MutableLiveData<LoginResponse>()
+    var refrescarResponse = MutableLiveData<LoginResponse>()
     var registroRespose = MutableLiveData<GlobalResponse>()
     val actualizarReponse = MutableLiveData<GlobalResponse>()
 
@@ -42,6 +44,22 @@ class AuthRetrofitRepository {
             }
         })
         return loginResponse
+    }
+
+    fun refresacarToken(tokenRequest: TokenRequest)
+            : MutableLiveData<LoginResponse> {
+        val call: Call<LoginResponse> =
+            MegaFarmaCliente.retrofitUsuarioService.refrescar(tokenRequest)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                refrescarResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("ErrorRefrescarToken", t.message.toString())
+            }
+        })
+        return refrescarResponse
     }
 
     fun registrarUsuario(registrarClienteRequest: RegistrarClienteRequest)

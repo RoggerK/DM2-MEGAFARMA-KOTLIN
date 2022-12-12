@@ -7,18 +7,21 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.AuthRetrofitRepository
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.ActualizarClienteRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.LoginRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.RegistrarClienteRequest
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.TokenRequest
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.LoginResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
 
 class AuthRetrofitViewModel: ViewModel() {
 
     var responseLogin: LiveData<LoginResponse>
+    var responseRefrescar: LiveData<LoginResponse>
     var responseRegistro: LiveData<GlobalResponse>
     var responseActualizar: LiveData<GlobalResponse>
     private var repository = AuthRetrofitRepository()
 
     init {
         responseLogin = repository.loginResponse
+        responseRefrescar = repository.refrescarResponse
         responseRegistro = repository.registroRespose
         responseActualizar = repository.actualizarReponse
     }
@@ -27,6 +30,10 @@ class AuthRetrofitViewModel: ViewModel() {
         responseLogin = repository.autenticarUsuario(
             LoginRequest(correo, contrasenia), view
         )
+    }
+
+    fun refrescarToken(token: String) {
+        responseLogin = repository.refresacarToken(TokenRequest(token))
     }
 
     fun registroUsuario(nombres: String, apellidos: String, celular: String, dni: String,

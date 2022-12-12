@@ -76,8 +76,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun guardarAuthSQLite(auth: LoginResponse) {
-        val authEntity = AuthEntity(1, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo,
-            auth.idcliente)
+        val authEntity = AuthEntity(auth.idcliente, auth.token, auth.nombre, auth.apellido, auth.dni, auth.correo)
         authSQLiteRepository.insertar(authEntity)
     }
 

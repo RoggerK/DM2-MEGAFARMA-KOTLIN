@@ -14,19 +14,19 @@ object AppMessage {
         when (tipo) {
             TypeMessage.DANGER -> {
                 snackBarView.setBackgroundColor(
-                    ContextCompat.getColor(MyApplication.instance, R.color.alertDANGER)
+                    ContextCompat.getColor(MyApplication.INSTANCE, R.color.alertDANGER)
                 )
             }
 
             TypeMessage.INFO -> {
                 snackBarView.setBackgroundColor(
-                    ContextCompat.getColor(MyApplication.instance, R.color.alertINFO)
+                    ContextCompat.getColor(MyApplication.INSTANCE, R.color.alertINFO)
                 )
             }
 
             else -> {
                 snackBarView.setBackgroundColor(
-                    ContextCompat.getColor(MyApplication.instance, R.color.alertSUCCESS)
+                    ContextCompat.getColor(MyApplication.INSTANCE, R.color.alertSUCCESS)
                 )
             }
         }

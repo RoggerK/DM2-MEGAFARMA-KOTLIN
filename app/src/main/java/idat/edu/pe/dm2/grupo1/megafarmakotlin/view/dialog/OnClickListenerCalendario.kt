@@ -17,7 +17,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoRespo
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class OnClickListenerRecordatorio(var medicamento: MedicamentoResponse) : View.OnClickListener {
+class OnClickListenerCalendario(var medicamento: MedicamentoResponse) : View.OnClickListener {
 
     private lateinit var context: Context
 
