@@ -63,6 +63,7 @@
 
     <string name="valCerrarSesion">Cerrar Sesion</string>
     <string name="menu_mapa">Mapa</string>
+    <string name="ValBlank">Blank</string>
 
 
 </resources>

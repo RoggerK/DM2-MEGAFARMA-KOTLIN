@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.fragment.PedidoFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="712dp"
+        android:layout_margin="15dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="5dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
 
             <TextView
                 android:id="@+id/idEstimado"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:text="ESTIMADO" />
 
@@ -31,18 +30,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/idComprador"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/idCompradorr"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:enabled="false"
                     android:gravity="center_horizontal"
                     android:hint="Comprador"
@@ -58,9 +55,9 @@
             <TextView
                 android:id="@+id/idProductoss"
                 android:layout_width="99dp"
-                android:layout_height="wrap_content"
+                android:layout_height="31dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="Productos" />
@@ -68,7 +65,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="97dp"
+            android:layout_height="62dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
@@ -78,18 +75,18 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="62dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="135dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
+                android:layout_height="34dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/idImporte"
@@ -108,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="33dp"
+                    android:layout_marginStart="36dp"
                     android:layout_marginBottom="7dp"
                     android:layout_toEndOf="@+id/idImporte"
                     android:clickable="false"
@@ -122,17 +119,11 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
             </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
+                android:layout_height="34dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/idIGV"
@@ -151,8 +142,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginBottom="7dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_toEndOf="@+id/idIGV"
                     android:clickable="false"
                     android:enabled="true"
@@ -164,17 +155,11 @@
                     android:textStyle="bold"
                     tools:ignore="TouchTargetSizeCheck" />
             </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
+                android:layout_height="33dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/idTOTAL"
@@ -193,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="34dp"
+                    android:layout_marginStart="36dp"
                     android:layout_marginBottom="7dp"
                     android:layout_toEndOf="@+id/idTOTAL"
                     android:clickable="false"
@@ -206,6 +191,7 @@
                     android:textStyle="bold"
                     tools:ignore="TouchTargetSizeCheck" />
             </RelativeLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -227,8 +213,8 @@
                     android:id="@+id/idUbicacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textSize="15sp" />
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -237,6 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="#2e2e2e"
+                android:layout_marginTop="10dp"
                 android:text="@string/RealizarPedido"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
@@ -245,4 +232,4 @@
 
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
