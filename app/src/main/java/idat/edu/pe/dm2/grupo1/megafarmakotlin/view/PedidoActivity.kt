@@ -10,10 +10,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityPedidoBinding
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentPedidoListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment.PedidoFragment
 
-class PedidoActivity : AppCompatActivity() {
+class PedidoActivity : AppCompatActivity(), OnFragmentPedidoListerne {
 
     private lateinit var binding: ActivityPedidoBinding
 
@@ -69,5 +70,9 @@ class PedidoActivity : AppCompatActivity() {
         fragment.listaMedicamentosAgregados = listaMedicamento
         fragment.realizarDatosOperacionales()
         fragment.realizarAdapterPedido()
+    }
+
+    override fun onClickButtonRealizarPedido() {
+        finish()
     }
 }

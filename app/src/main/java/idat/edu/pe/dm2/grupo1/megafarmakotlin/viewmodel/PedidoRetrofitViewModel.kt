@@ -1,5 +1,6 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel
 
+import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModel
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.repository.PedidoRetrofitRepository
@@ -11,13 +12,13 @@ class PedidoRetrofitViewModel : ViewModel() {
     private var repository = PedidoRetrofitRepository()
 
     fun realizarPedido(
-        view: View,
+        context: Context,
         compraClienteRequest: CompraClienteRequest,
         listaDetalle: ArrayList<DetalleClienteRequest>,
         token: String
     ) {
         repository.registrarReclamo(
-            view,
+            context,
             CompraDetalleClienteRequest(compraClienteRequest, listaDetalle),
             token
         )

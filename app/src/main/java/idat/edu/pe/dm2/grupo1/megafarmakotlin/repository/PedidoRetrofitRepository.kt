@@ -1,10 +1,8 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.repository
 
+import android.content.Context
 import android.util.Log
-import android.view.View
-import androidx.lifecycle.MutableLiveData
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.AppMessage
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
+import android.widget.Toast
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.MegaFarmaCliente
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.request.CompraDetalleClienteRequest
 import retrofit2.Call
@@ -13,7 +11,11 @@ import retrofit2.Response
 
 class PedidoRetrofitRepository {
 
-    fun registrarReclamo(view: View, compraDetalleClienteRequest: CompraDetalleClienteRequest, token: String) {
+    fun registrarReclamo(
+        context: Context,
+        compraDetalleClienteRequest: CompraDetalleClienteRequest,
+        token: String
+    ) {
         val call: Call<Void> =
             MegaFarmaCliente.retrofitPedidoService.realizarPedido(
                 compraDetalleClienteRequest,
@@ -25,10 +27,8 @@ class PedidoRetrofitRepository {
                 response: Response<Void>
             ) {
                 if (response.isSuccessful) {
-                    AppMessage.enviarMensaje(
-                        view, "INFO: Pedido realizado con exito",
-                        TypeMessage.SUCCESSFULL
-                    )
+                    Toast.makeText(context, "INFO: Pedido realizado con exito", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 

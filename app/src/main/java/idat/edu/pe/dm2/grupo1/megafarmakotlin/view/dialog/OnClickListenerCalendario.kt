@@ -97,7 +97,7 @@ class OnClickListenerCalendario(var medicamento: MedicamentoResponse) : View.OnC
         intent.putExtra(CalendarContract.Events.TITLE, "Pedir ${medicamento.nombre_producto}")
         intent.putExtra(
             CalendarContract.Events.DESCRIPTION,
-            "La última vez pediste ${medicamento.pedido} UN\nEl precio fue de s/. ${medicamento.precio_total}"
+            "La última vez pediste ${medicamento.pedido} UN\nEl precio total fue de s/. ${medicamento.precio_total}"
         )
 
         startActivity(context, intent, null)
