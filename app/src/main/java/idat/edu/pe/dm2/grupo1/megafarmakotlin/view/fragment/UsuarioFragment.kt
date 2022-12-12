@@ -1,12 +1,12 @@
 package idat.edu.pe.dm2.grupo1.megafarmakotlin.view.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
@@ -20,7 +20,6 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.FragmentUsuarioBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentUsuarioListerne
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.GlobalResponse
-import idat.edu.pe.dm2.grupo1.megafarmakotlin.view.LoginActivity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthRetrofitViewModel
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.viewmodel.AuthSQLiteViewModel
 import java.util.regex.Pattern
@@ -74,7 +73,7 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         binding.btNecesitoAyuda.setOnClickListener(this)
 
         authSQLiteViewModel.obtener().observe(viewLifecycleOwner, Observer { response ->
-            if(response != null) {
+            if (response != null) {
                 authEntity = response
                 binding.edtNombres.setText(response.nombre)
                 binding.edtApellidos.setText(response.apellido)
@@ -138,11 +137,8 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
 
     private fun obtenerRespuestaDatos(response: GlobalResponse) {
         if (response.respuesta) {
-            AppMessage.enviarMensaje(
-                binding.root, "INFO: ${response.mensaje}",
-                TypeMessage.SUCCESSFULL
-            )
-            limpiarFormulario()
+            Toast.makeText(context, "INFO: ${response.mensaje}", Toast.LENGTH_LONG).show()
+            listernerUsuario.onClickButtonActualizarDatos()
         } else {
             AppMessage.enviarMensaje(
                 binding.root, "INFO: ${response.mensaje}",
@@ -171,12 +167,6 @@ class UsuarioFragment : Fragment(), View.OnClickListener {
         }
 
         return true
-    }
-
-    private fun limpiarFormulario() {
-        binding.edtCorreo.setText("")
-        binding.edtCelular.setText("")
-        binding.edtContrasenia.setText("")
     }
 
     private fun validarCorreo(): Boolean {

@@ -12,6 +12,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.R
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.Constante
+import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.SharedPreferencesManager
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.databinding.ActivityMenuClienteBinding
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.db.entity.AuthEntity
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.interfaces.OnFragmentCarritoListerne
@@ -66,6 +68,13 @@ class MenuClienteActivity : AppCompatActivity(),
         startActivity(Intent(this, PedidoActivity::class.java).apply {
             putExtra("listaCarrito", listaCarrito)
         })
+    }
+
+    override fun onClickButtonActualizarDatos() {
+        SharedPreferencesManager().deletePreferences(Constante().PREF_ACCESO)
+        authSQLiteViewModel.eliminarTodo()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     override fun onClickButtonCerrarSesion() {
