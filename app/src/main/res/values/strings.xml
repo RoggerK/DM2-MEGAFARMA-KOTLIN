@@ -69,5 +69,7 @@
     <string name="valAgendar">Recordar medicamento</string>
     <string name="menu_mapa">Mapa</string>
     <string name="ValBlank">Blank</string>
+    <string name="valCantidad">Cantidad:</string>
+    <string name="valImporte">Importe: S/. </string>
 
 </resources>

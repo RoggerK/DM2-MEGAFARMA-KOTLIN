@@ -23,7 +23,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
         mMap.setOnMarkerDragListener(this)
-        var puntoInicio = LatLng(-12.0453, -77.0311)
+        var puntoInicio = LatLng(-12.01629, -76.88454)
 
         if (coordenada != "") {
             val array = coordenada.split(" ")
@@ -37,8 +37,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
                 .draggable(true)
         )
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(puntoInicio, 16.0F))
-        mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-        mMap.isTrafficEnabled = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
