@@ -68,5 +68,6 @@
     <string name="valSemana">Una semana</string>
     <string name="valAgendar">Recordar medicamento</string>
     <string name="menu_mapa">Mapa</string>
+    <string name="ValBlank">Blank</string>
 
 </resources>

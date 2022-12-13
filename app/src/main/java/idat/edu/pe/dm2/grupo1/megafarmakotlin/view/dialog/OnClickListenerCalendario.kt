@@ -16,6 +16,7 @@ import idat.edu.pe.dm2.grupo1.megafarmakotlin.common.TypeMessage
 import idat.edu.pe.dm2.grupo1.megafarmakotlin.retrofit.response.MedicamentoResponse
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Date
 
 class OnClickListenerCalendario(var medicamento: MedicamentoResponse) : View.OnClickListener {
 
@@ -47,19 +48,19 @@ class OnClickListenerCalendario(var medicamento: MedicamentoResponse) : View.OnC
                 if (radgCalRecordar.checkedRadioButtonId != -1) {
                     when (radgCalRecordar.checkedRadioButtonId) {
                         radbUnaSemana.id -> realizarEventoCalendario(
-                            dateTime.dayOfMonth + 7,
-                            dateTime.dayOfMonth,
-                            dateTime.year
+                            ZonedDateTime.now().dayOfMonth + 7,
+                            ZonedDateTime.now().monthValue - 1,
+                            ZonedDateTime.now().year
                         )
                         radbQuinceDias.id -> realizarEventoCalendario(
-                            dateTime.dayOfMonth + 15,
-                            dateTime.dayOfMonth,
-                            dateTime.year
+                            ZonedDateTime.now().dayOfMonth + 15,
+                            ZonedDateTime.now().monthValue - 1,
+                            ZonedDateTime.now().year
                         )
                         radbUnMes.id -> realizarEventoCalendario(
-                            dateTime.dayOfMonth + 30,
-                            dateTime.dayOfMonth,
-                            dateTime.year
+                            ZonedDateTime.now().dayOfMonth + 30,
+                            ZonedDateTime.now().monthValue - 1,
+                            ZonedDateTime.now().year
                         )
                     }
                     dialog.cancel()

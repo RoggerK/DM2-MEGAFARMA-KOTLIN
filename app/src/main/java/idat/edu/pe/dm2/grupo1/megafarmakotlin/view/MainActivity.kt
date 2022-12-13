@@ -36,9 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         }, 3000) //3s = 3000
 
-        //animacion de 3 o 5 segundos para hacer dichas consultas y registros
-        //verificar token si hay ingresa principal sino login
-        //funcion que actualiza token existente
     }
 
     private fun verificarAccesoRapido(): Boolean {
